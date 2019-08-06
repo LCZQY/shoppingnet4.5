@@ -6,7 +6,7 @@ namespace BLL
 {
     public class DeliveryService : IBaseServer<Delivery>
     {
-        private DeliveryDal _infoDal = Common.CacheControl.Get<DeliveryDal>();
+        private DeliveryDal _infoDal = new DeliveryDal(); //Common.CacheControl.Get<DeliveryDal>();
 
 
         public bool Add(Delivery model)

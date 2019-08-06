@@ -384,7 +384,7 @@
     </div>
     <%--促销咨询结束--%>
     <script src="Scripts/jquery-3.3.1.min.js"></script>
-    <script src="Scripts/Shopping/pageindex.js"></script>
+   <script src="Scripts/Shopping/pageindex.js"></script>
     <script src="AppData/layui/layui.js"></script>
     <script src="Scripts/Shopping/master.js"></script>
     <script>

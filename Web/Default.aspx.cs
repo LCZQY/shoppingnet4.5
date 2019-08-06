@@ -10,8 +10,8 @@ namespace System.Web
     public partial class _Default : Page
     {
 
-        private ProductService _InfoProductService = CacheControl.Get<ProductService>();
-        private PhotoService _InfoImageService = CacheControl.Get<PhotoService>();
+        private ProductService _InfoProductService = new ProductService(); //CacheControl.Get<ProductService>();
+        private PhotoService _InfoImageService = new PhotoService();//CacheControl.Get<PhotoService>();
         protected void Page_Load(object sender, EventArgs e)
         {
 

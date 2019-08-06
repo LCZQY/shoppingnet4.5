@@ -10,7 +10,7 @@ namespace System.Web.Aspx.ManagePages
     /// </summary>
     public class userhandler : IHttpHandler
     {
-        private UserInfoService _userInfoService = CacheControl.Get<UserInfoService>();
+        private UserInfoService _userInfoService = new UserInfoService(); //CacheControl.Get<UserInfoService>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

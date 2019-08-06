@@ -11,7 +11,7 @@ namespace System.Web.Aspx.ManagePages
     public class adminhandler : IHttpHandler
     {
 
-        private AdminUserService _AdminUserService = CacheControl.Get<AdminUserService>();
+        private AdminUserService _AdminUserService = new AdminUserService(); //CacheControl.Get<AdminUserService>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

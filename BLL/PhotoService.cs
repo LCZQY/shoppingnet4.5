@@ -11,7 +11,7 @@ namespace BLL
 
     public class PhotoService : IBaseServer<Photo>
     {
-        private PhotoDal _infoDal = Common.CacheControl.Get<PhotoDal>();
+        private PhotoDal _infoDal = new PhotoDal { }; //Common.CacheControl.Get<PhotoDal>();
 
 
         public bool Add(Photo model)

@@ -10,7 +10,7 @@ namespace BLL
 
     public class UserInfoService
     {
-        UserInfoDal UserInfoDal = Common.CacheControl.Get<UserInfoDal>();
+        UserInfoDal UserInfoDal = new UserInfoDal();// Common.CacheControl.Get<UserInfoDal>();
 
 
         /// <summary>

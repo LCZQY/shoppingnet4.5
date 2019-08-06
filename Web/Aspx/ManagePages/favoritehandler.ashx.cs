@@ -12,7 +12,7 @@ namespace System.Web.Aspx.ManagePages
     public class favoritehandler : IHttpHandler
     {
 
-        private FavoriteService _InfoService = CacheControl.Get<FavoriteService>();
+        private FavoriteService _InfoService = new FavoriteService();//CacheControl.Get<FavoriteService>();
 
         public void ProcessRequest(HttpContext context)
         {

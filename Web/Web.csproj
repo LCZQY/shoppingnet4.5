@@ -288,6 +288,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="img\2019-08-05\4f8dfe17-4db3-4e51-bc70-38a8b16c1c8b.jpg" />
     <Content Include="img\4.jpg" />
     <Content Include="img\arrow.png" />

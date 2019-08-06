@@ -11,7 +11,7 @@ namespace BLL
  
     public class ProductService : IBaseServer<Product>
     {
-        private ProductDal _infoDal = Common.CacheControl.Get<ProductDal>();
+        private ProductDal _infoDal = new ProductDal { }; //Common.CacheControl.Get<ProductDal>();
 
 
         

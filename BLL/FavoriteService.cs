@@ -10,7 +10,7 @@ namespace BLL
     /// </summary>
     public class FavoriteService : IBaseServer<Favorite>
     {
-        private FavoriteDal _infoDal = Common.CacheControl.Get<FavoriteDal>();
+        private FavoriteDal _infoDal = new FavoriteDal();//Common.CacheControl.Get<FavoriteDal>();
 
 
         public bool Add(Favorite model)

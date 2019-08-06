@@ -6,7 +6,7 @@ namespace BLL
 {
     public class NewsService : IBaseServer<News>
     {
-        private NewsDal _infoDal = Common.CacheControl.Get<NewsDal>();
+        private NewsDal _infoDal = new NewsDal(); //Common.CacheControl.Get<NewsDal>();
 
 
         public bool Add(News model)

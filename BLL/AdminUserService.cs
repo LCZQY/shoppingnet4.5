@@ -12,7 +12,7 @@ namespace BLL
     /// </summary>
     public class AdminUserService : IBaseServer<AdminUser>
     {
-        private AdminUserDal _infoDal = Common.CacheControl.Get<AdminUserDal>();
+        private AdminUserDal _infoDal = new AdminUserDal();// Common.CacheControl.Get<AdminUserDal>();
 
 
 

@@ -16,8 +16,8 @@ namespace System.Web.Aspx.ManagePages
     public class groundinghandler : IHttpHandler
     {
 
-        private ProductService _InfoService = CacheControl.Get<ProductService>();
-        private PhotoService _photoInfoService = CacheControl.Get<PhotoService>();
+        private ProductService _InfoService = new ProductService(); //CacheControl.Get<ProductService>();
+        private PhotoService _photoInfoService = new PhotoService();// CacheControl.Get<PhotoService>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

@@ -11,7 +11,7 @@ namespace BLL
 
     public class CategoryService : IBaseServer<Category>
     {
-        private CategoryDal _infoDal = CacheControl.Get<CategoryDal>();
+        private CategoryDal _infoDal = new CategoryDal(); //CacheControl.Get<CategoryDal>();
 
 
         /// <summary>

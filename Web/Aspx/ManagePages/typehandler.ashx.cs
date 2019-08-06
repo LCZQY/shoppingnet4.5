@@ -15,9 +15,9 @@ namespace System.Web.Aspx.ManagePages
     public class typehandler : IHttpHandler
     {
 
-        private CategoryService _infoService = CacheControl.Get<CategoryService>();
+        private CategoryService _infoService = new CategoryService(); //CacheControl.Get<CategoryService>();
 
-        private ProductService _infoProductService = CacheControl.Get<ProductService>();
+        private ProductService _infoProductService = new ProductService(); //CacheControl.Get<ProductService>();
 
         public void ProcessRequest(HttpContext context)
         {

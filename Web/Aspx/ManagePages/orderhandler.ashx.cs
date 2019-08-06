@@ -12,7 +12,7 @@ namespace System.Web.Aspx.ManagePages
     public class orderhandler : IHttpHandler
     {
 
-        private OrderService _infoService = CacheControl.Get<OrderService>();
+        private OrderService _infoService = new OrderService();//CacheControl.Get<OrderService>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

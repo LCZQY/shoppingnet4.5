@@ -13,8 +13,8 @@ namespace System.Web.Aspx.ManagePages
     {
         //！ 促销应该和商品挂钩，下个版本可优化
 
-        private NewsService _InfoService = CacheControl.Get<NewsService>();
-        private PhotoService _photoInfoService = CacheControl.Get<PhotoService>();
+        private NewsService _InfoService = new NewsService(); //CacheControl.Get<NewsService>();
+        private PhotoService _photoInfoService = new PhotoService(); // CacheControl.Get<PhotoService>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

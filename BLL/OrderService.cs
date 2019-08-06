@@ -9,11 +9,11 @@ namespace BLL
 {
     public class OrderService : IBaseServer<Orders>
     {
-        private OrdersDal _infoOrderDal = CacheControl.Get<OrdersDal>();
-        private UserInfoDal _infoUserDal = CacheControl.Get<UserInfoDal>();
-        private OrdersDetailDal _infoDetailDal = CacheControl.Get<OrdersDetailDal>();
-        private DeliveryService _infoDeliveryDal = CacheControl.Get<DeliveryService>();
-        private ProductDal _infoProductDal = CacheControl.Get<ProductDal>();
+        private OrdersDal _infoOrderDal = new OrdersDal(); //CacheControl.Get<OrdersDal>();
+        private UserInfoDal _infoUserDal = new UserInfoDal();// CacheControl.Get<UserInfoDal>();
+        private OrdersDetailDal _infoDetailDal = new OrdersDetailDal(); //CacheControl.Get<OrdersDetailDal>();
+        private DeliveryService _infoDeliveryDal = new DeliveryService(); //CacheControl.Get<DeliveryService>();
+        private ProductDal _infoProductDal = new ProductDal(); // CacheControl.Get<ProductDal>();
 
 
         /// <summary>
