@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DAL;
 using Model;
 
@@ -11,8 +12,8 @@ namespace BLL
     public class FavoriteService : IBaseServer<Favorite>
     {
         private FavoriteDal _infoDal = new FavoriteDal();//Common.CacheControl.Get<FavoriteDal>();
-
-
+        private ProductDal _infoProductDal = new ProductDal();
+        private PhotoDal _infoPhotoDal = new PhotoDal();
         public bool Add(Favorite model)
         {
             return _infoDal.AddFavorite(model) > 0;
@@ -28,8 +29,9 @@ namespace BLL
             return _infoDal.GetDeail(id);
         }
 
-        public List<Favorite> GetList()
+        public List<Favorite> GetList(string userid)
         {
+
             return _infoDal.GetList();
         }
 

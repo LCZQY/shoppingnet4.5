@@ -111,7 +111,7 @@ var productContentHtml = function (options) {
     var title = '<div class="product-content"><h5 class="product-name"><a href="#">' + options.title + '</a></h5>';
     var star = '<div class="product-ratings"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> </div>'; 
     var price = '<div class="product-price"><h2>￥' + options.price + '<del>￥' + options.marketPrice + ' </del></h2></div>';
-    var action = '<div class="product-action"><ul><li class="cart"><a href="##" class="cart_add" name="' + options.id + '" ><i class="fa fa-shopping-cart add_cart" aria-hidden="true"></i></a></li><li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li></ul></div></div>';    
+    var action = '<div class="product-action"><ul><li class="cart"><a href="##" class="cart_add" name="' + options.id + '" ><i class="fa fa-shopping-cart add_cart" aria-hidden="true"></i></a></li><li class="fa"><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li></ul></div></div>';    
     var div2 = '</div></div>';
     var html = div1 + img + title + star + price + action + div2;
     return html;

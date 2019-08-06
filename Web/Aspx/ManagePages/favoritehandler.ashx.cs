@@ -13,7 +13,7 @@ namespace System.Web.Aspx.ManagePages
     {
 
         private FavoriteService _InfoService = new FavoriteService();//CacheControl.Get<FavoriteService>();
-
+        private ProductService _infoProductService = new ProductService(); 
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -41,9 +41,15 @@ namespace System.Web.Aspx.ManagePages
                 case "upload":
                     UploadImg(context);
                     break;
+            
             }
 
         }
+
+
+
+
+
 
         /// <summary>
         /// 批量删除
@@ -193,25 +199,29 @@ namespace System.Web.Aspx.ManagePages
         public void ListFavoriteRequest(HttpContext context)
         {
 
-            var userid = context.Request.Form["Userid"];
-            var page = context.Request.Form["page"];
-            var index = context.Request.Form["limit"];
-            if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
-            {
-                var list = _InfoService.GetList().Where(y=>y.UserId == userid)?.ToList();
-                list = list ?? new List<Favorite> { };
-                var res = SerializeHelp.ToTableJson(list);
-                context.Response.Write(res);
-            }
-            else
-            {
-                var list = _InfoService.GetList().Where(y => y.UserId == userid)?.ToList() ?? null;
-                list = list ?? new List<Favorite> { };
-                var list1 = list?.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-                var res = SerializeHelp.ToTableJson(list1, list == null ? 0 : list.Count());
-                context.Response.Write(res);
+            var userid = context.Request.Form["UserId"];
+            var list = _infoProductService.FavoriteProductList(userid);
+            var res = SerializeHelp.ToTableJson(list);
+            context.Response.Write(res);
+            //var userid = context.Request.Form["Userid"];
+            //var page = context.Request.Form["page"];
+            //var index = context.Request.Form["limit"];
+            //if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+            //{
+            //    var list = _InfoService.GetList().Where(y=>y.UserId == userid)?.ToList();
+            //    list = list ?? new List<Favorite> { };
+            //    var res = SerializeHelp.ToTableJson(list);
+            //    context.Response.Write(res);
+            //}
+            //else
+            //{
+            //    var list = _InfoService.GetList().Where(y => y.UserId == userid)?.ToList() ?? null;
+            //    list = list ?? new List<Favorite> { };
+            //    var list1 = list?.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
+            //    var res = SerializeHelp.ToTableJson(list1, list == null ? 0 : list.Count());
+            //    context.Response.Write(res);
 
-            }
+            //}
         }
 
 

@@ -98,12 +98,17 @@ namespace Model
 
         #region  商品
 
-
+        
         /// <summary>
         /// 商品名
         /// </summary>
         public string Title { get; set; }
 
+
+        /// <summary>
+        /// 图片地址
+        /// </summary>
+        public string Path { get; set; }
         ///// <summary>
         /////分类id
         ///// </summary>

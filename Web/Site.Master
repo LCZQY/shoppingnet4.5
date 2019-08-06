@@ -468,7 +468,8 @@
             console.log('搜索');
             window.location.replace("ShopList.aspx");
         });
-        var 
+        var vars = localStorage.getItem("index");
+        console.log(vars,"!!!!!!!!!!~~~~~~~~~~~~~~");
         var login = JSON.parse(localStorage.getItem("index"));      
         if (login) {
             $("#mychange").text(login);

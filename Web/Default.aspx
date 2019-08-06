@@ -439,9 +439,32 @@
             $("#favourite-area").hide();
         }
 
+
+
+        /*加入购物车*/
+        $(".cart >").click(function () {
+            if (login) {
+                $('#exampleModal').modal('show');
+                return false;
+            }
+            ajax_request({
+                url: "Aspx/ManagePages/orderhandler.ashx?action=add",
+                data: { "ProductId": pid, "UserId": uid },
+                callback: function (e) {
+                    e = JSON.parse(e);
+                    console.log(e, "加入购物车成功！！！！！");
+                    if (e.code === 0) {
+                        favoriteList(e.data);
+                    } else {
+
+                    }
+                }
+            });
+        });
+
            
-        /*加入购物车！！！*/
-        $(".cart >a").click(function () {
+        /*加入收藏！！！*/
+        $(".fa >a").click(function () {
             if (login) {
                 $('#exampleModal').modal('show');
                 return false;

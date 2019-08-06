@@ -9,17 +9,53 @@ namespace BLL
 {
     public class OrderService : IBaseServer<Orders>
     {
-        private OrdersDal _infoOrderDal = new OrdersDal(); //CacheControl.Get<OrdersDal>();
-        private UserInfoDal _infoUserDal = new UserInfoDal();// CacheControl.Get<UserInfoDal>();
-        private OrdersDetailDal _infoDetailDal = new OrdersDetailDal(); //CacheControl.Get<OrdersDetailDal>();
-        private DeliveryService _infoDeliveryDal = new DeliveryService(); //CacheControl.Get<DeliveryService>();
-        private ProductDal _infoProductDal = new ProductDal(); // CacheControl.Get<ProductDal>();
+        private OrdersDal _infoOrderDal = new OrdersDal(); 
+        private UserInfoDal _infoUserDal = new UserInfoDal();
+        private OrdersDetailDal _infoDetailDal = new OrdersDetailDal();
+        private DeliveryService _infoDeliveryDal = new DeliveryService();
+        private ProductDal _infoProductDal = new ProductDal(); 
+        private PhotoDal _infoPhotoDal = new PhotoDal();
+        private FavoriteDal _infoFavoriteDal = new FavoriteDal();
+
+
+
+      
 
 
         /// <summary>
-        ///  连表查询订单信息
+        ///  购物车数据
         /// </summary>
-        public List<OrdersDetailExtend> OrderDetailJoinList()
+        public List<OrdersDetailExtend> OrderCartList()
+        {
+            var list = from c in _infoOrderDal.GetList().AsQueryable()
+                       join b in _infoDetailDal.GetList().AsQueryable()
+                       on c.OrdersId equals b.OrdersId
+                       join h in _infoPhotoDal.GetList().AsQueryable()
+                       on b.ProductId equals h.ProductId
+                       select new OrdersDetailExtend
+                       {
+                           //订单
+                           OrdersId = c.OrdersId,
+                           ProductId= b.ProductId,
+                           Orderdate = c.Orderdate,
+
+                           Total = c.Total,
+                           DeliveryDate = c.DeliveryDate,
+                           States = c.States,
+                           Remark = c.Remark,
+
+                           //订单详情
+                           Path = h.PhotoUrl,                  
+                           DetailId = b.DetailId,
+                           Quantity = b.Quantity,
+                           DetailStates = b.States,
+                       };
+            return list.ToList() ?? new List<OrdersDetailExtend> { };
+        }
+            /// <summary>
+            ///  连表查询订单信息
+            /// </summary>
+            public List<OrdersDetailExtend> OrderDetailJoinList()
         {
             try
             {
