@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace System.Web.Aspx {
+namespace Web {
     
     
     public partial class ShoppingCart {

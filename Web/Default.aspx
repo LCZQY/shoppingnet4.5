@@ -12,8 +12,8 @@
                             <h2>全部商品分类</h2>
                         </div>
                         <div class="product_vmegamenu">
-                            <ul>
-                                <li>
+                            <ul id="leftmunu">
+                               <%-- <li>
                                     <a href="#" class="hover-icon">women</a>
                                     <div class="vmegamenu">
                                         <span>
@@ -29,23 +29,9 @@
                                             <a href="#">Satchels</a>
                                             <a href="#">kids</a>
                                             <a href="#">coats</a>
-                                        </span>
-                                        <span>
-                                            <a href="#" class="vgema-title">shoes</a>
-                                            <a href="#">Ankle Boots</a>
-                                            <a href="#">Clog sandals </a>
-                                            <a href="#">run</a>
-                                            <a href="#">Books</a>
-                                        </span>
-                                        <span>
-                                            <a href="#" class="vgema-title">Clothing</a>
-                                            <a href="#">Coats  Jackets</a>
-                                            <a href="#">Raincoats</a>
-                                            <a href="#">Jackets</a>
-                                            <a href="#">T-shirts</a>
-                                        </span>
+                                        </span>                                       
                                     </div>
-                                </li>
+                                </li>--%>
                             </ul>
                         </div>
                     </div>
@@ -167,7 +153,7 @@
     <!--轮播结束-->
 
     <!-- 我的收藏开始-->
-    <div class="favourite-area mrgn-40">
+    <div class="favourite-area mrgn-40" id="favourite-area" hidden>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -393,7 +379,7 @@
             data: null,
             callback: function (e) {
                 // e = JSON.parse(e);
-                console.log(e, "商品列表");
+              //  console.log(e, "商品列表");
                 // if (e.code === 0) {
                 productList(e);
                 // } else {
@@ -405,7 +391,7 @@
             data: null,
             callback: function (e) {
                 e = JSON.parse(e);
-                console.log(e.data, "咨询");
+        //        console.log(e.data, "咨询");
 
                 if (e.code === 0) {
                     newList(e.data);
@@ -414,17 +400,72 @@
                 }
             }
         });
-        //ajax_request({
-        //    url: "Aspx/ManagePages/newshandler.ashx?action=list",
-        //    data: { },
-        //    callback: function (e) {
-        //        e = JSON.parse(e);
-        //        console.log(e, "收藏");
-        //        if (e.code === 0) {
-        //            favoriteList(e.data);
-        //        } else {
-        //        }
-        //    }
-        //});
+        ajax_request({
+            url: "Aspx/ManagePages/typehandler.ashx?action=tree",
+            data: null,
+            callback: function (e) {
+              //  e = JSON.parse(e);
+                menuleftList(e);
+                //if (e.code === 0) {
+                // //   list (e.data);
+                   
+                //} else {
+
+                //}
+            }
+        });
+
+        //收藏列表
+        var favorites = function () {
+            var uid = JSON.parse(localStorage.getItem("id"));
+            ajax_request({
+                url: "Aspx/ManagePages/favoritehandler.ashx?action=list",
+                data: { "Userid": uid },
+                callback: function (e) {
+                    e = JSON.parse(e);
+                    console.log(e, "购物车列表！！！！！");
+                    if (e.code === 0) {
+                        favoriteList(e.data);
+                    } else {
+                    }
+                }
+            });
+        }
+        //如果有登陆信息则显示我的购物车
+        var login = JSON.parse(localStorage.getItem("index"));        
+        if (login) {
+            $("#favourite-area").show();
+        } else {
+            $("#favourite-area").hide();
+        }
+
+           
+        /*加入购物车！！！*/
+        $(".cart >a").click(function () {
+            if (login) {
+                $('#exampleModal').modal('show');
+                return false;
+            }
+            var pid = $(this).attr("name");
+            var uid = JSON.parse(localStorage.getItem("id"));
+            ajax_request({
+                url: "Aspx/ManagePages/favoritehandler.ashx?action=add",
+                data: { "ProductId": pid, "UserId": uid },
+                callback: function (e) {
+                    e = JSON.parse(e);
+                    console.log(e, "加入购物车成功！！！！！");
+                    if (e.code === 0) {
+                        favoriteList(e.data);
+                    } else {
+
+                    }
+                }
+            });
+            console.log(id, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        });
+
+
+
+
     </script>
 </asp:Content>

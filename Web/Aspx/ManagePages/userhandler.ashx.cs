@@ -47,7 +47,7 @@ namespace System.Web.Aspx.ManagePages
         /// <param name="context"></param>
         public void LoginRequest(HttpContext context)
         {
-            var response = new ResponseMessage();
+            var response = new ResponseMessage<string>();
             try
             {
                 string userName = context.Request.Form["name"];
@@ -57,6 +57,8 @@ namespace System.Web.Aspx.ManagePages
                 {
                     response.code = 0;
                     response.msg = "登陆成功";
+                    //response.model = model.UserId+'.'+model.Nick;
+                    response.model = model.UserId;
                     context.Response.Write(SerializeHelp.ToJson(response));
                     return;
                 }
@@ -168,7 +170,7 @@ namespace System.Web.Aspx.ManagePages
         /// <param name="context"></param>
         public void AddUsersRequest(HttpContext context)
         {
-            var response = new ResponseMessage();
+            var response = new ResponseMessage<string>();
             try
             {
                 string userName = context.Request.Form["name"];
@@ -188,6 +190,8 @@ namespace System.Web.Aspx.ManagePages
                 {
                     response.code = 0;
                     response.msg = "添加成功";
+                    //response.model = userInfo.UserId + '.' + userInfo.Nick;
+                    response.model = userInfo.UserId;
                     context.Response.Write(SerializeHelp.ToJson(response));
                     return;
                 }

@@ -154,21 +154,25 @@ namespace System.Web.Aspx.ManagePages
             var response = new ResponseMessage();
             try
             {
-                string id = context.Request.Form["FavoriteId"];
+                //string id = context.Request.Form["FavoriteId"];
                 string productId = context.Request.Form["ProductId"];
                 string userId = context.Request.Form["UserId"];
-
                 Favorite Favorite = new Favorite()
                 {
-                    FavoriteId = id,
+                    FavoriteId = Guid.NewGuid().ToString(),
                     ProductId = productId,
                     UserId = userId
                 };
-
                 var add = _InfoService.Add(Favorite);
-
-                response.code = add == true ? 0 : 500;
-                response.msg = "添加成功";
+                if (add)
+                {
+                    response.code = 0;
+                    response.msg = "添加成功";
+                    context.Response.Write(SerializeHelp.ToJson(response));
+                    return;
+                }
+                response.code = 500;
+                response.msg = "添加失败";
                 context.Response.Write(SerializeHelp.ToJson(response));
             }
             catch (Exception e)
@@ -176,30 +180,32 @@ namespace System.Web.Aspx.ManagePages
                 string error = e.Message;
 
                 response.code = 500;
-                response.msg = "添加失败";
+                response.msg = "失败，请重试";
                 context.Response.Write(SerializeHelp.ToJson(response));
             }
 
         }
 
         /// <summary>
-        /// 查询
+        /// 查询我的收藏
         /// </summary>
         /// <param name="context"></param>
         public void ListFavoriteRequest(HttpContext context)
         {
+
+            var userid = context.Request.Form["Userid"];
             var page = context.Request.Form["page"];
             var index = context.Request.Form["limit"];
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
-                var list = _InfoService.GetList()?.ToList();
+                var list = _InfoService.GetList().Where(y=>y.UserId == userid)?.ToList();
                 list = list ?? new List<Favorite> { };
                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
             else
             {
-                var list = _InfoService.GetList()?.ToList() ?? null;
+                var list = _InfoService.GetList().Where(y => y.UserId == userid)?.ToList() ?? null;
                 list = list ?? new List<Favorite> { };
                 var list1 = list?.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
                 var res = SerializeHelp.ToTableJson(list1, list == null ? 0 : list.Count());

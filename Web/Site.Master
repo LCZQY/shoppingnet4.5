@@ -203,7 +203,7 @@
                                                 </div>
                                             </div>
                                             <div class="cart-inner-bottom">
-                                                <p class="cart-button-top"><a runat="server" href="ShoppingCart.aspx">查看</a></p>
+                                                <p class="cart-button-top"><a id="look"  href="ShoppingCart.aspx">查看</a></p>
                                             </div>
                                         </div>
                                     </li>
@@ -466,11 +466,10 @@
     <script>
         $("#Searchs").click(function () {
             console.log('搜索');
-            // window.location.href = "ShopList.aspx";
             window.location.replace("ShopList.aspx");
         });
-        var login = JSON.parse(localStorage.getItem("index"));
-        console.log(login,"--------------用户登陆-------------------");
+        var 
+        var login = JSON.parse(localStorage.getItem("index"));      
         if (login) {
             $("#mychange").text(login);
             //退出登陆
@@ -479,7 +478,16 @@
                 location.reload();
             });
         }
-    
+
+        /*加入购物车！！！*/
+        $("#look").click(function () {
+            alert(0);
+            if (login) {
+                $('#exampleModal').modal('show');
+                return false;
+            }
+        });
+
     </script>
 </body>
 

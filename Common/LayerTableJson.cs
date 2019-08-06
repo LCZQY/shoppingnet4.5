@@ -70,6 +70,8 @@ namespace Common
         /// </summary>
         public string msg { get; set; }
 
+
+
     }
 
     /// <summary>

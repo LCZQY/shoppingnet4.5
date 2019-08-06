@@ -16,6 +16,12 @@ namespace DAL
     public class ProductDal
     {
 
+        //public List<ProductEx> ProductJoinImage()
+        //{
+        //    string sql 
+        //}
+
+
 
         /// <summary>
         /// 获取列表

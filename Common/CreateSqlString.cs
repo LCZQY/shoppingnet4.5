@@ -88,7 +88,7 @@ namespace Common
         {
             var name = typeof(T).ToString();
             var str = SplicingSql(model);
-            var Sql = "INSERT INTO " + GetName(name) + str.FieldStr + "VALUES (" + str.ParameterStr + ")";
+            var Sql = "INSERT INTO   " + GetName(name) +" ("+ str.FieldStr + ") VALUES (" + str.ParameterStr + ")";
             return Sql;
         }
 

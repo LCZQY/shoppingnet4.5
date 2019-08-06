@@ -16,16 +16,16 @@ $("#submit").on("click", function () {
             alert("用户名不能够为空");
             return false;
         }
-
-        var data = { name: name, nick: $("#nick").val(), pwd: $("#pwd").val(), email: $("#email").val() };
-        console.log(data, "-----------------------------!!!!!!!!!!!");
+        var data = { "name": name, "nick": $("#nick").val(), "pwd": $("#pwd").val(), "email": $("#email").val() };
+        // console.log(JSON.parse( data), "-----------------------------!!!!!!!!!!!");
         ajax_request({
             url: 'Aspx/ManagePages/userhandler.ashx?action=add',
-            date: data,
+            data: data,
             callback: function (e) {
                 e = JSON.parse(e);
                 if (e.code === 0) {
                     localStorage.setItem("index", name);
+                    localStorage.setItem("id", e.model);
                     location.reload();
                 } else {
                     $("#tipe").text(e.msg);
@@ -33,6 +33,7 @@ $("#submit").on("click", function () {
             }
         });
     }
+
     //登陆
     if (!action) {
         var names = $("#name").val();
@@ -40,18 +41,22 @@ $("#submit").on("click", function () {
             alert("用户名不能够为空");
             return false;
         }
-        var logindata = { name: names, pwd: $("#pwd").val() };
-        console.log(logindata, "-----------------------------!!!!!!!!!!!");
+        var logindata = { "name": names, "pwd": $("#pwd").val() };
+        // console.log(JSON.parse(logindata), "-----------------------------!!!!!!!!!!!");
         ajax_request({
             url: 'Aspx/ManagePages/userhandler.ashx?action=login',
-            date: logindata,
+            data: logindata,
             callback: function (e) {
-                e = JSON.parse(e);      
-                if (e.code === 0) {
+             
+                e = JSON.parse(e);
+                if (e.code === 0) { 
                     localStorage.setItem("index", names);
+                    localStorage.setItem("id", e.model);
                     location.reload();
-                    
-                } else {                
+                   
+            
+        console.log(JSON.parse(localStorage.getItem("index")), "登陆》》》》》》》》");
+                } else {
                     $("#tipe").text(e.msg);
                 }
             }
@@ -77,8 +82,6 @@ $('.look').click(function () {
 //$(function () {
 //    $('#myModal').on('show.bs.modal', function () {
 //          //  alert($('a[href="#myModal"]').text());
-
-      
 //    });
 //});
 
@@ -91,15 +94,24 @@ function getDate(strDate) {
 }
 
 
+
+//单个分类源码
+var typeContentHtml = function (options) {
+    var div1 = '<li><a href="#" class="hover-icon" name="' + options.pid + '">' + options.parent + '</a>';
+    var menu = '<div class="vmegamenu"><span><a href="#" class="vgema-title">' + options.son1 + '</a>' + options.son2 + '</span>';
+    var div2 = '</li></div>';
+    return div1 + menu + div2;
+};
+
 ///单个商品源码
 var productContentHtml = function (options) {
 
     var div1 = ' <div class="col-md-12"><div class="single-product" >';
-    var img = '<div class="product-img" ><a href="#"><img src="' + options.src + '" alt="" /><span class="new-box">new</span></a><div  class="quick-preview look"><a href="#myModal" data-toggle="modal" name=' + options.id+'>查看详情</a></div></div>';
+    var img = '<div class="product-img" ><a href="#"><img src="' + options.src + '" alt="" /><span class="new-box">new</span></a><div  class="quick-preview look"><a href="#myModal" data-toggle="modal" name=' + options.id + '>查看详情</a></div></div>';
     var title = '<div class="product-content"><h5 class="product-name"><a href="#">' + options.title + '</a></h5>';
-    var star = '<div class="product-ratings"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> </div>';
+    var star = '<div class="product-ratings"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> </div>'; 
     var price = '<div class="product-price"><h2>￥' + options.price + '<del>￥' + options.marketPrice + ' </del></h2></div>';
-    var action = '<div class="product-action"><ul><li class="cart"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li><li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li></ul></div></div>';
+    var action = '<div class="product-action"><ul><li class="cart"><a href="##" class="cart_add" name="' + options.id + '" ><i class="fa fa-shopping-cart add_cart" aria-hidden="true"></i></a></li><li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li></ul></div></div>';    
     var div2 = '</div></div>';
     var html = div1 + img + title + star + price + action + div2;
     return html;
@@ -116,13 +128,40 @@ var newContentHtml = function (options) {
     return html;
 };
 
+
+
+//组合分类菜单项
+var menuleftList = function (obj) {
+    var list = JSON.parse(obj);
+    var html = '';
+    $.each(list, function (index, item) {
+        console.log(item, "!!!!!!!!!!!!!!!!!!!!!!!");
+        var son2 = '';
+        if (item.children !== null) {
+
+            //菜单栏只是展示两级，在后台添加请注意！
+            $.each(item.children, function (index2, item2) {
+                son2 += '<a href="javascript:;" name=' + item2.id + '>' + item2.title + '</a>';
+            });
+        }
+        html += typeContentHtml({
+            parent: item.title,
+            pid: item.id,
+            son1: item.title,
+            son2: son2
+        });
+    });
+
+    $("#leftmunu").append(html);
+};
+
 //组合咨询列表
 var newList = function (obj) {
     // var list = JSON.parse(obj);
     // console.log(list, "组合咨询列表");
     var html = '';
     $.each(obj, function (index, item) {
-        console.log(item.PushTime, "------------");
+
         html += newContentHtml({
             month: getDate(item.PushTime).month,
             year: item.PushTime.year,
@@ -130,7 +169,7 @@ var newList = function (obj) {
             content: item.Content
         });
     });
-    console.log(html, "2");
+
     $("#indicator").append(html);
 };
 
@@ -138,7 +177,7 @@ var newList = function (obj) {
 //组合商品列表
 var productList = function (obj) {
     var list = JSON.parse(obj);
-    console.log(list, "组合商品列表");
+
     var html = list === null ? '暂无商品' : '';
     $.each(list, function (index, item) {
         html += productContentHtml({
@@ -146,7 +185,7 @@ var productList = function (obj) {
             title: item.Title,
             price: item.Price,
             marketPrice: item.MarketPrice,
-            id: item.ProductId,
+            id: item.ProductId
         });
     });
     $("#carousel").append(html);
@@ -157,15 +196,24 @@ var productList = function (obj) {
 //收藏列表
 var favoriteList = function (obj) {
     var list = JSON.parse(obj);
-    console.log(list, "组合咨询列表");
+
     var html = '';
     $.each(list, function (index, item) {
         html += productContentHtml({
             src: item.Path,
             title: item.Title,
             price: item.Price,
-            marketPrice: item.MarketPrice
+            marketPrice: item.MarketPrice,
+            id: item.ProductId
         });
     });
     $("#favourite").append(html);
 };
+
+
+
+/****
+ * **
+ * 加入购物车开始
+ * *********/
+

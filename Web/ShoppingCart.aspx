@@ -1,7 +1,7 @@
-﻿<%@ Page Title="Change官网-首页-购物车" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ShoppingCart.aspx.cs" Inherits="System.Web.Aspx.ShoppingCart" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ShoppingCart.aspx.cs" Inherits="Web.ShoppingCart" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <!-- cart area start -->
+
+      <!-- cart area start -->
     <div class="cart-area mrgn-40">
         <div class="container">
             <div class="row">
@@ -24,7 +24,7 @@
                                             <th class="product-price">价格</th>
                                             <th class="product-quantity">数量</th>
                                             <th class="product-subtotal">总价</th>
-                                            <th class="product-remove">删除</th>
+                                            <th class="product-remove">操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-md-8 col-sm-7 col-xs-12">
                                     <div class="buttons-cart">
-                                        <input value="更新购物车" type="submit">
+                                        <input value="更新购物车" type="button" id="flsh">
                                         <a href="#">继续购物</a>
                                     </div>                                   
                                 </div>
@@ -73,7 +73,17 @@
             </div>
         </div>
     </div>
+
     <!-- cart area end -->
     <!-- End footer-area -->
+
     <div id="back-top"><i class="fa fa-angle-up"></i></div>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="AppData/layui/layui.js"></script>
+    <script src="Scripts/Shopping/master.js"></script>
+   <script>
+       $("#flsh").click(function () {
+           page_reload();
+       });
+   </script>
 </asp:Content>

@@ -57,21 +57,24 @@ namespace System.Web.Aspx.ManagePages
         {
             try
             {
-                var list1 = _InfoService.GetList().AsQueryable();
-                var list2 = _photoInfoService.GetList().AsQueryable();
+                var list1 = _InfoService.GetList().ToList();
+                var list2 = _photoInfoService.GetList().ToList();         
+                //全关联
                 var list3 = from c in list1
+                            join b in list2
+                            on c.ProductId equals b.ProductId                
                             select new ProductEx
                             {
                                 Content = c.Content,
                                 CateId = c.CateId,
                                 MarketPrice = c.MarketPrice,
-                                Path = list2.Where(u => u.ProductId == c.ProductId).FirstOrDefault().PhotoUrl,
+                                Path = b.PhotoUrl == null ? "" : b.PhotoUrl,
                                 Price = c.Price,
                                 ProductId = c.ProductId,
                                 Title = c.Title,
                                 Stock = c.Stock
                             };
-                
+            
                 context.Response.Write(SerializeHelp.ToJson(list3?.ToList()));
             }
             catch (Exception e)
