@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6FCE7F0C-A7F7-4CEA-94BA-D578E568EE44}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web</RootNamespace>
+    <AssemblyName>Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.bootstrap">
+      <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.0.0\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.jQuery">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.1.10.2\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.MSAjax">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.1\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.1.0.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.2\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.2.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.2.0.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.2.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.2.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="Account\Login.aspx" />
+    <Content Include="Account\Manage.aspx" />
+    <Content Include="Account\OpenAuthProviders.ascx" />
+    <Content Include="Account\Register.aspx" />
+    <Content Include="Account\RegisterExternalLogin.aspx" />
+    <Content Include="AppData\layui\css\layui.css" />
+    <Content Include="AppData\layui\css\layui.mobile.css" />
+    <Content Include="AppData\layui\css\modules\code.css" />
+    <Content Include="AppData\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="AppData\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="AppData\layui\css\modules\layer\default\icon.png" />
+    <Content Include="AppData\layui\css\modules\layer\default\layer.css" />
+    <Content Include="AppData\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="AppData\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="AppData\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="AppData\layui\font\iconfont.svg" />
+    <Content Include="AppData\layui\images\face\0.gif" />
+    <Content Include="AppData\layui\images\face\1.gif" />
+    <Content Include="AppData\layui\images\face\10.gif" />
+    <Content Include="AppData\layui\images\face\11.gif" />
+    <Content Include="AppData\layui\images\face\12.gif" />
+    <Content Include="AppData\layui\images\face\13.gif" />
+    <Content Include="AppData\layui\images\face\14.gif" />
+    <Content Include="AppData\layui\images\face\15.gif" />
+    <Content Include="AppData\layui\images\face\16.gif" />
+    <Content Include="AppData\layui\images\face\17.gif" />
+    <Content Include="AppData\layui\images\face\18.gif" />
+    <Content Include="AppData\layui\images\face\19.gif" />
+    <Content Include="AppData\layui\images\face\2.gif" />
+    <Content Include="AppData\layui\images\face\20.gif" />
+    <Content Include="AppData\layui\images\face\21.gif" />
+    <Content Include="AppData\layui\images\face\22.gif" />
+    <Content Include="AppData\layui\images\face\23.gif" />
+    <Content Include="AppData\layui\images\face\24.gif" />
+    <Content Include="AppData\layui\images\face\25.gif" />
+    <Content Include="AppData\layui\images\face\26.gif" />
+    <Content Include="AppData\layui\images\face\27.gif" />
+    <Content Include="AppData\layui\images\face\28.gif" />
+    <Content Include="AppData\layui\images\face\29.gif" />
+    <Content Include="AppData\layui\images\face\3.gif" />
+    <Content Include="AppData\layui\images\face\30.gif" />
+    <Content Include="AppData\layui\images\face\31.gif" />
+    <Content Include="AppData\layui\images\face\32.gif" />
+    <Content Include="AppData\layui\images\face\33.gif" />
+    <Content Include="AppData\layui\images\face\34.gif" />
+    <Content Include="AppData\layui\images\face\35.gif" />
+    <Content Include="AppData\layui\images\face\36.gif" />
+    <Content Include="AppData\layui\images\face\37.gif" />
+    <Content Include="AppData\layui\images\face\38.gif" />
+    <Content Include="AppData\layui\images\face\39.gif" />
+    <Content Include="AppData\layui\images\face\4.gif" />
+    <Content Include="AppData\layui\images\face\40.gif" />
+    <Content Include="AppData\layui\images\face\41.gif" />
+    <Content Include="AppData\layui\images\face\42.gif" />
+    <Content Include="AppData\layui\images\face\43.gif" />
+    <Content Include="AppData\layui\images\face\44.gif" />
+    <Content Include="AppData\layui\images\face\45.gif" />
+    <Content Include="AppData\layui\images\face\46.gif" />
+    <Content Include="AppData\layui\images\face\47.gif" />
+    <Content Include="AppData\layui\images\face\48.gif" />
+    <Content Include="AppData\layui\images\face\49.gif" />
+    <Content Include="AppData\layui\images\face\5.gif" />
+    <Content Include="AppData\layui\images\face\50.gif" />
+    <Content Include="AppData\layui\images\face\51.gif" />
+    <Content Include="AppData\layui\images\face\52.gif" />
+    <Content Include="AppData\layui\images\face\53.gif" />
+    <Content Include="AppData\layui\images\face\54.gif" />
+    <Content Include="AppData\layui\images\face\55.gif" />
+    <Content Include="AppData\layui\images\face\56.gif" />
+    <Content Include="AppData\layui\images\face\57.gif" />
+    <Content Include="AppData\layui\images\face\58.gif" />
+    <Content Include="AppData\layui\images\face\59.gif" />
+    <Content Include="AppData\layui\images\face\6.gif" />
+    <Content Include="AppData\layui\images\face\60.gif" />
+    <Content Include="AppData\layui\images\face\61.gif" />
+    <Content Include="AppData\layui\images\face\62.gif" />
+    <Content Include="AppData\layui\images\face\63.gif" />
+    <Content Include="AppData\layui\images\face\64.gif" />
+    <Content Include="AppData\layui\images\face\65.gif" />
+    <Content Include="AppData\layui\images\face\66.gif" />
+    <Content Include="AppData\layui\images\face\67.gif" />
+    <Content Include="AppData\layui\images\face\68.gif" />
+    <Content Include="AppData\layui\images\face\69.gif" />
+    <Content Include="AppData\layui\images\face\7.gif" />
+    <Content Include="AppData\layui\images\face\70.gif" />
+    <Content Include="AppData\layui\images\face\71.gif" />
+    <Content Include="AppData\layui\images\face\8.gif" />
+    <Content Include="AppData\layui\images\face\9.gif" />
+    <Content Include="AppData\layui\jquery-3.3.1.min.js" />
+    <Content Include="AppData\layui\jquery.js" />
+    <Content Include="AppData\layui\layui.all.js" />
+    <Content Include="AppData\layui\layui.js" />
+    <Content Include="AppData\layui\lay\modules\carousel.js" />
+    <Content Include="AppData\layui\lay\modules\code.js" />
+    <Content Include="AppData\layui\lay\modules\colorpicker.js" />
+    <Content Include="AppData\layui\lay\modules\element.js" />
+    <Content Include="AppData\layui\lay\modules\flow.js" />
+    <Content Include="AppData\layui\lay\modules\form.js" />
+    <Content Include="AppData\layui\lay\modules\jquery.js" />
+    <Content Include="AppData\layui\lay\modules\laydate.js" />
+    <Content Include="AppData\layui\lay\modules\layedit.js" />
+    <Content Include="AppData\layui\lay\modules\layer.js" />
+    <Content Include="AppData\layui\lay\modules\laypage.js" />
+    <Content Include="AppData\layui\lay\modules\laytpl.js" />
+    <Content Include="AppData\layui\lay\modules\mobile.js" />
+    <Content Include="AppData\layui\lay\modules\rate.js" />
+    <Content Include="AppData\layui\lay\modules\slider.js" />
+    <Content Include="AppData\layui\lay\modules\table.js" />
+    <Content Include="AppData\layui\lay\modules\transfer.js" />
+    <Content Include="AppData\layui\lay\modules\tree.js" />
+    <Content Include="AppData\layui\lay\modules\upload.js" />
+    <Content Include="AppData\layui\lay\modules\util.js" />
+    <Content Include="Aspx\Favorites.aspx" />
+    <Content Include="Aspx\login.html" />
+    <Content Include="Aspx\ManageIndex.aspx" />
+    <Content Include="Aspx\ManagePages\adminuser.html" />
+    <Content Include="Aspx\ManagePages\grounding.html" />
+    <Content Include="Aspx\ManagePages\news.html" />
+    <Content Include="Aspx\ManagePages\order.html" />
+    <Content Include="Aspx\ManagePages\type.html" />
+    <Content Include="Aspx\ManagePages\user.html" />
+    <Content Include="Aspx\MyChange.aspx" />
+    <Content Include="Contact.aspx" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\iconfont.svg" />
+    <Content Include="Content\fonts\资源使用说明.txt" />
+    <Content Include="Content\font\iconfont.svg" />
+    <Content Include="Content\Shopping\font.css" />
+    <Content Include="Content\Shopping\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\Shopping\laydate.css" />
+    <Content Include="Content\Shopping\layer.css" />
+    <Content Include="Content\Shopping\layui.css" />
+    <Content Include="Content\Shopping\master\animate.css" />
+    <Content Include="Content\Shopping\master\font-awesome.min.css" />
+    <Content Include="Content\Shopping\master\jquery-ui.min.css" />
+    <Content Include="Content\Shopping\master\meanmenu.min.css" />
+    <Content Include="Content\Shopping\master\nivo-slider.css" />
+    <Content Include="Content\Shopping\master\owl.carousel.css" />
+    <Content Include="Content\Shopping\master\responsive.css" />
+    <Content Include="Content\Shopping\master\style.css" />
+    <Content Include="Content\Shopping\weadmin.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="img\2019-08-05\4f8dfe17-4db3-4e51-bc70-38a8b16c1c8b.jpg" />
+    <Content Include="img\4.jpg" />
+    <Content Include="img\arrow.png" />
+    <Content Include="img\bg.png" />
+    <Content Include="img\blog-comments\1.png" />
+    <Content Include="img\blog-comments\2.jpg" />
+    <Content Include="img\blog-comments\avatar.png" />
+    <Content Include="img\green_icon_nav_footer.png" />
+    <Content Include="img\icon_nav_footer.png" />
+    <Content Include="img\lang\1.jpg" />
+    <Content Include="img\lang\2.jpg" />
+    <Content Include="img\logo.jpg" />
+    <Content Include="img\payment.png" />
+    <Content Include="img\product-view\1.jpg" />
+    <Content Include="img\product-view\1_1.jpg" />
+    <Content Include="img\product-view\2.jpg" />
+    <Content Include="img\product-view\2_2.jpg" />
+    <Content Include="img\product-view\3.jpg" />
+    <Content Include="img\product-view\3_3.jpg" />
+    <Content Include="img\product-view\4.jpg" />
+    <Content Include="img\product-view\4_4.jpg" />
+    <Content Include="img\product\1.jpg" />
+    <Content Include="img\product\10.jpg" />
+    <Content Include="img\product\12.jpg" />
+    <Content Include="img\product\14.jpg" />
+    <Content Include="img\product\3.jpg" />
+    <Content Include="img\product\4.jpg" />
+    <Content Include="img\product\5.jpg" />
+    <Content Include="img\product\7.jpg" />
+    <Content Include="img\slider\1.jpg" />
+    <Content Include="img\slider\2.jpg" />
+    <Content Include="img\slider\3.jpg" />
+    <Content Include="img\slider\4.jpg" />
+    <Content Include="img\slider\5.jpg" />
+    <Content Include="img\slider\6.jpg" />
+    <Content Include="img\slider\7.jpg" />
+    <Content Include="img\slider\8.jpg" />
+    <Content Include="packages.config" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Account\Web.config" />
+    <Content Include="Aspx\adminhandler.ashx" />
+    <Content Include="Aspx\ManagePages\adminhandler.ashx" />
+    <Content Include="Aspx\ManagePages\favoritehandler.ashx" />
+    <Content Include="Aspx\ManagePages\groundinghandler.ashx" />
+    <Content Include="Aspx\ManagePages\newshandler.ashx" />
+    <Content Include="Aspx\ManagePages\orderhandler.ashx" />
+    <Content Include="Aspx\ManagePages\typehandler.ashx" />
+    <Content Include="Aspx\ManagePages\userhandler.ashx" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="json\menu.json" />
+    <Content Include="json\menu2.json" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\fonts\iconfont.eot" />
+    <Content Include="Content\fonts\iconfont.ttf" />
+    <Content Include="Content\fonts\iconfont.woff" />
+    <Content Include="Content\font\iconfont.eot" />
+    <Content Include="Content\font\iconfont.ttf" />
+    <Content Include="Content\font\iconfont.woff" />
+    <Content Include="Content\Shopping\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\Shopping\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\Shopping\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\Shopping\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\Shopping\weadmin.less" />
+    <Content Include="AppData\layui\font\iconfont.eot" />
+    <Content Include="AppData\layui\font\iconfont.ttf" />
+    <Content Include="AppData\layui\font\iconfont.woff" />
+    <Content Include="AppData\layui\font\iconfont.woff2" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Shopping\admin.js" />
+    <Content Include="Scripts\Shopping\css\layui.css" />
+    <Content Include="Scripts\Shopping\css\layui.mobile.css" />
+    <Content Include="Scripts\Shopping\css\modules\code.css" />
+    <Content Include="Scripts\Shopping\css\modules\laydate\default\laydate.css" />
+    <Content Include="Scripts\Shopping\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Scripts\Shopping\css\modules\layer\default\icon.png" />
+    <Content Include="Scripts\Shopping\css\modules\layer\default\layer.css" />
+    <Content Include="Scripts\Shopping\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Scripts\Shopping\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Scripts\Shopping\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Scripts\Shopping\layui.js" />
+    <Content Include="Scripts\Shopping\lay\modules\carousel.js" />
+    <Content Include="Scripts\Shopping\lay\modules\code.js" />
+    <Content Include="Scripts\Shopping\lay\modules\colorpicker.js" />
+    <Content Include="Scripts\Shopping\lay\modules\element.js" />
+    <Content Include="Scripts\Shopping\lay\modules\flow.js" />
+    <Content Include="Scripts\Shopping\lay\modules\form.js" />
+    <Content Include="Scripts\Shopping\lay\modules\jquery.js" />
+    <Content Include="Scripts\Shopping\lay\modules\laydate.js" />
+    <Content Include="Scripts\Shopping\lay\modules\layedit.js" />
+    <Content Include="Scripts\Shopping\lay\modules\layer.js" />
+    <Content Include="Scripts\Shopping\lay\modules\laypage.js" />
+    <Content Include="Scripts\Shopping\lay\modules\laytpl.js" />
+    <Content Include="Scripts\Shopping\lay\modules\mobile.js" />
+    <Content Include="Scripts\Shopping\lay\modules\rate.js" />
+    <Content Include="Scripts\Shopping\lay\modules\slider.js" />
+    <Content Include="Scripts\Shopping\lay\modules\table.js" />
+    <Content Include="Scripts\Shopping\lay\modules\transfer.js" />
+    <Content Include="Scripts\Shopping\lay\modules\tree.js" />
+    <Content Include="Scripts\Shopping\lay\modules\upload.js" />
+    <Content Include="Scripts\Shopping\lay\modules\util.js" />
+    <Content Include="Scripts\Shopping\master.js" />
+    <Content Include="Scripts\Shopping\master\ajax-mail.js" />
+    <Content Include="Scripts\Shopping\master\bootstrap.min.js" />
+    <Content Include="Scripts\Shopping\master\jquery-1.12.0.min.js" />
+    <Content Include="Scripts\Shopping\master\jquery-ui.min.js" />
+    <Content Include="Scripts\Shopping\master\jquery.countdown.min.js" />
+    <Content Include="Scripts\Shopping\master\jquery.counterup.min.js" />
+    <Content Include="Scripts\Shopping\master\jquery.meanmenu.js" />
+    <Content Include="Scripts\Shopping\master\jquery.meanmenu.min.js" />
+    <Content Include="Scripts\Shopping\master\jquery.nivo.slider.pack.js" />
+    <Content Include="Scripts\Shopping\master\main.js" />
+    <Content Include="Scripts\Shopping\master\modernizr-2.8.3.min.js" />
+    <Content Include="Scripts\Shopping\master\nivo-active.js" />
+    <Content Include="Scripts\Shopping\master\owl.carousel.min.js" />
+    <Content Include="Scripts\Shopping\master\particles.js" />
+    <Content Include="Scripts\Shopping\master\plugins.js" />
+    <Content Include="Scripts\Shopping\master\waypoints.min.js" />
+    <Content Include="Scripts\Shopping\master\wow.min.js" />
+    <Content Include="Scripts\Shopping\menu.js" />
+    <Content Include="Scripts\Shopping\pageindex.js" />
+    <Content Include="Scripts\Shopping\showtable.js" />
+    <Content Include="Scripts\Shopping\weadmin.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Site.Master" />
+    <Content Include="ViewSwitcher.ascx" />
+    <Content Include="Web.config" />
+    <Content Include="Bundle.config" />
+    <None Include="Project_Readme.html" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Site.Mobile.Master" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Manage.aspx.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Manage.aspx.designer.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\OpenAuthProviders.ascx.cs">
+      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\OpenAuthProviders.ascx.designer.cs">
+      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\RegisterExternalLogin.aspx.cs">
+      <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\RegisterExternalLogin.aspx.designer.cs">
+      <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Aspx\adminhandler.ashx.cs">
+      <DependentUpon>adminhandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\Favorites.aspx.cs">
+      <DependentUpon>Favorites.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Aspx\Favorites.aspx.designer.cs">
+      <DependentUpon>Favorites.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManageIndex.aspx.cs">
+      <DependentUpon>ManageIndex.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Aspx\ManageIndex.aspx.designer.cs">
+      <DependentUpon>ManageIndex.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\adminhandler.ashx.cs">
+      <DependentUpon>adminhandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\favoritehandler.ashx.cs">
+      <DependentUpon>favoritehandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\groundinghandler.ashx.cs">
+      <DependentUpon>groundinghandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\newshandler.ashx.cs">
+      <DependentUpon>newshandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\orderhandler.ashx.cs">
+      <DependentUpon>orderhandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\typehandler.ashx.cs">
+      <DependentUpon>typehandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\userhandler.ashx.cs">
+      <DependentUpon>userhandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\MyChange.aspx.cs">
+      <DependentUpon>MyChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Aspx\MyChange.aspx.designer.cs">
+      <DependentUpon>MyChange.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Mobile.Master.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Mobile.Master.designer.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Compile Include="ViewSwitcher.ascx.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewSwitcher.ascx.designer.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{5cdddfb7-4f45-4c9b-983f-4ea014c721e4}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{538101e7-7cc2-4d98-9246-a409136ea822}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{a1d0b5d1-87a2-41c2-8fc9-dc6ece4c0fe4}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7324</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:7324/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
