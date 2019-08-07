@@ -1,7 +1,6 @@
 ﻿using BLL;
 using Common;
 using Model;
-using System.Collections.Generic;
 using System.Linq;
 namespace System.Web.Aspx.ManagePages
 {
@@ -13,7 +12,7 @@ namespace System.Web.Aspx.ManagePages
     {
 
         private FavoriteService _InfoService = new FavoriteService();//CacheControl.Get<FavoriteService>();
-        private ProductService _infoProductService = new ProductService(); 
+        private ProductService _infoProductService = new ProductService();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -32,16 +31,16 @@ namespace System.Web.Aspx.ManagePages
                 case "delete":
                     DeleteFavoriteRequest(context);
                     break;
-                case "search":
-                    SeachFavoriteRequest(context);
-                    break;
-                case "removelist":
-                    DeleteListFavoriteRequest(context);
-                    break;
-                case "upload":
-                    UploadImg(context);
-                    break;
-            
+                    //case "search":
+                    //    SeachFavoriteRequest(context);
+                    //    break;
+                    //case "removelist":
+                    //    DeleteListFavoriteRequest(context);
+                    //    break;
+                    //case "upload":
+                    //    UploadImg(context);
+                    //    break;
+
             }
 
         }
@@ -51,39 +50,39 @@ namespace System.Web.Aspx.ManagePages
 
 
 
-        /// <summary>
-        /// 批量删除
-        /// </summary>
-        /// <param name="context"></param>
-        public void DeleteListFavoriteRequest(HttpContext context)
-        {
-            // ?
-        }
+        ///// <summary>
+        ///// 批量删除
+        ///// </summary>
+        ///// <param name="context"></param>
+        //public void DeleteListFavoriteRequest(HttpContext context)
+        //{
+        //    // ?
+        //}
 
 
-        /// <summary>
-        /// 搜索
-        /// </summary>
-        /// <param name="context"></param>
-        public void SeachFavoriteRequest(HttpContext context)
-        {
-            //var title = context.Request["name"];
-            //var page = context.Request.Form["page"];
-            //var index = context.Request.Form["limit"];
-            //if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
-            //{
-            //    var list = _InfoService.GetList().Where(y => y.Title.Contains(title)).ToList();
-            //    var res = SerializeHelp.ToTableJson(list);
-            //    context.Response.Write(res);
-            //}
-            //else
-            //{
-            //    var list = _InfoService.GetList().Where(y => y.Title.Contains(title)).ToList();
-            //    var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-            //    var res = SerializeHelp.ToTableJson(list1, list.Count());
-            //    context.Response.Write(res);
-            //}
-        }
+        ///// <summary>
+        ///// 搜索
+        ///// </summary>
+        ///// <param name="context"></param>
+        //public void SeachFavoriteRequest(HttpContext context)
+        //{
+        //    //var title = context.Request["name"];
+        //    //var page = context.Request.Form["page"];
+        //    //var index = context.Request.Form["limit"];
+        //    //if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+        //    //{
+        //    //    var list = _InfoService.GetList().Where(y => y.Title.Contains(title)).ToList();
+        //    //    var res = SerializeHelp.ToTableJson(list);
+        //    //    context.Response.Write(res);
+        //    //}
+        //    //else
+        //    //{
+        //    //    var list = _InfoService.GetList().Where(y => y.Title.Contains(title)).ToList();
+        //    //    var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
+        //    //    var res = SerializeHelp.ToTableJson(list1, list.Count());
+        //    //    context.Response.Write(res);
+        //    //}
+        //}
 
         /// <summary>
         ///删除
@@ -163,6 +162,15 @@ namespace System.Web.Aspx.ManagePages
                 //string id = context.Request.Form["FavoriteId"];
                 string productId = context.Request.Form["ProductId"];
                 string userId = context.Request.Form["UserId"];
+
+                var exist = _InfoService.GetList()?.Where(y => y.ProductId == productId && y.UserId == userId).DefaultIfEmpty();
+                if (exist != null)
+                {
+                    response.code = 500;
+                    response.msg = "已收藏该商品,请勿重复添加";
+                    context.Response.Write(SerializeHelp.ToJson(response));
+                    return;
+                }
                 Favorite Favorite = new Favorite()
                 {
                     FavoriteId = Guid.NewGuid().ToString(),
@@ -199,53 +207,25 @@ namespace System.Web.Aspx.ManagePages
         /// <param name="context"></param>
         public void ListFavoriteRequest(HttpContext context)
         {
+            try {
+                var userid = context.Request.Form["UserId"];
+                var ProductId = _InfoService.GetList().Where(y => y.UserId == userid).Select(y => y.ProductId)?.ToList();
+                var list = _infoProductService.FavoriteProductList(ProductId);
 
-            var userid = context.Request.Form["UserId"];
-            var list = _infoProductService.FavoriteProductList(userid);
-            var res = SerializeHelp.ToTableJson(list);
-            context.Response.Write(res);
-            //var userid = context.Request.Form["Userid"];
-            //var page = context.Request.Form["page"];
-            //var index = context.Request.Form["limit"];
-            //if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
-            //{
-            //    var list = _InfoService.GetList().Where(y=>y.UserId == userid)?.ToList();
-            //    list = list ?? new List<Favorite> { };
-            //    var res = SerializeHelp.ToTableJson(list);
-            //    context.Response.Write(res);
-            //}
-            //else
-            //{
-            //    var list = _InfoService.GetList().Where(y => y.UserId == userid)?.ToList() ?? null;
-            //    list = list ?? new List<Favorite> { };
-            //    var list1 = list?.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-            //    var res = SerializeHelp.ToTableJson(list1, list == null ? 0 : list.Count());
-            //    context.Response.Write(res);
-
-            //}
-        }
-
-
-
-
-        /// <summary>
-        ///  文件上传
-        /// </summary>
-        /// <param name="context"></param>
-        public void UploadImg(HttpContext context)
-        {
-            if (context.Request.Files.Count > 0)
-            {
-                var imgSrc = SerializeHelp.UploadFile(context);
-                var res = new { msg = "ok", code = 0, src = imgSrc };
-                context.Response.Write(SerializeHelp.ToJson(res));
-            }
-            else
-            {
-                var res = new { msg = "no", code = 500, src = "" };
+                var datelist = _InfoService.GetList().Where(y => y.UserId == userid);
+                list.ForEach(u => u.FavoriDate = datelist.Where(y => y.ProductId == u.ProductId).Select(y => y.DateTime).FirstOrDefault());
+                var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
+            catch (Exception) {
+
+
+            }
         }
+
+
+
+
 
         public bool IsReusable
         {

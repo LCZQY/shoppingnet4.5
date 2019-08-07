@@ -26,6 +26,7 @@ $("#submit").on("click", function () {
                 if (e.code === 0) {
                     localStorage.setItem("index", name);
                     localStorage.setItem("id", e.model);
+                    $("input").val("");
                     location.reload();
                 } else {
                     $("#tipe").text(e.msg);
@@ -47,15 +48,16 @@ $("#submit").on("click", function () {
             url: 'Aspx/ManagePages/userhandler.ashx?action=login',
             data: logindata,
             callback: function (e) {
-             
+
                 e = JSON.parse(e);
-                if (e.code === 0) { 
+                if (e.code === 0) {
                     localStorage.setItem("index", names);
                     localStorage.setItem("id", e.model);
+                    $("input").val("");
                     location.reload();
-                   
-            
-        console.log(JSON.parse(localStorage.getItem("index")), "登陆》》》》》》》》");
+
+
+                    console.log(JSON.parse(localStorage.getItem("index")), "登陆》》》》》》》》");
                 } else {
                     $("#tipe").text(e.msg);
                 }
@@ -70,6 +72,7 @@ $(function () {
         $(".registration").hide();
         $("#exampleModalLabel").text("用户登陆");
         $("#submit").text("登陆");
+        $(this).removeData('bs.modal');
     });
 });
 
@@ -106,16 +109,18 @@ var typeContentHtml = function (options) {
 ///单个商品源码
 var productContentHtml = function (options) {
 
-    var div1 = ' <div class="col-md-12"><div class="single-product" >';
-    var img = '<div class="product-img" ><a href="#"><img src="' + options.src + '" alt="" /><span class="new-box">new</span></a><div  class="quick-preview look"><a href="#myModal" data-toggle="modal" name=' + options.id + '>查看详情</a></div></div>';
+    var div1 = '<div class="col-md-12"><div class="single-product">';
+    var img = '<div class="product-img"><a href="#"><img src="' + options.src + '" alt="" /><span class="new-box">new</span></a><div  class="quick-preview look"><a href="#myModal" data-toggle="modal" name=' + options.id + '>查看详情</a></div></div>';
     var title = '<div class="product-content"><h5 class="product-name"><a href="#">' + options.title + '</a></h5>';
-    var star = '<div class="product-ratings"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> </div>'; 
-    var price = '<div class="product-price"><h2>￥' + options.price + '<del>￥' + options.marketPrice + ' </del></h2></div>';
-    var action = '<div class="product-action"><ul><li class="cart"><a href="##" class="cart_add" name="' + options.id + '" ><i class="fa fa-shopping-cart add_cart" aria-hidden="true"></i></a></li><li class="fa"><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li></ul></div></div>';    
+    var star = '<div class="product-ratings"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> </div>';
+    var price = '<div class="product-price"><h2 class="' + options.id +'">￥' + options.price + '<del>￥' + options.marketPrice + ' </del></h2></div>';
+    var action = '<div class="product-action"><ul><li class="cart"><a href="##" class="cart_add" name="' + options.id + '"><i class="fa fa-shopping-cart add_cart" aria-hidden="true"></i></a></li><li class="fa"><a href="##" name="' + options.id + '"><i class="fa fa-heart" aria-hidden="true"></i></a></li></ul></div></div>';
     var div2 = '</div></div>';
     var html = div1 + img + title + star + price + action + div2;
     return html;
 };
+
+
 
 //单个促销咨询源码
 var newContentHtml = function (options) {
@@ -192,11 +197,9 @@ var productList = function (obj) {
 };
 
 
-
 //收藏列表
 var favoriteList = function (obj) {
-    var list = JSON.parse(obj);
-
+    var list = obj;// JSON.parse(obj);
     var html = '';
     $.each(list, function (index, item) {
         html += productContentHtml({
@@ -205,9 +208,12 @@ var favoriteList = function (obj) {
             price: item.Price,
             marketPrice: item.MarketPrice,
             id: item.ProductId
+
         });
     });
+    console.log(html, "************************************");
     $("#favourite").append(html);
+    // return html;
 };
 
 

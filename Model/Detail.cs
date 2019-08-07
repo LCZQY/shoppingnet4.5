@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Model
+﻿namespace Model
 {
 
     /// <summary>
@@ -16,6 +10,11 @@ namespace Model
         /// key
         /// </summary>
         public string DetailId { get; set; }
+
+        /// <summary>
+        /// 用户id
+        /// </summary>
+        public string UserId { get; set; }
 
         /// <summary>
         /// 订单编号
@@ -32,6 +31,7 @@ namespace Model
         /// </summary>
         public int Quantity { get; set; }
 
+
         /// <summary>
         /// 明细状态[ 0正常 1: 退货中 2:已退货 ]
         /// </summary>
@@ -47,7 +47,7 @@ namespace Model
     /// </summary>
     public class OrdersDetailExtend : Orders
     {
-       
+
 
         #region 订单详情
 
@@ -98,7 +98,7 @@ namespace Model
 
         #region  商品
 
-        
+
         /// <summary>
         /// 商品名
         /// </summary>
@@ -119,10 +119,10 @@ namespace Model
         ///// </summary>
         //public decimal MarketPrice { get; set; }
 
-        ///// <summary>
-        ///// 本地价格（本站价格）
-        ///// </summary>
-        //public decimal Price { get; set; }
+        /// <summary>
+        /// 本地价格（本站价格）
+        /// </summary>
+        public decimal Price { get; set; }
 
         ///// <summary>
         ///// 商品说明描述

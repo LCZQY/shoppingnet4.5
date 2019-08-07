@@ -230,7 +230,9 @@ namespace System.Web.Aspx.ManagePages
                     MarketPrice = marketPrice,
                     Stock = stock,
                     PostTime = postTime,
-                    Price = price
+                    Price = price,
+                    Icon = path
+                    
                 };
                 var add = _InfoService.Add(Product);
 

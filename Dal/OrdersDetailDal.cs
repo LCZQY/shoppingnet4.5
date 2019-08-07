@@ -142,7 +142,9 @@ namespace DAL
             Detail.ProductId = row["ProductId"] != DBNull.Value ? row["ProductId"].ToString() : string.Empty;
             Detail.Quantity = Convert.ToInt32(row["Quantity"] != DBNull.Value ? row["Quantity"].ToString() : string.Empty);
             Detail.OrdersId = row["OrdersId"] != DBNull.Value ? row["OrdersId"].ToString() : string.Empty;
-            Detail.States = Convert.ToInt32(row["States"] != DBNull.Value ? row["States"].ToString() : string.Empty);                              
+            Detail.States = Convert.ToInt32(row["States"] != DBNull.Value ? row["States"].ToString() : string.Empty);
+            Detail.UserId = row["UserId"] != DBNull.Value ? row["UserId"].ToString() : string.Empty;
+           
         }
 
 

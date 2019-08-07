@@ -194,6 +194,7 @@ namespace DAL
             Product.ProductId = row["ProductId"] != DBNull.Value ? row["ProductId"].ToString() : string.Empty;
             Product.Title = row["Title"] != DBNull.Value ? row["Title"].ToString() : string.Empty;
             Product.Stock = Convert.ToInt32(row["Stock"] != DBNull.Value ? row["Stock"].ToString() : string.Empty);
+            Product.Icon = row["Icon"] != DBNull.Value ? row["Icon"].ToString() : string.Empty;
         }
 
 

@@ -29,7 +29,7 @@ namespace System.Web.Aspx.ManagePages
                     ListOrderRequest(context);
                     break;
                 case "update":
-                    //UpdateOrderRequest(context);
+                    UpdateOrderRequest(context);
                     break;
                 case "delete":
                     //DeleteOrderRequest(context);
@@ -37,8 +37,8 @@ namespace System.Web.Aspx.ManagePages
                 case "search":
                     SeachOrderRequest(context);
                     break;
-                case "removelist":
-                    //DeleteListOrderRequest(context);
+                case "add":
+                    AddOrderRequest(context);
                     break;
                 case "cart":
                     SeachCartListRequest(context);
@@ -114,23 +114,31 @@ namespace System.Web.Aspx.ManagePages
         /// <param name="context"></param>
         public void SeachCartListRequest(HttpContext context)
         {
-            var userId = context.Request["UserId"];
-            var page = context.Request.Form["page"];
-            var index = context.Request.Form["limit"];
-            if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+            try
             {
-                var list = _infoService.OrderCartList().Where(y => y.UserId == userId)?.ToList();
-                list = list ?? new List<OrdersDetailExtend> { };
-                var res = SerializeHelp.ToTableJson(list);
-                context.Response.Write(res);
+                var userId = context.Request["UserId"];
+                var page = context.Request.Form["page"];
+                var index = context.Request.Form["limit"];
+                if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+                {
+                    var list = _infoService.OrderCartList().Where(y => y.UserId == userId)?.ToList();
+                    list = list ?? new List<OrdersDetailExtend> { };
+                    var res = SerializeHelp.ToTableJson(list);
+                    context.Response.Write(res);
 
+                }
+                else
+                {
+                    var list = _infoService.OrderCartList().Where(y => y.UserId == userId)?.ToList();
+                    list = list ?? new List<OrdersDetailExtend> { };
+                    var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
+                    var res = SerializeHelp.ToTableJson(list1, list.Count());
+                    context.Response.Write(res);
+                }
             }
-            else
-            {
-                var list = _infoService.OrderCartList().Where(y => y.UserId == userId)?.ToList();
-                list = list ?? new List<OrdersDetailExtend> { };
-                var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-                var res = SerializeHelp.ToTableJson(list1, list.Count());
+            catch (Exception e) {
+                var list  = new List<OrdersDetailExtend> { };
+                var res = SerializeHelp.ToTableJson(list);               
                 context.Response.Write(res);
             }
         }
@@ -199,7 +207,7 @@ namespace System.Web.Aspx.ManagePages
 
 
         /// <summary>
-        /// 修改用户
+        /// 前端用户确认结算修改用户
         /// </summary>
         /// <param name="context"></param>
         public void UpdateOrderRequest(HttpContext context)
@@ -207,41 +215,26 @@ namespace System.Web.Aspx.ManagePages
             var response = new ResponseMessage();
             try
             {
-                string productId = context.Request.Form["ProductId"];
-                string quantity = context.Request.Form["Quantity"];
-                string detailId = context.Request.Form["DetailId"];
 
-                string ordersId = context.Request.Form["OrdersId"];
-                string total = context.Request.Form["Total"];
-                string remark = context.Request.Form["Remark"];
-                string userId = context.Request.Form["UserId"];
+                //订单动作
+                string action = context.Request.Form["action"];
                 string deliveryId = context.Request.Form["DeliveryId"];
-                string deliveryDate = context.Request.Form["DeliveryDate"];
+                string ordersId = context.Request.Form["OrdersId"];
+                string remark = context.Request.Form["Remark"];
 
-                //订单
-                Orders order = new Orders();
-                order.UserId = userId;
-                order.Total = Convert.ToDecimal(total);
+                var order = _infoService.GetList()?.Where(y => y.OrdersId == ordersId  ).FirstOrDefault();
+
+                //订单            
                 order.Remark = remark;
                 order.OrdersId = ordersId;
                 order.Orderdate = DateTime.Now;
-                order.States = 0; //加入购物车未付款
-                order.DeliveryId = deliveryId;
-                order.DeliveryDate = Convert.ToDateTime(deliveryDate);
-
-                //订单详情
-                Detail detail = new Detail
+                if (action == "1")
                 {
-                    DetailId = detailId,
-                    OrdersId = order.OrdersId,
-                    ProductId = productId,
-                    Quantity = Convert.ToInt32(quantity),
-                    States = 0
-                };
-
-                var add1 = _infoService.Update(order);
-                var add2 = _infodetailService.Update(detail);
-                if (add1 && add2)
+                    order.States = 1;
+                }             
+                order.DeliveryId = deliveryId;           
+                var add1 = _infoService.Update(order);             
+                if (add1)
                 {
                     response.code = 0;
                     response.msg = "修改成功";
@@ -271,26 +264,33 @@ namespace System.Web.Aspx.ManagePages
             var response = new ResponseMessage();
             try
             {
-
                 string productId = context.Request.Form["ProductId"];
-                string quantity = context.Request.Form["Quantity"];
-
-                string total = context.Request.Form["Total"];
-                string remark = context.Request.Form["Remark"];
                 string userId = context.Request.Form["UserId"];
+
+                var exist = _infodetailService.GetList()?.Where(y => y.UserId == userId && y.ProductId == productId).SingleOrDefault();
+                if (exist != null)
+                {
+                    response.code = 101;
+                    response.msg = "该商品已加入购物车";
+                    context.Response.Write(SerializeHelp.ToJson(response));
+                    return;
+                }
+                var quantity = context.Request.Form["Quantity"] == null ? 1 : Convert.ToInt32(context.Request.Form["Quantity"]);
+                var total = context.Request.Form["Total"] == null ? 0 : Convert.ToDecimal(context.Request.Form["Total"]);
+                string remark = context.Request.Form["Remark"];       
                 string deliveryId = context.Request.Form["DeliveryId"];
                 string deliveryDate = context.Request.Form["DeliveryDate"];
 
                 //订单
                 Orders order = new Orders();
                 order.UserId = userId;
-                order.Total = Convert.ToDecimal(total);
+                order.Total = total * quantity;
                 order.Remark = remark;
                 order.OrdersId = Guid.NewGuid().ToString();
                 order.Orderdate = DateTime.Now;
                 order.States = 0; //加入购物车未付款
                 order.DeliveryId = deliveryId;
-                order.DeliveryDate = Convert.ToDateTime(deliveryDate);
+                order.DeliveryDate = deliveryDate == null? DateTime.Now: Convert.ToDateTime(deliveryDate);
 
                 //订单详情
                 Detail detail = new Detail
@@ -298,8 +298,9 @@ namespace System.Web.Aspx.ManagePages
                     DetailId = Guid.NewGuid().ToString(),
                     OrdersId = order.OrdersId,
                     ProductId = productId,
-                    Quantity = Convert.ToInt32(quantity),
-                    States = 0
+                    Quantity = quantity ,
+                    States = 0,
+                    UserId = userId
                 };
 
                 var add1 = _infoService.Add(order);

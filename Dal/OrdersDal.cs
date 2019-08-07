@@ -14,11 +14,29 @@ namespace DAL
    
     public class OrdersDal
     {
-        /// <summary>
-        /// 获取列表
-        /// </summary>
-        /// <returns></returns>
-        public List<Orders> GetList()
+
+
+
+
+        ///// <summary>
+        ///// 获取列表
+        ///// </summary>
+        ///// <returns></returns>
+        //public List<Orders> UserOrderDetailJoin()
+        //{
+        //   string sql 
+
+
+        //    return null;
+        //}
+
+
+
+            /// <summary>
+            /// 获取列表
+            /// </summary>
+            /// <returns></returns>
+            public List<Orders> GetList()
         {
             string sql = CreateSqlString.SelectSqlString(new Orders { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);

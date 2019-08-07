@@ -42,19 +42,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbody">
-                                        <tr>
-                                            <td class="product-thumbnail"><a href="#">
-                                                <img src="img/product/10.jpg" alt=""></a></td>
-                                            <td class="product-name"><a href="#">北极熊</a></td>
-                                            <td class="product-price"><span class="amount">￥165.00</span></td>
-                                            <td class="product-quantity">
-                                                <input value="1" type="number"></td>
-                                            <td class="product-subtotal">￥165.00</td>
-                                            <td class="product-remove">
-                                                <a href="#">删除</a>
-                                                <a href="#">结算</a>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <div class="row" id="row">
@@ -72,7 +59,7 @@
                                                     <tr class="order-total">
                                                         <th>总共：</th>
                                                         <td>
-                                                            <strong><span class="amount">￥215.00</span></strong>
+                                                            <strong><span id="amount" class="amount"></span></strong>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -97,14 +84,14 @@
                                         </tr>
                                     </thead>
                                     <tbody id="favio_tbody">
-                                        <tr>
+                                        <%--  <tr>
                                             <td class="product-thumbnail"><a href="#">
                                                 <img src="img/product/10.jpg" alt=""></a></td>
                                             <td class="favio-name"><a href="#">北极熊</a></td>
                                             <td class="favio-price"><span class="amount">￥165.00</span></td>
-                                            <td class="favio-quantity"></td>
+                                            <td class="favio-quantity">1</td>
                                             <td class="favio-remove"><a href="#">删除</a></td>
-                                        </tr>
+                                        </tr>--%>
                                     </tbody>
                                 </table>
                             </div>
@@ -119,22 +106,23 @@
                                             <th class="address-remove">操作</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="address_tbody">
-                                        <tr>
-                                            <td class="address-quantity">的说法是手动阀手动阀撒旦发射点</td>
-                                            <td class="address-quantity">的说法是手动阀手动阀撒旦发射点</td>
-                                            <td class="address-quantity">的说法是手动阀手动阀撒旦发射点</td>
-                                            <td class="address-remove"><a href="#">删除</a></td>
-                                        </tr>
+                                    <tbody id="address_tbody">                                       
                                     </tbody>
                                 </table>
+                                <div class="row">
+                                    <div class="col-md-8 col-sm-7 col-xs-12">
+                                        <div class="buttons-cart">
+                                            <a href="##" data-toggle="modal" data-target="#AddreesModal" id="adrees" data-whatever="@mdo">添加地址</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <%--评价--%>
                             <div id="appraise_table" hidden>
                                 <table>
                                     <thead>
                                         <tr>
-                                           <th class="appraise-thumbnail">图片</th>
+                                            <th class="appraise-thumbnail">图片</th>
                                             <th class="appraise-name">商品</th>
                                             <th class="appraise-price">评价等级</th>
                                             <th class="appraise-subtotal">评价时间</th>
@@ -155,8 +143,79 @@
                             </div>
                             <div class="table-content table-responsive" id="div">
                             </div>
-
                         </form>
+                        <%--添加地址模态框开始--%>
+                        <div class="modal fade" id="AddreesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog model-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="exampleModalLabel">添加收货地址</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">收件人姓名:</label>
+                                                <input type="text"  class="form-control" id="Consignee">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">详细地址:</label>
+                                                <input type="text" class="form-control" id="Complete">
+                                            </div>                                           
+                                            <div class="form-group registration" >
+                                                <label for="message-text" class="control-label">手机号:</label>
+                                                <input type="text" class="form-control " id="Phone">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button type="button" id="submitadrees" class="btn btn-primary">确认添加</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%--用户登陆模态框结束--%>
+
+                         <%--商品支付界面开始--%>
+                          <div class="modal fade" id="PayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog model-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">请核对订单信息</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">商品名称:<label class="spmc">1</label></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">应付价格:<label class="yfjg"></label></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">联系人号码:<label class="lxrhm"></label></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">请选择收货地址:</label>
+                                                <select class="form-control" id="selects">
+                                                    <option>请选择</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">备注信息:</label>
+                                                <textarea class="form-control" id="bzxx" rows="3"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button type="button" id="sumbitpay" class="btn btn-primary">立即支付</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%--商品支付界面结束--%>
                     </div>
                 </div>
             </div>
@@ -168,32 +227,144 @@
     <script src="AppData/layui/jquery.js"></script>
     <script src="AppData/layui/layui.js"></script>
     <script src="Scripts/Shopping/master.js"></script>
-    <script src="Scripts/Shopping/cart.js" charset="utf-8" ></script>
+    <script src="Scripts/Shopping/cart.js" charset="utf-8"></script>
     <script>
-        var userid = localStorage.getItem("id");
-        console.log(userid,"--------userid-----------------------------");
-        if (userid) {         
-            ////获取购物车列表
-            //ajax_request({
-            //    url: "Aspx/ManagePages/orderhandler.ashx?action=cart",
-            //    data: { "UserId": userid },
-            //    callback: function (e) {
-            //        e = JSON.parse(e);
-            //        console.log(e, "加入购物车成功！！！！！");
-            //        if (e.code === 0) {
-            //            carthtml(e.data);
-            //        } else {
-            //        }
-            //    }
-            //});
+        layui.use(['layer'], function () {
+            layer = layui.layer;
+            var userid = localStorage.getItem("id");
+            console.log(userid, "--------userid-----------------------------");
+            if (userid) {
+
+                ////获取购物车列表
+                ajax_request({
+                    url: "Aspx/ManagePages/orderhandler.ashx?action=cart",
+                    data: { "UserId": userid },
+                    callback: function (e) {
+                        if (e) {
+                            e = JSON.parse(e);
+                            console.log(e, "加入购物车成功！！！！！");
+                            if (e.code === 0) {
+                                if (e.data != null) {
+                                    var total = MyCartList(e.data);
+                                    $("#amount").text(total);
+                                }
+                            } else {
+
+                            }
+                        }
+                    }
+                });
+                //默认显示购物车
+                $("#div").html($("#cart_table").html());
+
+                //收藏
+                ajax_request({
+                    url: "Aspx/ManagePages/favoritehandler.ashx?action=list",
+                    data: { "UserId": userid },
+                    callback: function (e) {
+                        if (e) {
+                            e = JSON.parse(e);
+                            console.log(e, "加入收藏成功！！！！！");
+                            if (e.code === 0) {
+                                MyFacoiriteList(e.data);
+                            }
+                        }
+                    }
+                });
+                var arrlist = [];
+                //我的地址列表
+                var addreeslist =function() {
+                    ajax_request({
+                        url: "Aspx/ManagePages/deliveryhandler.ashx?action=list",
+                        data: { "UserId": userid },
+                        callback: function (e) {
+                            if (e) {
+                                e = JSON.parse(e);
+                                console.log(e, "我的地址列表！！！！！");
+                                if (e.code === 0) {
+                                    arrlist = e.data;
+                                    MyAdreesList(e.data);
+                                }
+                            }
+                        }
+                    });
+                }
+                addreeslist();
+                //模态框添加地址
+                $("#submitadrees").click(function () {
+                    ajax_request({
+                        url: "Aspx/ManagePages/deliveryhandler.ashx?action=add",
+                        data: { "UserId": userid, "Complete": $("#Complete").val(), "Consignee": $("#Consignee").val(), "Phone": $("#Phone").val() },
+                        callback: function (e) {
+                            if (e) {
+                                e = JSON.parse(e);
+                                console.log(e, "添加地址！！！！！");
+                                if (e.code === 0) {
+                                    $('#AddreesModal').modal('hide');
+                                    addreeslist();
+                                }
+                            }
+                        }
+                    });
+                });
+
+                /*监听模态框关闭事件*/
+                $(function () {
+                    $('#AddreesModal').on('hidden.bs.modal', function () {                     
+                        $(this).removeData('bs.modal');
+                    });
+                });
+
+                //获取地址id
+                var deliveryId = "";
+                var orderid = "";
+                $("#selects").change(function () {
+                    deliveryId = $(this).val();                    
+                });
+
+                //展示模态框
+                $(".paymoeny").click(function () {
+                    orderid = $(this).attr("name");
+                    $('#PayModal').modal('show');                   
+                    if (arrlist) {
+                        $.each(arrlist, function (index, item) {
+                            $("#selects").append('<option name="' + item.DeliveryId + '">' + item.Complete+'<option>');
+                        });
+                    }                    
+                });
+
+                //修改改订单状态
+                $("#sumbitpay").click(function () {
+                    if (deliveryId == "") {
+                        layer.msg("请选择收货地址");
+                        return false;
+                    } else {
+
+                        ajax_request({
+                            url: "Aspx/ManagePages/orderhandler.ashx?action=update",
+                            data: { "UserId": userid, "action": "1", "DeliveryId": deliveryId, "OrdersId": orderid, "Remark": $("#bzxx").val() },
+                            callback: function (e) {
+                                if (e) {
+                                    e = JSON.parse(e);                               
+                                    if (e.code === 0) {
+                                        layer.msg("正在支付中.......");
+                                        $('#PayModal').modal('hide');
+                                        window.parent.location.reload();
+                                    } else {
+                                        layer.msg("支付失败请重试.......");
+                                    }
+                                }
+                            }
+                        });
 
 
-            $("#div").html($("#cart_table").html());
 
-           
+                    }
+                });
 
-        } else {
-            alert("请登陆");
-        }
+            } else {
+                layer.msg("请先登陆");
+            }
+        });
     </script>
 </asp:Content>

@@ -17,28 +17,16 @@
 
     <!-- google fonts here -->
     <%--    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">--%>
-
-    <!-- all css here -->
-    <!-- bootstrap v3.3.6 css -->
-    <link rel="stylesheet" href="Content/bootstrap.min.css">
-    <!-- animate css -->
-    <link rel="stylesheet" href="Content/Shopping/master/animate.css">
-    <!-- jquery-ui.min css -->
-    <link rel="stylesheet" href="Content/Shopping/master/jquery-ui.min.css">
-    <!-- meanmenu css -->
-    <link rel="stylesheet" href="Content/Shopping/master/meanmenu.min.css">
-    <!-- owl.carousel css -->
-    <link rel="stylesheet" href="Content/Shopping/master/owl.carousel.css">
-    <!-- font-awesome css -->
-    <link rel="stylesheet" href="Content/Shopping/master/font-awesome.min.css">
-    <!-- nivo-slider css -->
-    <link rel="stylesheet" href="Content/Shopping/master/nivo-slider.css">
-    <!-- style css -->
-    <link rel="stylesheet" href="Content/Shopping/master/style.css">
-    <!-- responsive css -->
-    <link rel="stylesheet" href="Content/Shopping/master/responsive.css">
-    <!-- modernizr css -->
-    <script src="Scripts/Shopping/master/modernizr-2.8.3.min.js"></script>
+    <link href="AppData/index/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="AppData/index/css/animate.css" rel="stylesheet" />
+    <link href="AppData/index/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="AppData/index/css/meanmenu.min.css" rel="stylesheet" />
+    <link href="AppData/index/css/owl.carousel.css" rel="stylesheet" />
+    <link href="AppData/index/css/responsive.css" rel="stylesheet" />
+    <link href="AppData/index/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="AppData/index/lib/css/nivo-slider.css" rel="stylesheet" />
+    <link href="AppData/index/style.css" rel="stylesheet" />
+   <script src="AppData/index/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
     <!--[if lt IE 8]>
@@ -432,46 +420,29 @@
             </div>
         </div>
     </div>
-    <div id="back-top"><i class="fa fa-angle-up"></i></div>
-    <!-- all js here -->
-    <!-- jquery latest version -->
-    <script src="Scripts/Shopping/master/jquery-1.12.0.min.js"></script>
-    <!-- bootstrap js -->
-    <script src="Scripts/Shopping/master/bootstrap.min.js"></script>
-    <!-- ajax mails JS
-    ============================================ -->
-    <script src="Scripts/Shopping/master/ajax-mail.js"></script>
-    <!-- owl.carousel js -->
-    <script src="Scripts/Shopping/master/owl.carousel.min.js"></script>
-    <!-- meanmenu js -->
-    <script src="Scripts/Shopping/master/jquery.meanmenu.min.js"></script>
-    <!-- jquery-ui js -->
-    <script src="Scripts/Shopping/master/jquery-ui.min.js"></script>
-    <!-- wow js -->
-    <script src="Scripts/Shopping/master/wow.min.js"></script>
-    <!-- nivo-slider js -->
-    <script src="Scripts/Shopping/master/jquery.nivo.slider.pack.js"></script>
-    <!-- nivo-slider activate js -->
-    <script src="Scripts/Shopping/master/nivo-active.js"></script>
-    <!-- jquery countdown js -->
-    <script src="Scripts/Shopping/master/jquery.countdown.min.js"></script>
-    <!-- jquery waypoints js -->
-    <script src="Scripts/Shopping/master/waypoints.min.js"></script>
-    <!-- jquery counterup js -->
-    <script src="Scripts/Shopping/master/jquery.counterup.min.js"></script>
-    <!-- plugins js -->
-    <script src="Scripts/Shopping/master/plugins.js"></script>
-    <!-- main js -->
-    <script src="Scripts/Shopping/master/main.js"></script>
+    <div id="back-top"><i class="fa fa-angle-up"></i></div>    
+    <script src="AppData/index/js/vendor/jquery-1.12.0.min.js"></script>
+    <script src="AppData/index/js/bootstrap.min.js"></script>
+    <script src="AppData/index/js/ajax-mail.js"></script>
+    <script src="AppData/index/js/owl.carousel.min.js"></script>
+    <script src="AppData/index/js/wow.min.js"></script>
+    <script src="Scripts/Shopping/pageindex.js"></script>
+    <script src="AppData/index/lib/js/jquery.nivo.slider.pack.js"></script>
+    <script src="AppData/index/lib/js/nivo-active.js"></script>
+    <script src="AppData/index/js/jquery.countdown.min.js"></script>
+    <script src="AppData/index/js/waypoints.min.js"></script>
+    <script src="AppData/index/js/jquery.counterup.min.js"></script>
+    <script src="AppData/index/js/jquery.meanmenu.min.js"></script>
+    <script src="AppData/index/js/plugins.js"></script>
+    <script src="AppData/index/js/main.js"></script>
     <script src="Scripts/Shopping/pageindex.js"></script>
     <script>
         $("#Searchs").click(function () {
             console.log('搜索');
             window.location.replace("ShopList.aspx");
         });
-        var vars = localStorage.getItem("index");
-        console.log(vars,"!!!!!!!!!!~~~~~~~~~~~~~~");
-        var login = JSON.parse(localStorage.getItem("index"));      
+       
+        var login =localStorage.getItem("index");      
         if (login) {
             $("#mychange").text(login);
             //退出登陆

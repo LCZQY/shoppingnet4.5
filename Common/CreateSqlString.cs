@@ -103,7 +103,7 @@ namespace Common
         {
             var name = typeof(T).ToString();
             var str = SplicingSql(model);
-            var Sql = "UPDATE " + GetName(name) + "SET " + str.UpdateStr;
+            var Sql = "UPDATE " + GetName(name) + " SET " + str.UpdateStr;
             return Sql;
         }
 
@@ -137,13 +137,12 @@ namespace Common
                 var i = 0;
                 foreach (PropertyInfo pi in t.GetProperties())
                 {
-                    var value = pi.GetValue(model, null);//用pi.GetValue获得值
-                    var type = (value.GetType() ?? typeof(object)).Name;//获得属性的类型         
-                    //if (pi.Name.ToLower().IndexOf("id") > -1) continue;
+                    var value = pi.GetValue(model, null)??"";//用pi.GetValue获得值
+                    var type = (value.GetType() ?? typeof(object)).Name;//获得属性的类型                            
                     switch (type)
                     {
                         case "String":
-                            pars[i] = new SqlParameter("@" + pi.Name, SqlDbType.VarChar, 32);
+                            pars[i] = new SqlParameter("@" + pi.Name, SqlDbType.VarChar);
 
                             break;
                         case "DateTime":
@@ -162,7 +161,7 @@ namespace Common
                             pars[i] = new SqlParameter("@" + pi.Name, SqlDbType.Float);
                             break;
                         default:
-                            pars[i] = new SqlParameter("@" + pi.Name, SqlDbType.VarChar, 32);
+                            pars[i] = new SqlParameter("@" + pi.Name, SqlDbType.VarChar);
                             break;
                     }
                     pars[i].Value = value ?? null;

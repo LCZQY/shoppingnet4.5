@@ -14,7 +14,7 @@
                         </div>
                         <div class="product_vmegamenu">
                             <ul id="leftmunu">
-                               <%-- <li>
+                                <%-- <li>
                                     <a href="#" class="hover-icon">women</a>
                                     <div class="vmegamenu">
                                         <span>
@@ -165,13 +165,14 @@
                         <div role="tabpanel" class="tab-pane active" id="men">
                             <div class="favourite-product">
                                 <div class="row">
-                                    <div class="favourite-carousel" id="favourite">
+                                    <div class="favourite-carousel"  id="favourite">
                                         <div class="col-md-12">
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <a href="#">
-                                                        <img src="img/product/1.jpg" alt="" />
+                                                        <img src="img/product/3.jpg" alt="" />
                                                         <span class="new-box">new</span>
+                                           
                                                     </a>
                                                     <div class="quick-preview">
                                                         <a href="#myModal" data-toggle="modal">查看详情</a>
@@ -179,7 +180,7 @@
                                                 </div>
                                                 <div class="product-content">
                                                     <h5 class="product-name">
-                                                        <a href="#">帽子</a>
+                                                        <a href="#">七夕礼物</a>
                                                     </h5>
                                                     <div class="product-ratings">
                                                         <i class="fa fa-star"></i>
@@ -189,14 +190,14 @@
                                                         <i class="fa fa-star"></i>
                                                     </div>
                                                     <div class="product-price">
-                                                        <h2>￥ 19.68
-                                                            <del>￥ 24.60 </del>
+                                                        <h2>￥19.68
+																<del>￥24.60 </del>
                                                         </h2>
                                                     </div>
                                                     <div class="product-action">
                                                         <ul>
                                                             <li class="cart"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-                                                            <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+                                                            <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>                                                          
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -371,125 +372,125 @@
     </div>
     <%--促销咨询结束--%>
     <script src="Scripts/jquery-3.3.1.min.js"></script>
-   <script src="Scripts/Shopping/pageindex.js"></script>
+    <script src="Scripts/Shopping/pageindex.js"></script>
     <script src="AppData/layui/layui.js"></script>
     <script src="Scripts/Shopping/master.js"></script>
     <script>
-        ajax_request({
-            url: "Aspx/ManagePages/groundinghandler.ashx?action=productlist",
-            data: null,
-            callback: function (e) {
-                // e = JSON.parse(e);
-              //  console.log(e, "商品列表");
-                // if (e.code === 0) {
-                productList(e);
-                // } else {
-                // }
-            }
-        });
-        ajax_request({
-            url: "Aspx/ManagePages/newshandler.ashx?action=list",
-            data: null,
-            callback: function (e) {
-                e = JSON.parse(e);
-        //        console.log(e.data, "咨询");
-
-                if (e.code === 0) {
-                    newList(e.data);
-                } else {
-
-                }
-            }
-        });
-        ajax_request({
-            url: "Aspx/ManagePages/typehandler.ashx?action=tree",
-            data: null,
-            callback: function (e) {
-              //  e = JSON.parse(e);
-                menuleftList(e);
-                //if (e.code === 0) {
-                // //   list (e.data);
-                   
-                //} else {
-
-                //}
-            }
-        });
-
-        //收藏列表
-        var favorites = function () {
-            var uid = JSON.parse(localStorage.getItem("id"));
-            ajax_request({
-                url: "Aspx/ManagePages/favoritehandler.ashx?action=list",
-                data: { "Userid": uid },
+        layui.use([ 'layer'], function () {
+            layer = layui.layer;
+                
+            ajax_request({ //商品列表
+                url: "Aspx/ManagePages/groundinghandler.ashx?action=productlist",
+                data: null,
                 callback: function (e) {
-                    e = JSON.parse(e);
-                    console.log(e, "购物车列表！！！！！");
+                    console.log(e,"商品列表");
+                    productList(e);           
+                }
+            });
+            ajax_request({//咨询列表
+                url: "Aspx/ManagePages/newshandler.ashx?action=list",
+                data: null,
+                callback: function (e) {
+                    e = JSON.parse(e);              
                     if (e.code === 0) {
-                        favoriteList(e.data);
+                        newList(e.data);
                     } else {
+
                     }
                 }
             });
-        }
-        //如果有登陆信息则显示我的购物车
-        var login = JSON.parse(localStorage.getItem("index"));        
-        if (login) {
-            $("#favourite-area").show();
-        } else {
-            $("#favourite-area").hide();
-        }
+            ajax_request({//左侧菜单栏
+                url: "Aspx/ManagePages/typehandler.ashx?action=tree",
+                data: null,
+                callback: function (e) {
+                    menuleftList(e);                
+                }
+            });
 
+            //收藏列表
+            var favorites = function () {
+                var uid = localStorage.getItem("id");
+                ajax_request({
+                    url: "Aspx/ManagePages/favoritehandler.ashx?action=list",
+                    data: { "Userid": uid },
+                    callback: function (e) {                      
+                        if (e)   {
+                            e = JSON.parse(e);
+                            if (e.code === 0) {
+                                if (e.data != null) {
+                                 
+                                    var html = favoriteList(e.data);
+                                    //$("#favourite").html(html);
+                                }
+                            } else {
+                                //     layer.msg(e.msg);
+                            }
+                        }
+                    }
+                });
+            }
 
-
-        /*加入购物车*/
-        $(".cart >").click(function () {
+            favorites();
+            //如果有登陆信息则显示我的购物车
+            var login = localStorage.getItem("index");
+            console.log(login, "是否有登陆！！！！！！！！！！！！！！！！");
             if (login) {
-                $('#exampleModal').modal('show');
-                return false;
+                $("#favourite-area").show();
+            } else {
+                $("#favourite-area").hide();
             }
-            ajax_request({
-                url: "Aspx/ManagePages/orderhandler.ashx?action=add",
-                data: { "ProductId": pid, "UserId": uid },
-                callback: function (e) {
-                    e = JSON.parse(e);
-                    console.log(e, "加入购物车成功！！！！！");
-                    if (e.code === 0) {
-                        favoriteList(e.data);
-                    } else {
+     
 
-                    }
+            /*加入购物车*/
+            $(".cart >a").click(function () {
+                if (!login) {
+                    $('#exampleModal').modal('show');
+                    return false;
                 }
+               
+                var pid = $(this).attr("name");
+                var uid = localStorage.getItem("id")
+                var price = $("." + pid).text().toString().split('￥')[1];
+                console.log(price,"价格！！！！！！！！！！！！！！！");
+                ajax_request({
+                    url: "Aspx/ManagePages/orderhandler.ashx?action=add",
+                    data: { "ProductId": pid, "UserId": uid, "Total": price},
+                    callback: function (e) {
+                        e = JSON.parse(e);  
+                        if (e.code === 0) {
+                            layer.msg("加入购物车成功");                 
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    }
+                });
+            });
+
+
+            /*加入收藏！！！*/
+            $(".fa >a").click(function () {
+                if (!login) {
+                    $('#exampleModal').modal('show');
+                    return false;
+                }
+                var pid = $(this).attr("name");
+                var uid = localStorage.getItem("id")      
+                console.log(uid, "----------");
+                ajax_request({
+                    url: "Aspx/ManagePages/favoritehandler.ashx?action=add",
+                    data: { "ProductId": pid, "UserId": uid },
+                    callback: function (e) {
+                        e = JSON.parse(e);                   
+                        if (e.code === 0) {
+                            layer.msg("已收藏成功");                 
+                           // favorites();
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    }
+                });    
             });
         });
-
-           
-        /*加入收藏！！！*/
-        $(".fa >a").click(function () {
-            if (login) {
-                $('#exampleModal').modal('show');
-                return false;
-            }
-            var pid = $(this).attr("name");
-            var uid = JSON.parse(localStorage.getItem("id"));
-            ajax_request({
-                url: "Aspx/ManagePages/favoritehandler.ashx?action=add",
-                data: { "ProductId": pid, "UserId": uid },
-                callback: function (e) {
-                    e = JSON.parse(e);
-                    console.log(e, "加入购物车成功！！！！！");
-                    if (e.code === 0) {
-                        favoriteList(e.data);
-                    } else {
-
-                    }
-                }
-            });
-            console.log(id, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        });
-
-
-
 
     </script>
 </asp:Content>

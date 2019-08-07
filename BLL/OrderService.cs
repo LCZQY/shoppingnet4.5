@@ -23,34 +23,45 @@ namespace BLL
 
 
         /// <summary>
-        ///  购物车数据
+        ///  我的购物车购物车数据
         /// </summary>
         public List<OrdersDetailExtend> OrderCartList()
         {
-            var list = from c in _infoOrderDal.GetList().AsQueryable()
-                       join b in _infoDetailDal.GetList().AsQueryable()
-                       on c.OrdersId equals b.OrdersId
-                       join h in _infoPhotoDal.GetList().AsQueryable()
-                       on b.ProductId equals h.ProductId
-                       select new OrdersDetailExtend
-                       {
-                           //订单
-                           OrdersId = c.OrdersId,
-                           ProductId= b.ProductId,
-                           Orderdate = c.Orderdate,
 
-                           Total = c.Total,
-                           DeliveryDate = c.DeliveryDate,
-                           States = c.States,
-                           Remark = c.Remark,
 
-                           //订单详情
-                           Path = h.PhotoUrl,                  
-                           DetailId = b.DetailId,
-                           Quantity = b.Quantity,
-                           DetailStates = b.States,
-                       };
-            return list.ToList() ?? new List<OrdersDetailExtend> { };
+
+            try
+            {
+                var list = from c in _infoOrderDal.GetList().ToList()
+                           join b in _infoDetailDal.GetList().ToList()
+                           on c.OrdersId equals b.OrdersId
+                           join u in _infoProductDal.GetList().ToList()
+                           on b.ProductId equals u.ProductId 
+                           select new OrdersDetailExtend
+                           {
+                               //订单
+                               OrdersId = c.OrdersId,
+                               ProductId = b.ProductId,
+                               Orderdate = c.Orderdate,
+                               UserId = c.UserId,
+                               Title = u.Title,
+                               Price = u.Price,
+                               Total = c.Total,
+                               DeliveryDate = c.DeliveryDate,
+                               States = c.States,
+                               Remark = c.Remark,
+                               //订单详情
+                               Path = _infoPhotoDal.GetList().Where(y => y.ProductId == (b.ProductId == null ? "" : b.ProductId)).FirstOrDefault().PhotoUrl ?? "",
+                               DetailId = b.DetailId,
+                               Quantity = b.Quantity,
+                               DetailStates = b.States,
+                           };
+
+                return list.ToList();// ?? new List<OrdersDetailExtend> { };
+            }
+            catch (Exception e) {
+                throw;
+            }
         }
             /// <summary>
             ///  连表查询订单信息

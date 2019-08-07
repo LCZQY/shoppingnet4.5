@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -50,6 +46,12 @@ namespace Model
         /// 库存数量
         /// </summary>
         public int Stock { get; set; }
+
+
+        /// <summary>
+        /// 封面【由于这里只是一张图片，直接把图片冗余在本表中，避免一次Sql语句的查询！】
+        /// </summary>
+        public string Icon { get; set; }
     }
 
     public class ProductEx : Product
@@ -58,6 +60,11 @@ namespace Model
         /// 图片路径
         /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// 收藏时间
+        /// </summary>
+        public DateTime FavoriDate { get; set; }
 
     }
 }

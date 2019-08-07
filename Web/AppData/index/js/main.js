@@ -1,10 +1,6 @@
 (function($) {
     "use strict";
 
-    $("#Search").on('click', function () {
-        window.location.href = "shop-list.html";
-    });
-
     /*----------------------------
      jQuery MeanMenu
     ------------------------------ */

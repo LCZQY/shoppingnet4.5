@@ -15,18 +15,18 @@ namespace BLL
         private ProductDal _infoDal = new ProductDal { }; //Common.CacheControl.Get<ProductDal>();s
         private ProductDal _infoProductDal = new ProductDal();
         private PhotoDal _infoPhotoDal = new PhotoDal();
-        private FavoriteDal _infoFavoriteDal = new FavoriteDal();
+
 
         /// <summary>
         ///  获取收藏商品
         /// </summary>
-        public List<ProductEx> FavoriteProductList(string userid)
+        public List<ProductEx> FavoriteProductList(List<string> productId)
         {
 
-            var fproid = _infoFavoriteDal.GetList().Where(y => y.UserId == userid).Select(y => y.ProductId).ToList();
-            var prolist = _infoProductDal.GetList().Where(y => fproid.Contains(y.ProductId)).ToList();
+
+            var prolist = _infoProductDal.GetList().Where(y => productId.Contains(y.ProductId))?.ToList();
             var ex = from c in prolist
-                     join b in _infoPhotoDal.GetList().ToList()
+                     join b in _infoPhotoDal.GetList()?.ToList()
                       on c.ProductId equals b.ProductId
                      select new ProductEx
                      {
