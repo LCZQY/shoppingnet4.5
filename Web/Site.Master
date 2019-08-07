@@ -463,6 +463,7 @@
     <script src="Scripts/Shopping/master/plugins.js"></script>
     <!-- main js -->
     <script src="Scripts/Shopping/master/main.js"></script>
+    <script src="Scripts/Shopping/pageindex.js"></script>
     <script>
         $("#Searchs").click(function () {
             console.log('搜索');
@@ -479,10 +480,9 @@
                 location.reload();
             });
         }
-
+      
         /*加入购物车！！！*/
-        $("#look").click(function () {
-            alert(0);
+        $("#look").click(function () {          
             if (login) {
                 $('#exampleModal').modal('show');
                 return false;

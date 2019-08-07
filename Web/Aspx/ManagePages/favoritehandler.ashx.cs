@@ -167,7 +167,8 @@ namespace System.Web.Aspx.ManagePages
                 {
                     FavoriteId = Guid.NewGuid().ToString(),
                     ProductId = productId,
-                    UserId = userId
+                    UserId = userId,
+                    DateTime = DateTime.Now,
                 };
                 var add = _InfoService.Add(Favorite);
                 if (add)

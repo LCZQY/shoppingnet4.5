@@ -40,6 +40,11 @@ namespace BLL
             return _infoDal.GetList(page, index);
         }
 
+        public List<Favorite> GetList()
+        {
+            return _infoDal.GetList();
+        }
+
         public bool Update(Favorite model)
         {
             return _infoDal.UpdateFavorite(model) > 0;

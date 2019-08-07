@@ -411,6 +411,7 @@
     <Content Include="Scripts\Shopping\lay\modules\tree.js" />
     <Content Include="Scripts\Shopping\lay\modules\upload.js" />
     <Content Include="Scripts\Shopping\lay\modules\util.js" />
+    <Content Include="Scripts\Shopping\cart.js" />
     <Content Include="Scripts\Shopping\master.js" />
     <Content Include="Scripts\Shopping\master\ajax-mail.js" />
     <Content Include="Scripts\Shopping\master\bootstrap.min.js" />

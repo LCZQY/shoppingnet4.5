@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
     /// <summary>
     /// 收藏夹表
@@ -21,6 +23,10 @@
         /// </summary>
         public string UserId { get; set; }
 
+        /// <summary>
+        /// 收藏时间
+        /// </summary>
+        public DateTime DateTime { get; set; }
 
 
     }
