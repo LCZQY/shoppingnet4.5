@@ -17,20 +17,20 @@ namespace Model
         /// <summary>
         /// Key
         /// </summary>
-        public int AppraiseId { get; set; }
+        public string AppraiseId { get; set; }
         /// <summary>
         /// 用户id
         /// </summary>
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         /// <summary>
         /// 商品ID
         /// </summary>
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
 
         /// <summary>
-        /// 评价等级
+        /// 评价等级 【0：很好，1：好，2：不好】
         /// </summary>
-        public EnumGrade Grade { get; set; }
+        public int Grade { get; set; }
 
         /// <summary>
         /// 评价时间

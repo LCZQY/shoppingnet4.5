@@ -364,6 +364,8 @@
     <Content Include="AppData\layui\font\iconfont.ttf" />
     <Content Include="AppData\layui\font\iconfont.woff" />
     <Content Include="AppData\layui\font\iconfont.woff2" />
+    <Content Include="Aspx\ManagePages\appraisehandler.ashx" />
+    <Content Include="Aspx\ManagePages\deliveryhandler.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -541,6 +543,12 @@
     </Compile>
     <Compile Include="Aspx\ManagePages\adminhandler.ashx.cs">
       <DependentUpon>adminhandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\appraisehandler.ashx.cs">
+      <DependentUpon>appraisehandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Aspx\ManagePages\deliveryhandler.ashx.cs">
+      <DependentUpon>deliveryhandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Aspx\ManagePages\favoritehandler.ashx.cs">
       <DependentUpon>favoritehandler.ashx</DependentUpon>

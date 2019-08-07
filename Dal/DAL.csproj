@@ -46,6 +46,7 @@
     <Compile Include="DeliveryDal.cs" />
     <Compile Include="FavoriteDal.cs" />
     <Compile Include="NewsDal.cs" />
+    <Compile Include="AppraiseDal.cs" />
     <Compile Include="OrdersDal.cs" />
     <Compile Include="OrdersDetailDal.cs" />
     <Compile Include="PhotoDal.cs" />

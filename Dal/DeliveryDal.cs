@@ -12,6 +12,9 @@ namespace DAL
 {
 
 
+    /// <summary>
+    /// 收获地址
+    /// </summary>
     public class DeliveryDal
     {
         /// <summary>

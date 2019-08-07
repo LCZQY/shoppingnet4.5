@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="AdminUserService.cs" />
     <Compile Include="CategoryService.cs" />
+    <Compile Include="AppraiseService.cs" />
     <Compile Include="DeliveryService.cs" />
     <Compile Include="FavoriteService.cs" />
     <Compile Include="IBaseServer.cs" />
