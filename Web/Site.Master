@@ -43,7 +43,7 @@
                                     <a href="#" id="mychange">我的账户</a>
                                     <ul>
                                         <li><a href="#">我的Change</a></li>
-                                        <li><a runat="server" target="_blank" href="Aspx/ManageIndex.aspx">后台登陆</a></li>
+                                        <li><a runat="server" target="_blank" href="Aspx/login.html">后台登陆</a></li>
                                         <li><a href="#" data-toggle="modal" data-target="#exampleModal" id="loginout" data-whatever="@mdo">登陆/注册</a></li>
                                     </ul>
                                 </li>

@@ -58,12 +58,12 @@ namespace System.Web.Aspx
             {
                 string userName = context.Request.Form["UserName"];
                 string userPwd = context.Request.Form["Pwd"];
-                var list = _userInfoService.GetList().Where(y => y.UserName == userName && y.Pwd == userPwd);
+                var list = _userInfoService.GetList().Where(y => y.UserName == userName && y.Pwd == userPwd).FirstOrDefault();
                 if (list != null)
                 {
                     response.code = 0;
                     response.msg = "登陆成功";
-                    response.model = list.FirstOrDefault().Role.ToString();
+                    response.model = list.Role.ToString();
                     context.Response.Write(SerializeHelp.ToJson(response));
                 }
                 else

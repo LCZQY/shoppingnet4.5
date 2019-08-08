@@ -29,7 +29,7 @@ namespace DAL
             if (da.Rows.Count > 0)
             {
                 list = new List<AdminUser>();
-                AdminUser AdminUser = null;
+                AdminUser AdminUser = new AdminUser { };
                 foreach (DataRow row in da.Rows)
                 {
                     AdminUser = new AdminUser();
