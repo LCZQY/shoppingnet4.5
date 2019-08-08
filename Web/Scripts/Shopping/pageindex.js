@@ -13,7 +13,7 @@ $("#submit").on("click", function () {
     if (action) {
         var name = $("#name").val();
         if (name === "") {
-            alert("用户名不能够为空");
+            //alert("用户名不能够为空");
             return false;
         }
         var data = { "name": name, "nick": $("#nick").val(), "pwd": $("#pwd").val(), "email": $("#email").val() };
@@ -39,7 +39,7 @@ $("#submit").on("click", function () {
     if (!action) {
         var names = $("#name").val();
         if (names === "") {
-            alert("用户名不能够为空");
+            //alert("用户名不能够为空");
             return false;
         }
         var logindata = { "name": names, "pwd": $("#pwd").val() };
@@ -78,9 +78,9 @@ $(function () {
 
 
 
-$('.look').click(function () {
-    alert("000");
-});
+//$('.look').click(function () {
+//    alert("000");
+//});
 
 //$(function () {
 //    $('#myModal').on('show.bs.modal', function () {

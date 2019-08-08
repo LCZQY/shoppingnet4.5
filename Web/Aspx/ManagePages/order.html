@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <title>订单管理</title>
-    <link href="../../Content/Shopping/layer.css" rel="stylesheet" />
-    <link href="../../Content/Shopping/layui.css" rel="stylesheet" />
+    <link href="../../AppData/layui/css/layui.css" rel="stylesheet" />
+
 </head>
 
 <body>
     <table class="layui-hide" id="test" lay-filter="test"></table>
-    <script src="../../Scripts/jquery-3.3.1.min.js"></script>
-    <script src="../../Scripts/Shopping/layui.js"></script>
+    <script src="../../AppData/layui/jquery-3.3.1.min.js"></script>
+    <script src="../../AppData/layui/layui.js"></script>
     <script src="../../Scripts/Shopping/master.js"></script>
 </body>
 
@@ -54,9 +54,9 @@
     {{# } else if(d.States== 1) { }}
     <span style="color:green"> 已付款</span>
     {{# } else if(d.States== 2) { }}
-    <span style="color:yellowgreen"> 已发货</span>
+    <span style="color:"> 已发货</span>
     {{# } else if(d.States== 3) { }}
-    <span style="color:yellow"> 已收货</span>
+    <span style="color:black"> 已收货</span>
     {{# } else if(d.States== 4) { }}
     <span style="color:red"> 已评价</span>
     {{# } else{  }}
@@ -187,8 +187,8 @@
             var data = obj.data;
             if (obj.event === 'send') { //发货
                 layer.confirm('是否确定发货', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    //obj.del();
+                    //layer.close(index);
                     $.ajax({
                         url: "orderhandler.ashx?action=send",
                         type: "POST",
@@ -199,7 +199,7 @@
                         success: function (e) {
                             if (e.code == 0) {
                                 layer.msg(e.msg);
-                                reload();
+                                window.parent.location.reload();
                             } else {
                                 layer.msg(e.msg);
                             }
@@ -213,30 +213,31 @@
             if (obj.event === 'detail') { //详情
                 layer.msg("开发中");
             }
-            if (obj.event === 'evaluate') { //查看评价
-                layer.confirm('是否确定发货', function (index) {
-                    obj.del();
-                    layer.close(index);
-                    $.ajax({
-                        url: "orderhandler.ashx?action=send",
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            id: data.OrdersId
-                        },
-                        success: function (e) {
-                            if (e.code == 0) {
-                                layer.msg(e.msg);
-                                page_reload();
-                            } else {
-                                layer.msg(e.msg);
-                            }
-                        },
-                        error: function (e) {
-                            layer.msg(e);
-                        }
-                    })
-                });
+            if (obj.event === 'evaluate') { //查看评价??
+                   layer.msg("开发中");
+                //layer.confirm('是否确定发货', function (index) {
+                
+                //   // layer.close(index);
+                //    $.ajax({
+                //        url: "orderhandler.ashx?action=send",
+                //        type: "POST",
+                //        dataType: "json",
+                //        data: {
+                //            id: data.OrdersId
+                //        },
+                //        success: function (e) {
+                //            if (e.code == 0) {
+                //                layer.msg(e.msg);
+                //                window.parent.location.reload();
+                //            } else {
+                //                layer.msg(e.msg);
+                //            }
+                //        },
+                //        error: function (e) {
+                //            layer.msg(e);
+                //        }
+                //    })
+                //});
 
             }
         });

@@ -40,7 +40,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new Orders { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Orders> list = null;
+            List<Orders> list = new List<Orders>();
             if (da.Rows.Count > 0)
             {
                 list = new List<Orders>();
@@ -65,7 +65,7 @@ namespace DAL
 
             string sql = CreateSqlString.SelectSqlString(new Orders { }); //}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Orders> list = null;
+            List<Orders> list = new List<Orders> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Orders>();
@@ -165,6 +165,7 @@ namespace DAL
             Orders.DeliveryId = row["DeliveryId"] != DBNull.Value ? row["DeliveryId"].ToString() : string.Empty;
             Orders.States = Convert.ToInt32(row["States"] != DBNull.Value ? row["States"].ToString() : string.Empty);
             Orders.Remark = row["Remark"] != DBNull.Value ? row["Remark"].ToString() : string.Empty;
+            Orders.ProductId = row["ProductId"] != DBNull.Value ? row["ProductId"].ToString() : string.Empty; 
         }
 
 

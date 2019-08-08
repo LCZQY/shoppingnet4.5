@@ -163,8 +163,8 @@ namespace System.Web.Aspx.ManagePages
                 string productId = context.Request.Form["ProductId"];
                 string userId = context.Request.Form["UserId"];
 
-                var exist = _InfoService.GetList().Where(y => y.ProductId == productId && y.UserId == userId).DefaultIfEmpty();
-                if (exist != null)
+                var exist = _InfoService.GetList().Where(y => y.ProductId == productId && y.UserId == userId).ToList();
+                if (exist.Count() >0 )
                 {
                     response.code = 500;
                     response.msg = "已收藏该商品,请勿重复添加";
@@ -212,9 +212,12 @@ namespace System.Web.Aspx.ManagePages
                 var ProductId = _InfoService.GetList().Where(y => y.UserId == userid).Select(y => y.ProductId).ToList();
                 var list = _infoProductService.FavoriteProductList(ProductId);
 
-                var datelist = _InfoService.GetList().Where(y => y.UserId == userid);
-                list.ForEach(u => u.FavoriDate = datelist.Where(y => y.ProductId == u.ProductId).Select(y => y.DateTime).FirstOrDefault());
-                var res = SerializeHelp.ToTableJson(list);
+                //var datelist = _InfoService.GetList().Where(y => y.UserId == userid);
+
+                ///list.ForEach(u => u.FavoriDate = datelist.Where(y => y.ProductId == u.ProductId).Select(y => y.DateTime).FirstOrDefault());
+                list.ForEach(u => u.FavoriDate =Convert.ToDateTime(  DateTime.Now.ToShortDateString() ));
+ 
+                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
             catch (Exception) {

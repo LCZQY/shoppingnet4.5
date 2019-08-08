@@ -46,6 +46,11 @@ namespace Model
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 商品id
+        /// </summary>
+        public string ProductId { get; set; }
     }
 
     /// <summary>

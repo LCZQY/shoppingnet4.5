@@ -35,6 +35,7 @@ var addreesConentHtml = function (options) {
     var complete = '<td class="address-quantity">' + options.complete + '</td>';
     var phone = '<td class="address-quantity">' + options.phone + '</td><td class="address-remove"><a href="#">删除</a></td></tr>';
     return consingnee + complete + phone;
+   
 };
 
 
@@ -67,7 +68,7 @@ var MyCartList = function (obj) {
             states: item.States,
             id: item.OrdersId,
             price: item.Price,
-            proid: item.ProductId,
+            proid: item.ProductId
         });
     });
     $("#tbody").append(html);
@@ -94,21 +95,21 @@ var MyFacoiriteList = function (obj) {
 
 
 
-//我的购藏
+//我的地址
 var MyAdreesList = function (obj) {
     var list = obj;
     var html = '';
 
     $.each(list, function (index, item) {
 
-        html += favoriteConentHtml({
-            path: item.Path,
-            title: item.Title,
-            date: item.FavoriDate,
-            id: item.ProductId,
-            price: item.Price
+        html += addreesConentHtml({
+            consingnee: item.Consignee,
+            complete: item.Complete,
+            phone: item.Phone
+          
         });
     });
+    console.log(html,"------------我的地址-----------");
     $("#address_tbody").append(html);
 };
 

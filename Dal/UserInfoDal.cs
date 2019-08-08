@@ -25,7 +25,7 @@ namespace DAL
         {
             string sql = "select UserId,UserName,Pwd,Nick,Email,DeliveryId from Users";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Users> list = null;
+            List<Users> list = new List<Users> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Users>();
@@ -51,7 +51,7 @@ namespace DAL
             //string sql = $"select UserId,UserName,Pwd,Nick,Email,DeliveryId from Users limit  {((page - 1) * index)}, {index}";
             string sql = CreateSqlString.SelectSqlString(new Users { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Users> list = null;
+            List<Users> list = new List<Users> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Users>();

@@ -24,7 +24,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new Appraise { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Appraise> list = null;
+            List<Appraise> list = new List<Appraise> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Appraise>();
@@ -49,7 +49,7 @@ namespace DAL
 
             string sql = CreateSqlString.SelectSqlString(new Appraise { }); //}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Appraise> list = null;
+            List<Appraise> list = new List<Appraise> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Appraise>();

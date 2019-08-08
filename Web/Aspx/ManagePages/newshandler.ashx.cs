@@ -182,7 +182,7 @@ namespace System.Web.Aspx.ManagePages
                     States = states,
                     PushTime = DateTime.Now
                 };
-             
+
                 var add = _InfoService.Add(News);
 
                 response.code = add == true ? 0 : 500;
@@ -192,7 +192,7 @@ namespace System.Web.Aspx.ManagePages
             catch (Exception e)
             {
                 string error = e.Message;
-      
+
                 response.code = 500;
                 response.msg = "添加失败";
                 context.Response.Write(SerializeHelp.ToJson(response));
@@ -229,10 +229,11 @@ namespace System.Web.Aspx.ManagePages
             }
             catch
             {
+                var list = new List<News> { };
+                var res = SerializeHelp.ToTableJson(list);
+                context.Response.Write(res);
             }
         }
-
-
 
 
         /// <summary>

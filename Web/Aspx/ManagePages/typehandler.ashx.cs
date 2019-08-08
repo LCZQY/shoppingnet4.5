@@ -62,31 +62,38 @@ namespace System.Web.Aspx.ManagePages
             /// <param name="context"></param>
             public void TypeProductRequest(HttpContext context)
         {
-            var typename = context.Request["Name"];
-            var id = context.Request["CateId"];
-            var page = context.Request.Form["page"];
-            var index = context.Request.Form["limit"];
-            if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+            try
             {
-                var list = _infoProductService.GetList().Where(y => y.CateId == id).ToList();             
-                foreach (var y in list)
+                var typename = context.Request["Name"];
+                var id = context.Request["CateId"];
+                var page = context.Request.Form["page"];
+                var index = context.Request.Form["limit"];
+                if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
                 {
-                    y.CateId = typename;
+                    var list = _infoProductService.GetList().Where(y => y.CateId == id).ToList();
+                    foreach (var y in list)
+                    {
+                        y.CateId = typename;
+                    }
+                    list = list ?? new List<Product> { };
+                    var res = SerializeHelp.ToTableJson(list);
+                    context.Response.Write(res);
                 }
-                list = list ?? new List<Product> { };
+                else
+                {
+                    var list = _infoProductService.GetList().Where(y => y.CateId == id).ToList();
+
+                    list = list ?? new List<Product> { };
+                    var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
+                    var res = SerializeHelp.ToTableJson(list1, list.Count());
+                    context.Response.Write(res);
+                }
+            }
+            catch {
+               var list =  new List<Product> { };
                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
-            else
-            {
-                var list = _infoProductService.GetList().Where(y => y.CateId == id).ToList();
-
-                list = list ?? new List<Product> { };
-                var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-                var res = SerializeHelp.ToTableJson(list1, list.Count());
-                context.Response.Write(res);
-            }
-
 
         }
 

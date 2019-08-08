@@ -23,7 +23,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new News { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<News> list = null;
+            List<News> list = new List<News> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<News>();
@@ -48,7 +48,7 @@ namespace DAL
 
             string sql = CreateSqlString.SelectSqlString(new News { });//+" limit "  +((page - 1) * index), {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<News> list = null;
+            List<News> list = new List<News> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<News>();

@@ -23,7 +23,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new Favorite { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Favorite> list = null;
+            List<Favorite> list = new List<Favorite> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Favorite>();

@@ -25,7 +25,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new AdminUser { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<AdminUser> list = null;
+            List<AdminUser> list = new List<AdminUser> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<AdminUser>();
@@ -50,7 +50,7 @@ namespace DAL
 
             string sql = CreateSqlString.SelectSqlString(new AdminUser { }) ;//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<AdminUser> list = null;
+            List<AdminUser> list = new List<AdminUser> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<AdminUser>();

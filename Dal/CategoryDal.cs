@@ -27,7 +27,7 @@ namespace DAL
         {
             string sql = "select CateId,CateName,ParentId from Category";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Category> list = null;
+            List<Category> list = new List<Category> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Category>();
@@ -52,7 +52,7 @@ namespace DAL
 
             string sql = "select CateId,CateName,ParentId from Category ";//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Category> list = null;
+            List<Category> list = new List<Category> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Category>();

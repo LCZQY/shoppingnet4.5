@@ -273,7 +273,7 @@ namespace System.Web.Aspx.ManagePages
                 string productId = context.Request.Form["ProductId"];
                 string userId = context.Request.Form["UserId"];
 
-                var exist = _infodetailService.GetList().Where(y => y.UserId == userId && y.ProductId == productId).SingleOrDefault();
+                var exist = _infoService.GetList().Where(y => y.UserId == userId && y.ProductId == productId && y.States == 0).FirstOrDefault();
                 if (exist != null)
                 {
                     response.code = 101;
@@ -297,7 +297,7 @@ namespace System.Web.Aspx.ManagePages
                 order.States = 0; //加入购物车未付款
                 order.DeliveryId = deliveryId;
                 order.DeliveryDate = deliveryDate == null? DateTime.Now: Convert.ToDateTime(deliveryDate);
-
+                order.ProductId = productId;
                 //订单详情
                 Detail detail = new Detail
                 {

@@ -24,7 +24,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new Photo { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Photo> list = null;
+            List<Photo> list = new List<Photo> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Photo>();
@@ -49,7 +49,7 @@ namespace DAL
 
             string sql = CreateSqlString.SelectSqlString(new Photo { }); //}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Photo> list = null;
+            List<Photo> list = new List<Photo> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Photo>();

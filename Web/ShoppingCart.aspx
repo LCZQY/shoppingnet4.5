@@ -48,7 +48,7 @@
                                     <div class="col-md-8 col-sm-7 col-xs-12">
                                         <div class="buttons-cart">
                                             <input value="更新购物车" type="button" id="flsh">
-                                            <a href="#">继续购物</a>
+                                            <a href="~" runat="server" >继续购物</a>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-5 col-xs-12">
@@ -130,16 +130,7 @@
                                             <th class="appraise-remove">操作</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="appraise_tbody">
-                                        <tr>
-                                            <td class="product-quantity"><a href="#">
-                                                <img src="img/product/10.jpg" alt=""></a></td>
-                                            <td class="appraise-quantity">名称</td>
-                                            <td class="appraise-quantity">评价等级</td>
-                                            <td class="appraise-quantity">评价内容</td>
-                                               <td class="appraise-quantity">评价时间</td>
-                                            <td class="appraise-remove"><a href="#">删除</a></td>
-                                        </tr>
+                                    <tbody id="appraise_tbody">                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -189,7 +180,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form method="post">
-                                            <div class="form-group">
+                                           <%-- <div class="form-group">
                                                 <label for="recipient-name" class="control-label">商品名称:<label class="spmc">1</label></label>
                                             </div>
                                             <div class="form-group">
@@ -197,7 +188,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="recipient-name" class="control-label">联系人号码:<label class="lxrhm"></label></label>
-                                            </div>
+                                            </div>--%>
                                             <div class="form-group">
                                                 <label for="message-text" class="control-label">请选择收货地址:</label>
                                                 <select class="form-control" id="selects">
@@ -228,9 +219,9 @@
                                     </div>
                                     <div class="modal-body">
                                         <form method="post">
-                                            <div class="form-group">
+                                           <%-- <div class="form-group">
                                                 <label for="recipient-name" class="control-label">商品名称:<label class="spmc">1</label></label>
-                                            </div>
+                                            </div>--%>
                                             <div class="form-group">
                                                 <label for="message-text" class="control-label">等级:</label>
                                                 <select class="form-control" id="evaluate_selects">
@@ -316,9 +307,10 @@
                         url: "Aspx/ManagePages/deliveryhandler.ashx?action=list",
                         data: { "UserId": userid },
                         callback: function (e) {
+                            console.log(e, "我的地址列表！！！！！");
                             if (e) {
                                 e = JSON.parse(e);
-                                console.log(e, "我的地址列表！！！！！");
+                                
                                 if (e.code === 0) {
                                     arrlist = e.data;
                                     MyAdreesList(e.data);
@@ -334,18 +326,17 @@
                     url: "Aspx/ManagePages/appraisehandler.ashx?action=list",
                     data: { "UserId": userid },
                     callback: function (e) {
+                        console.log(e, "我的地址列表！！！！！");
                         if (e) {
                             e = JSON.parse(e);
-                            console.log(e, "我的地址列表！！！！！");
+                            
                             if (e.code === 0) {
-                                arrlist = e.data;
+                               // arrlist = e.data;
                                 MyPingjiaList(e.data);
                             }
                         }
                     }
                 });
-
-
 
                 //模态框添加地址
                 $("#submitadrees").click(function () {
@@ -359,6 +350,7 @@
                                 if (e.code === 0) {
                                     $('#AddreesModal').modal('hide');
                                     addreeslist();
+                                    page_reload();
                                 }
                             }
                         }
@@ -376,7 +368,8 @@
                 var deliveryId = "";
                 var orderid = "";
                 $("#selects").change(function () {
-                    deliveryId = $(this).val();
+                    deliveryId = $("#selects").find("option:selected").attr("name");
+                    console.log(deliveryId,"地址ID>>>>>>>>>>>>>>>>>>>>>>");
                 });
 
                 //展示模态框
@@ -432,7 +425,7 @@
                                     e = JSON.parse(e);
                                     if (e.code === 0) {
                                         layer.msg("收货成功");
-                                       // window.parent.location.reload();
+                                        page_reload();
                                     } else {
                                         layer.msg("失败,请重试");
                                     }

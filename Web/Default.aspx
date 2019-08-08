@@ -364,19 +364,23 @@
                 url: "Aspx/ManagePages/groundinghandler.ashx?action=productlist",
                 data: null,
                 callback: function (e) {
-                    console.log(e,"商品列表");
-                    productList(e);           
+                    if (e) {
+                        console.log(e, "商品列表");
+                        productList(e);
+                    }
                 }
             });
             ajax_request({//咨询列表
                 url: "Aspx/ManagePages/newshandler.ashx?action=list",
                 data: null,
                 callback: function (e) {
-                    e = JSON.parse(e);              
-                    if (e.code === 0) {
-                        newList(e.data);
-                    } else {
+                    if (e) {
+                        e = JSON.parse(e);
+                        if (e.code === 0) {
+                            newList(e.data);
+                        } else {
 
+                        }
                     }
                 }
             });
@@ -384,7 +388,9 @@
                 url: "Aspx/ManagePages/typehandler.ashx?action=tree",
                 data: null,
                 callback: function (e) {
-                    menuleftList(e);                
+                    if (e) {
+                        menuleftList(e);
+                    }
                 }
             });
 

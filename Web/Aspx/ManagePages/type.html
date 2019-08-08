@@ -387,7 +387,9 @@
                         if (data.code == 0) {
                             layer.msg("添加成功");
                             layer.closeAll("page"); //关闭（信息框，默认dialog）1（page页面层）2（iframe层）3（loading加载层）4（tips层）
+                            $("input[name='cateName']").val(" ");
                             loadtree();
+                           
                         } else {
                             console.log(data);
                             layer.msg("服务器出错了，请重试");

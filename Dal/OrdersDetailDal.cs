@@ -21,7 +21,7 @@ namespace DAL
         {
             string sql = CreateSqlString.SelectSqlString(new Detail { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Detail> list = null;
+            List<Detail> list = new List<Detail> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Detail>();
@@ -46,7 +46,7 @@ namespace DAL
 
             string sql = CreateSqlString.SelectSqlString(new Detail { }) ;;//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Detail> list = null;
+            List<Detail> list = new List<Detail> { };
             if (da.Rows.Count > 0)
             {
                 list = new List<Detail>();

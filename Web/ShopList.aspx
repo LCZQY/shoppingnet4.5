@@ -67,20 +67,15 @@
     <script src="Scripts/Shopping/master.js"></script>
     <script src="Scripts/Shopping/pageindex.js"></script>
     <script>
-        //获取Url参数
-        function getUrlQueryString(names, urls) {
-            urls = urls || window.location.href;
-            urls && urls.indexOf("?") > -1 ? urls = urls
-                .substring(urls.indexOf("?") + 1) : "";
-            var reg = new RegExp("(^|&)" + names + "=([^&]*)(&|$)", "i");
-            var r = urls ? urls.match(reg) : window.location.search.substr(1)
-                .match(reg);
-            if (r != null && r[2] != "")
-                return unescape(r[2]);
-            return null;
-        };
+        //获取Url参数   
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]); return null;
+        }
         var Serch = function () {
-            var title = getUrlQueryString('value');
+            var title = getQueryString('value');
+            console.log(title,"------------------------------------");
             ajax_request({
                 url: "Aspx/ManagePages/groundinghandler.ashx?action=seach",
                 data: { "Title": title },
@@ -89,7 +84,7 @@
 
                         var html = productList(e);
                         $("#list").append(html);
-                        console.log(html, "*------------");
+                        //console.log(html, "*------------");
 
                     }
                 }
