@@ -197,14 +197,14 @@ namespace Web.Aspx.ManagePages
                 var index = context.Request.Form["limit"];
                 if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
                 {
-                    var list = _userInfoService.GetList().Where(y => y.UserId == id)?.ToList();
+                    var list = _userInfoService.GetList().Where(y => y.UserId == id).ToList();
                     var res = SerializeHelp.ToTableJson<Delivery>(list);
                     context.Response.Write(res);
 
                 }
                 else
                 {
-                    var list = _userInfoService.GetList().Where(y => y.UserId == id )?.ToList();
+                    var list = _userInfoService.GetList().Where(y => y.UserId == id ).ToList();
                     var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
                     var res = SerializeHelp.ToTableJson<Delivery>(list1, list.Count());
                     context.Response.Write(res);

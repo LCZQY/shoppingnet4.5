@@ -46,7 +46,7 @@ namespace DAL
         public List<Favorite> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Favorite { }) }limit  {((page - 1) * index)}, {index}";
+            string sql =CreateSqlString.SelectSqlString(new Favorite { }); //limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Favorite> list = null;
             if (da.Rows.Count > 0)
@@ -70,7 +70,7 @@ namespace DAL
         /// <returns></returns>
         public Favorite GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Favorite { })} WHERE FavoriteId =@FavoriteId ";
+            string sql =  CreateSqlString.SelectSqlString(new Favorite { })+" WHERE FavoriteId =@FavoriteId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@FavoriteId",SqlDbType.Int)
                                   };
@@ -104,13 +104,13 @@ namespace DAL
         /// <returns></returns>
         public int UpdateFavorite(Favorite Favorite)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(Favorite)    } WHERE FavoriteId =@FavoriteId";
+            string sql =  CreateSqlString.UpdateSqlString(Favorite)    +" WHERE FavoriteId =@FavoriteId";
             var pars = CreateSqlString.SqlServerParameterArray(Favorite);
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
 
         /// <summary>
-        /// 删除信息
+        /// 删除该用户的收藏信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -118,9 +118,9 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Favorite { }) }  WHERE SuId = @FavoriteId";
+                string sql = CreateSqlString.DeleteSqlString(new Favorite { }) + " WHERE UserId = @UserId";
                 SqlParameter[] pars ={
-                                      new SqlParameter("@FavoriteId",SqlDbType.VarChar,36)
+                                      new SqlParameter("@UserId",SqlDbType.VarChar,36)
                                   };
                 pars[0].Value = id;
                 return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);

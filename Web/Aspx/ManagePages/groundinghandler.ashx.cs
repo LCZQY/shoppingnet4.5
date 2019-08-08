@@ -1,12 +1,8 @@
-﻿using System;
-using BLL;
-using System.Collections.Generic;
+﻿using BLL;
 using Common;
-using System.IO;
-using System.Linq;
-using System.Web;
 using Model;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace System.Web.Aspx.ManagePages
 {
@@ -45,24 +41,29 @@ namespace System.Web.Aspx.ManagePages
                 case "upload":
                     UploadImg(context);
                     break;
+                case "seach":
+                    SeachProductList(context);
+                    break;
+
             }
 
         }
 
         /// <summary>
-        /// 获取商品
+        /// 获取商品【前端商品列表搜索调用】
         /// </summary>
         /// <returns></returns>
-        public void GetProductList(HttpContext context)
+        public void SeachProductList(HttpContext context)
         {
             try
             {
+                var title = context.Request["Title"];
                 var list1 = _InfoService.GetList().ToList();
-                var list2 = _photoInfoService.GetList().ToList();         
+                var list2 = _photoInfoService.GetList().ToList();
                 //全关联
                 var list3 = from c in list1
                             join b in list2
-                            on c.ProductId equals b.ProductId                
+                            on c.ProductId equals b.ProductId
                             select new ProductEx
                             {
                                 Content = c.Content,
@@ -74,8 +75,41 @@ namespace System.Web.Aspx.ManagePages
                                 Title = c.Title,
                                 Stock = c.Stock
                             };
-            
-                context.Response.Write(SerializeHelp.ToJson(list3?.ToList()));
+                list3 = list3.Where(y => y.Title.Contains(title)).ToList();
+                context.Response.Write(SerializeHelp.ToJson(list3));
+            }
+            catch {
+
+            }
+        }
+        /// <summary>
+        /// 获取商品
+        /// </summary>
+        /// <returns></returns>
+        public void GetProductList(HttpContext context)
+        {
+            try
+            {
+
+                var list1 = _InfoService.GetList().ToList();
+                var list2 = _photoInfoService.GetList().ToList();
+                //全关联
+                var list3 = from c in list1
+                            join b in list2
+                            on c.ProductId equals b.ProductId
+                            select new ProductEx
+                            {
+                                Content = c.Content,
+                                CateId = c.CateId,
+                                MarketPrice = c.MarketPrice,
+                                Path = b.PhotoUrl == null ? "" : b.PhotoUrl,
+                                Price = c.Price,
+                                ProductId = c.ProductId,
+                                Title = c.Title,
+                                Stock = c.Stock
+                            };
+
+                context.Response.Write(SerializeHelp.ToJson(list3.ToList()));
             }
             catch (Exception e)
             {
@@ -232,7 +266,7 @@ namespace System.Web.Aspx.ManagePages
                     PostTime = postTime,
                     Price = price,
                     Icon = path
-                    
+
                 };
                 var add = _InfoService.Add(Product);
 
@@ -261,7 +295,7 @@ namespace System.Web.Aspx.ManagePages
             var index = context.Request.Form["limit"];
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
-                var list = _InfoService.GetList()?.ToList();
+                var list = _InfoService.GetList().ToList();
                 list = list ?? new List<Product> { };
                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);

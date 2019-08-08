@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Model;
+using System;
 using System.Collections.Generic;
 
 /// <summary>
@@ -29,7 +30,7 @@ namespace BLL
 
         public AdminUser GetDeail(int id)
         {
-            return _infoDal.GetDeail(id);
+            throw new Exception();
         }
 
         public List<AdminUser> GetList()

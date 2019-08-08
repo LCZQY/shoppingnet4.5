@@ -194,6 +194,7 @@ var productList = function (obj) {
         });
     });
     $("#carousel").append(html);
+    return html;
 };
 
 

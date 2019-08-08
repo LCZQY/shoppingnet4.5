@@ -21,7 +21,8 @@ namespace BLL
 
         public News GetDeail(int id)
         {
-            return _infoDal.GetDeail(id);
+           // return _infoDal.GetDeail(id);
+            return null;
         }
 
         public List<News> GetList()

@@ -4,6 +4,7 @@
     <link href="../Content/Shopping/font.css" rel="stylesheet" />
     <link href="../AppData/layui/css/layui.css" rel="stylesheet" />
     <link href="../Content/Shopping/weadmin.css" rel="stylesheet" />
+    <link href="../Content/Shopping/weadmin.css" rel="stylesheet" />
 
     <!-- 顶部开始 -->
     <div class="container">
@@ -32,15 +33,38 @@
             <li class="layui-nav-item to-index">
                 <a runat="server" href="~" target="_blank">前台首页</a>
             </li>
-        </ul>       
+        </ul>
     </div>
     <!-- 顶部结束 -->
     <!-- 中部开始 -->
     <!-- 左侧菜单开始 -->
     <div class="left-nav">
         <div id="side-nav">
+            <ul class="nav" id="nav">
+                <li id="menu1" class=""><a _href=""><i class="iconfont"></i><cite>用户管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none;">
+                    <li id="menu2"><a _href="ManagePages/user.html"><i class="iconfont"></i><cite>用户列表</cite></a></li>
+                </ul>
+                </li>
+                <li id="menu5" class=""><a _href=""><i class="iconfont"></i><cite>商品管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none;">
+                    <li id="menu4"><a _href="ManagePages/grounding.html"><i class="iconfont"></i><cite>商品上架</cite></a></li>
+                    <li id="menu3"><a _href="ManagePages/type.html"><i class="iconfont"></i><cite>商品类型</cite></a></li>
+                </ul>
+                </li>
+                <li id="menu8" class="open"><a _href=""><i class="iconfont"></i><cite>促销管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: block;">
+                    <li id="menu9"><a _href="ManagePages/news.html"><i class="iconfont"></i><cite>促销咨询列表</cite></a></li>
+                </ul>
+                </li>
+                <li id="menu11" class=""><a _href=""><i class="iconfont"></i><cite>订单管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none; height: 45px; padding-top: 0px; margin-top: 0px; padding-bottom: 0px; margin-bottom: 0px;">
+                    <li id="menu12"><a _href="ManagePages/order.html"><i class="iconfont"></i><cite>订单列表</cite></a></li>
+                </ul>
+                </li>
+                <li id="menu13" class=""><a _href=""><i class="iconfont"></i><cite>管理员权限</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none; height: 45px; padding-top: 0px; margin-top: 0px; padding-bottom: 0px; margin-bottom: 0px;">
+                    <li id="menu14"><a _href="ManagePages/adminuser.html"><i class="iconfont"></i><cite>管理员列表</cite></a></li>
+                </ul>
+                </li>
+            </ul>
         </div>
-   
+
     </div>
     <!-- <div class="x-slide_left"></div> -->
     <!-- 左侧菜单结束 -->
@@ -101,9 +125,11 @@
                         $("#userName").text(login.user);
                         /**简单的处理下权限管理*/
                         if (login.r === "0") {
-                            menu.getMenu('../json/menu2.json');
+
+                            //menu.getMenu('../json/menu2.json');
                         } else if (login.r === "1") {
-                            menu.getMenu('../json/menu.json');
+                            $("#menu13").hide();
+                           // menu.getMenu('../json/menu.json');
                         }
                         else {
                             $(".weIframe").hide();
@@ -113,7 +139,7 @@
                 } else {
                     window.location.href = './login.html';
                     return false;
-                }              
+                }
             });
         });
 
@@ -122,7 +148,7 @@
             localStorage.clear();
         });
 
-       
+
     </script>
 
     <!--Tab菜单右键弹出菜单-->

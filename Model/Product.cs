@@ -62,9 +62,15 @@ namespace Model
         public string Path { get; set; }
 
         /// <summary>
-        /// 收藏时间
+        /// 收藏时间 / 评价时间
         /// </summary>
         public DateTime FavoriDate { get; set; }
+
+        /// <summary>
+        /// 评价内容
+        /// </summary>
+        public string Content { get; set; }
+
 
     }
 }

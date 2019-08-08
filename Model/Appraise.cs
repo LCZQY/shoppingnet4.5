@@ -37,6 +37,10 @@ namespace Model
         /// </summary>
         public DateTime RateTime { get; set; }
 
+        /// <summary>
+        /// 内容
+        /// </summary>
+       public string Content { get; set; }
 
     }
 

@@ -28,8 +28,8 @@ var ajax_request = function (options) {
             options.callback(data);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(textStatus);
-            layer.msg("«Î«Û ß∞‹");
+            console.log(textStatus,"ajax«Î«Û ß∞‹");
+           // layer.msg("«Î«Û ß∞‹");
         }
     });
 };

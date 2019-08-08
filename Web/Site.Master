@@ -210,8 +210,8 @@
                                         </select>
                                     </div>
                                     <div class="search-box">
-                                        <input type="text" placeholder="请输入商品名称" />
-                                        <button id="Searchs"><a class="fa fa-search" href="ShopList.aspx" runat="server"></a></button>
+                                        <input type="text" placeholder="请输入商品名称" / id="title">
+                                        <button id="Searchs"><a href="##" class="fa fa-search" id="listshop" ></a></button>
 
                                     </div>
                                 </form>
@@ -437,9 +437,13 @@
     <script src="AppData/index/js/main.js"></script>
     <script src="Scripts/Shopping/pageindex.js"></script>
     <script>
-        $("#Searchs").click(function () {
-            console.log('搜索');
-            window.location.replace("ShopList.aspx");
+
+
+        //商品搜索
+        $("#listshop").click(function () {
+            var serch = $("#title").val();
+            window.location.href = "ShopList.aspx?value=" + serch;
+                
         });
        
         var login =localStorage.getItem("index");      

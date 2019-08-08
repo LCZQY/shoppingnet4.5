@@ -47,7 +47,7 @@ namespace DAL
         public List<Photo> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Photo { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Photo { }); //}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Photo> list = null;
             if (da.Rows.Count > 0)
@@ -71,7 +71,7 @@ namespace DAL
         /// <returns></returns>
         public Photo GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Photo { })} WHERE PhotoId =@PhotoId ";
+            string sql =  CreateSqlString.SelectSqlString(new Photo { })+"WHERE PhotoId =@PhotoId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@PhotoId",SqlDbType.Int)
                                   };
@@ -105,7 +105,7 @@ namespace DAL
         /// <returns></returns>
         public int UpdatePhoto(Photo Photo)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(Photo)    } WHERE PhotoId =@PhotoId";
+            string sql =  CreateSqlString.UpdateSqlString(Photo) +" WHERE PhotoId =@PhotoId";
             var pars = CreateSqlString.SqlServerParameterArray(Photo);
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
@@ -119,7 +119,7 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Photo { }) }  WHERE PhotoId = @PhotoId";
+                string sql =  CreateSqlString.DeleteSqlString(new Photo { }) +"  WHERE PhotoId = @PhotoId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@PhotoId",SqlDbType.VarChar,36)
                                   };

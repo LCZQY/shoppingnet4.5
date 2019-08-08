@@ -227,6 +227,7 @@
                         success: function (e) {
                             if (e.code == 0) {
                                 layer.msg(e.msg);
+                                page_reload();
                             } else {
                                 layer.msg(e.msg);
                             }

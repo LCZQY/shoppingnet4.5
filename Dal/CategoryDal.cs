@@ -50,7 +50,7 @@ namespace DAL
         public List<Category> GetList(int page, int index)
         {
 
-            string sql = $"select CateId,CateName,ParentId from Category limit  {((page - 1) * index)}, {index}";
+            string sql = "select CateId,CateName,ParentId from Category ";//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Category> list = null;
             if (da.Rows.Count > 0)
@@ -67,27 +67,27 @@ namespace DAL
             return list;
         }
 
-        /// <summary>
-        /// 获取一条用户信息 By ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Category GetDeail(int id)
-        {
-            string sql = "select CateId,CateName,ParentId from Category where CateId = @CateId";
-            SqlParameter[] pars ={
-                                      new SqlParameter("@CateId",SqlDbType.Int)
-                                  };
-            pars[0].Value = id;
-            DataTable dt = SqlHelper.GetDataTable(sql, CommandType.Text, pars);
-            Category instance = null;
-            if (dt.Rows.Count > 0)
-            {
-                instance = new Category();
-                LoadEntity(instance, dt.Rows[0]);
-            }
-            return instance;
-        }
+        ///// <summary>
+        ///// 获取一条用户信息 By ID
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public Category GetDeail(int id)
+        //{
+        //    string sql = "select CateId,CateName,ParentId from Category where CateId = @CateId";
+        //    SqlParameter[] pars ={
+        //                              new SqlParameter("@CateId",SqlDbType.Int)
+        //                          };
+        //    pars[0].Value = id;
+        //    DataTable dt = SqlHelper.GetDataTable(sql, CommandType.Text, pars);
+        //    Category instance = null;
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        instance = new Category();
+        //        LoadEntity(instance, dt.Rows[0]);
+        //    }
+        //    return instance;
+        //}
 
         /// <summary>
         /// 添加用户信息
@@ -115,7 +115,7 @@ namespace DAL
         /// <returns></returns>
         public int Updatecategory(Category category)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(category)    } WHERE CateId =@CateId";
+            string sql =  CreateSqlString.UpdateSqlString(category) +" WHERE CateId =@CateId";
             var pars = CreateSqlString.SqlServerParameterArray(category);
             //string sql = "UPDATE Category SET CateName = @CateName,ParentId = @ParentId, WHERE CateId = @CateId";
             //SqlParameter[] pars = {
@@ -163,7 +163,7 @@ namespace DAL
             try
             {
                 var arry = string.Join("', '", id);
-                string sql = $"DELETE FROM Category WHERE CateId in(@CateId)";
+                string sql = "DELETE FROM Category WHERE CateId in(@CateId)";
                 SqlParameter[] pars ={
                                       new SqlParameter("@CateId",SqlDbType.VarChar,36)
                                   };

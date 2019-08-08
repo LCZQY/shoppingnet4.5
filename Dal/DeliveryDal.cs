@@ -48,7 +48,7 @@ namespace DAL
         public List<Delivery> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Delivery { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Delivery { }) ;//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Delivery> list = null;
             if (da.Rows.Count > 0)
@@ -72,7 +72,7 @@ namespace DAL
         /// <returns></returns>
         public Delivery GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Delivery { })} WHERE DeliveryId =@DeliveryId ";
+            string sql =  CreateSqlString.SelectSqlString(new Delivery { })+" WHERE DeliveryId =@DeliveryId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@DeliveryId",SqlDbType.Int)
                                   };
@@ -106,7 +106,7 @@ namespace DAL
         /// <returns></returns>
         public int UpdateDelivery(Delivery Delivery)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(Delivery)    } WHERE DeliveryId =@DeliveryId";
+            string sql =  CreateSqlString.UpdateSqlString(Delivery)    +" WHERE DeliveryId =@DeliveryId";
             var pars = CreateSqlString.SqlServerParameterArray(Delivery);
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
@@ -120,7 +120,7 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Delivery { }) }  WHERE DeliveryId = @DeliveryId";
+                string sql =  CreateSqlString.DeleteSqlString(new Delivery { }) +" WHERE DeliveryId = @DeliveryId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@DeliveryId",SqlDbType.VarChar,36)
                                   };

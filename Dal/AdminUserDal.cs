@@ -48,7 +48,7 @@ namespace DAL
         public List<AdminUser> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new AdminUser { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new AdminUser { }) ;//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<AdminUser> list = null;
             if (da.Rows.Count > 0)
@@ -65,27 +65,27 @@ namespace DAL
             return list;
         }
 
-        /// <summary>
-        /// 获取一条用户信息 By ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public AdminUser GetDeail(int id)
-        {
-            string sql = $"{ CreateSqlString.SelectSqlString(new AdminUser { })} WHERE SuId =@SuId ";
-            SqlParameter[] pars ={
-                                      new SqlParameter("@SuId",SqlDbType.Int)
-                                  };
-            pars[0].Value = id;
-            DataTable dt = SqlHelper.GetDataTable(sql, CommandType.Text, pars);
-            AdminUser instance = null;
-            if (dt.Rows.Count > 0)
-            {
-                instance = new AdminUser();
-                LoadEntity(instance, dt.Rows[0]);
-            }
-            return instance;
-        }
+        ///// <summary>
+        ///// 获取一条用户信息 By ID
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public AdminUser GetDeail(int id)
+        //{
+        //    string sql = $"{ CreateSqlString.SelectSqlString(new AdminUser { })} WHERE SuId =@SuId ";
+        //    SqlParameter[] pars ={
+        //                              new SqlParameter("@SuId",SqlDbType.Int)
+        //                          };
+        //    pars[0].Value = id;
+        //    DataTable dt = SqlHelper.GetDataTable(sql, CommandType.Text, pars);
+        //    AdminUser instance = null;
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        instance = new AdminUser();
+        //        LoadEntity(instance, dt.Rows[0]);
+        //    }
+        //    return instance;
+        //}
 
         /// <summary>
         /// 添加信息

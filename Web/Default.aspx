@@ -13,26 +13,7 @@
                             <h2>全部商品分类</h2>
                         </div>
                         <div class="product_vmegamenu">
-                            <ul id="leftmunu">
-                                <%-- <li>
-                                    <a href="#" class="hover-icon">women</a>
-                                    <div class="vmegamenu">
-                                        <span>
-                                            <a href="#" class="vgema-title">Dresses</a>
-                                            <a href="#">Sweater</a>
-                                            <a href="#">Evening</a>
-                                            <a href="#">Day</a>
-                                            <a href="#">Sports</a>
-                                        </span>
-                                        <span>
-                                            <a href="#" class="vgema-title">Handbags</a>
-                                            <a href="#">Shoulder</a>
-                                            <a href="#">Satchels</a>
-                                            <a href="#">kids</a>
-                                            <a href="#">coats</a>
-                                        </span>                                       
-                                    </div>
-                                </li>--%>
+                            <ul id="leftmunu">                              
                             </ul>
                         </div>
                     </div>

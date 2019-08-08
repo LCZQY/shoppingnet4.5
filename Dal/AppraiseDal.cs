@@ -47,7 +47,7 @@ namespace DAL
         public List<Appraise> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Appraise { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Appraise { }); //}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Appraise> list = null;
             if (da.Rows.Count > 0)
@@ -71,7 +71,7 @@ namespace DAL
         /// <returns></returns>
         public Appraise GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Appraise { })} WHERE AppraiseId =@AppraiseId ";
+            string sql = CreateSqlString.SelectSqlString(new Appraise { })+" WHERE AppraiseId =@AppraiseId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@AppraiseId",SqlDbType.Int)
                                   };
@@ -105,7 +105,7 @@ namespace DAL
         /// <returns></returns>
         public int UpdateAppraise(Appraise Appraise)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(Appraise)    } WHERE AppraiseId =@AppraiseId";
+            string sql = CreateSqlString.UpdateSqlString(Appraise)   +" WHERE AppraiseId =@AppraiseId";
             var pars = CreateSqlString.SqlServerParameterArray(Appraise);
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
@@ -119,7 +119,7 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Appraise { }) }  WHERE AppraiseId = @AppraiseId";
+                string sql = CreateSqlString.DeleteSqlString(new Appraise { }) +"  WHERE AppraiseId = @AppraiseId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@AppraiseId",SqlDbType.VarChar,36)
                                   };
@@ -146,7 +146,7 @@ namespace DAL
             Appraise.UserId = row["UserId"] != DBNull.Value ? row["UserId"].ToString() : string.Empty;            
             Appraise.ProductId = row["ProductId"] != DBNull.Value ? row["ProductId"].ToString() : string.Empty;
             Appraise.Grade = Convert.ToInt32(row["Grade"] != DBNull.Value ? row["Grade"].ToString() : string.Empty);
-       
+            Appraise.Content = row["Content"] != DBNull.Value ? row["Content"].ToString() : string.Empty;
         }
 
 

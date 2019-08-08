@@ -15,6 +15,7 @@ namespace Web.Aspx.ManagePages
     public class appraisehandler : IHttpHandler
     {
         private AppraiseService _userInfoService = new AppraiseService(); //CacheControl.Get<UserInfoService>();
+        private ProductService _infoProductService = new ProductService();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -146,17 +147,19 @@ namespace Web.Aspx.ManagePages
             var response = new ResponseMessage<string>();
             try
             {
-                  string grade = context.Request.Form["Grade"];
+                string grade = context.Request.Form["Grade"];
                 string userId = context.Request.Form["UserId"];         
-                string productId = context.Request.Form["ProductId"];
-              
+                string productId = context.Request.Form["ProductId"];                
+                string content = context.Request.Form["Content"];
+
                 Appraise appraise = new Appraise
                 {
-                    AppraiseId= Guid.NewGuid().ToString(),
-                    Grade =  Convert.ToInt32( grade),
+                    AppraiseId = Guid.NewGuid().ToString(),
+                    Grade = Convert.ToInt32(grade),
                     ProductId = productId,
                     RateTime = DateTime.Now,
                     UserId = userId,
+                    Content = content
                 };
                 var add = _userInfoService.Add(appraise);
                
@@ -187,22 +190,38 @@ namespace Web.Aspx.ManagePages
         public void ListAppraiseRequest(HttpContext context)
         {
 
-            var page = context.Request.Form["page"];
-            var index = context.Request.Form["limit"];
-            if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+            try
             {
-                List<Appraise> list = _userInfoService.GetList();
-                var res = SerializeHelp.ToTableJson<Appraise>(list);
+                var userid = context.Request.Form["UserId"];
+                var ProductId = _userInfoService.GetList().Where(y => y.UserId == userid).Select(y => y.ProductId).ToList();
+                var list = _infoProductService.FavoriteProductList(ProductId);
+
+                var datelist = _userInfoService.GetList().Where(y => y.UserId == userid);
+                list.ForEach(u => u.FavoriDate = datelist.Where(y => y.ProductId == u.ProductId).Select(y => y.RateTime).FirstOrDefault());
+                list.ForEach(u => u.Content = datelist.Where(y => y.ProductId == u.ProductId).Select(y => y.Content).FirstOrDefault());
+                var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
 
             }
-            else
-            {
-                var list = _userInfoService.GetList();
-                var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-                var res = SerializeHelp.ToTableJson<Appraise>(list1, list.Count());
-                context.Response.Write(res);
+            catch {
+
             }
+            //var page = context.Request.Form["page"];
+            //var index = context.Request.Form["limit"];
+            //if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+            //{
+            //    List<Appraise> list = _userInfoService.GetList();
+            //    var res = SerializeHelp.ToTableJson<Appraise>(list);
+            //    context.Response.Write(res);
+
+            //}
+            //else
+            //{
+            //    var list = _userInfoService.GetList();
+            //    var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
+            //    var res = SerializeHelp.ToTableJson<Appraise>(list1, list.Count());
+            //    context.Response.Write(res);
+            //}
         }
 
 

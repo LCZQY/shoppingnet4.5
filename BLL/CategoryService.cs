@@ -72,7 +72,8 @@ namespace BLL
 
         public Category GetDeail(int id)
         {
-            return _infoDal.GetDeail(id);
+            //return _infoDal.GetDeail(id);
+            return null;
         }
 
         public List<Category> GetList()

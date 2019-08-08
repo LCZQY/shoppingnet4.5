@@ -11,7 +11,7 @@ using System;
 namespace DAL
 {
 
-   
+
     public class OrdersDal
     {
 
@@ -32,11 +32,11 @@ namespace DAL
 
 
 
-            /// <summary>
-            /// 获取列表
-            /// </summary>
-            /// <returns></returns>
-            public List<Orders> GetList()
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <returns></returns>
+        public List<Orders> GetList()
         {
             string sql = CreateSqlString.SelectSqlString(new Orders { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
@@ -63,7 +63,7 @@ namespace DAL
         public List<Orders> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Orders { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Orders { }); //}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Orders> list = null;
             if (da.Rows.Count > 0)
@@ -87,7 +87,7 @@ namespace DAL
         /// <returns></returns>
         public Orders GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Orders { })} WHERE OrdersId =@OrdersId ";
+            string sql = CreateSqlString.SelectSqlString(new Orders { }) + " WHERE OrdersId =@OrdersId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@OrdersId",SqlDbType.Int)
                                   };
@@ -121,7 +121,7 @@ namespace DAL
         /// <returns></returns>
         public int UpdateOrders(Orders Orders)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(Orders)    } WHERE OrdersId =@OrdersId";
+            string sql = CreateSqlString.UpdateSqlString(Orders) + " WHERE OrdersId =@OrdersId";
             var pars = CreateSqlString.SqlServerParameterArray(Orders);
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
@@ -135,7 +135,7 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Orders { }) }  WHERE OrdersId = @OrdersId";
+                string sql = CreateSqlString.DeleteSqlString(new Orders { }) + " WHERE OrdersId = @OrdersId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@OrdersId",SqlDbType.VarChar,36)
                                   };

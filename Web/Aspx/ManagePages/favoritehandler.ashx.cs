@@ -163,7 +163,7 @@ namespace System.Web.Aspx.ManagePages
                 string productId = context.Request.Form["ProductId"];
                 string userId = context.Request.Form["UserId"];
 
-                var exist = _InfoService.GetList()?.Where(y => y.ProductId == productId && y.UserId == userId).DefaultIfEmpty();
+                var exist = _InfoService.GetList().Where(y => y.ProductId == productId && y.UserId == userId).DefaultIfEmpty();
                 if (exist != null)
                 {
                     response.code = 500;
@@ -209,7 +209,7 @@ namespace System.Web.Aspx.ManagePages
         {
             try {
                 var userid = context.Request.Form["UserId"];
-                var ProductId = _InfoService.GetList().Where(y => y.UserId == userid).Select(y => y.ProductId)?.ToList();
+                var ProductId = _InfoService.GetList().Where(y => y.UserId == userid).Select(y => y.ProductId).ToList();
                 var list = _infoProductService.FavoriteProductList(ProductId);
 
                 var datelist = _InfoService.GetList().Where(y => y.UserId == userid);

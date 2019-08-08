@@ -206,24 +206,29 @@ namespace System.Web.Aspx.ManagePages
         /// <param name="context"></param>
         public void ListNewsRequest(HttpContext context)
         {
-
-            var page = context.Request.Form["page"];
-            var index = context.Request.Form["limit"];
-            if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+            try
             {
-                var list = _InfoService.GetList()?.ToList();
-                list = list ?? new List<News> { };
-                var res = SerializeHelp.ToTableJson(list);
-                context.Response.Write(res);
+                var page = context.Request.Form["page"];
+                var index = context.Request.Form["limit"];
+                if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
+                {
+                    var list = _InfoService.GetList().ToList();
+                    list = list ?? new List<News> { };
+                    var res = SerializeHelp.ToTableJson(list);
+                    context.Response.Write(res);
+                }
+                else
+                {
+                    var list = _InfoService.GetList().ToList();
+                    list = list ?? new List<News> { };
+                    var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
+                    var res = SerializeHelp.ToTableJson(list1, list == null ? 0 : list.Count());
+                    context.Response.Write(res);
+
+                }
             }
-            else
+            catch
             {
-                var list = _InfoService.GetList()?.ToList() ?? null;
-                list = list ?? new List<News> { };
-                var list1 = list?.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-                var res = SerializeHelp.ToTableJson(list1, list == null ? 0 : list.Count());
-                context.Response.Write(res);
-
             }
         }
 

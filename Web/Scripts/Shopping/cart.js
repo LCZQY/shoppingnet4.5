@@ -1,16 +1,16 @@
 ﻿
 //单个购物车源码
 var cartConentHtml = function (options) {
-    var image = '<tr><td class="product-thumbnail"><a href="##"><img src="' + options.path + '" alt=""></a></td>';
+    var image = '<tr id="' + options.id +'" name="' +options.proid+'"><td class="product-thumbnail"><a href="##"><img src="' + options.path + '" alt=""></a></td>';
     var name = '<td class="product-name"><a href="#">' + options.name + '</a></td>';
     var price = '<td class="product-price"><span class="amount">￥' + options.price + '</span></td>';
     var quantity = '<td class="product-quantity"><input value="' + options.quantity + '" type="text" disabled></td>'; //number
     var subtotal = '<td class="product-subtotal">￥' + options.amount + '</td>';
     var html = '';
-    if (options.states === 2) { html = '<a href="##" name="' + options.id + '">确认收货</a>'; }  
+    if (options.states === 2) { html = '<a href="##" class="Receiving" name="' + options.id + '">确认收货</a>'; }  
     if (options.states === 0) { html += '<a href="##" class="paymoeny" name="' + options.id + '">结算</a>'; }
     if (options.states === 1) { html += '<span style="color:Red;">待发货</span>'; }
-    if (options.states === 3) { html += '<span style="color:Red;">待评价</span>'; }
+    if (options.states === 3) { html += '<a href="##" class="pingjia" name="' + options.id + '">立即评价</a>'; }
     if (options.states === 4) { html += '<span style="color:Red;">已评价</span>';}
     var product = '<td class="product-remove">' + html + ' <a href="##" name="' + options.id + '">删除</a></td></tr>';
     return image + name + price + quantity + subtotal + product;
@@ -38,6 +38,20 @@ var addreesConentHtml = function (options) {
 };
 
 
+
+
+//我的评价
+var pingjiaContentHmtl = function (options) {
+    var img = '<tr><td class="product-thumbnail"><a href="#"><img src="' + options.path + '" alt=""></a></td>';
+    var name = '<td class="favio-name"><a href="#">' + options.title + '</a></td>';
+    var dengji = '<td class="favio-price"><span class="amount">' + options.dengji + '</span></td>';
+    var conent = '<td class="favio-quantity">' + options.conent + '</td>';
+    var quantity = '<td class="favio-quantity">' + options.date + '</td>';
+    var action = '<td class="favio-remove"><a href="##"  name="' + options.id + '">删除</a></td></tr>';
+    return img + name + dengji + conent + quantity + action;
+};
+
+
 //我的购物车
 var MyCartList = function (obj) {
     var list = obj;
@@ -52,7 +66,8 @@ var MyCartList = function (obj) {
             amount: item.Total,
             states: item.States,
             id: item.OrdersId,
-            price: item.Price
+            price: item.Price,
+            proid: item.ProductId,
         });
     });
     $("#tbody").append(html);
@@ -86,13 +101,37 @@ var MyAdreesList = function (obj) {
 
     $.each(list, function (index, item) {
 
-        html += addreesConentHtml({
-            consingnee: item.Consignee,
-            complete: item.Complete,
-            phone: item.Phone
+        html += favoriteConentHtml({
+            path: item.Path,
+            title: item.Title,
+            date: item.FavoriDate,
+            id: item.ProductId,
+            price: item.Price
         });
     });
     $("#address_tbody").append(html);
+};
+
+
+
+//我的评价
+var MyPingjiaList = function (obj) {
+    var list = obj;
+    var html = '';
+
+    $.each(list, function (index, item) {
+
+        html += pingjiaContentHmtl({
+            path: item.Path,
+            title: item.Title,
+            date: item.FavoriDate,
+            id: item.ProductId,
+            price: item.Price,
+            dengji: item.Grade === 0 ? "很好" : item.Grade === 1 ? "好" : "不好",
+            conent : item.Content
+        });
+    });
+    $("#appraise_tbody").append(html);
 };
 
 

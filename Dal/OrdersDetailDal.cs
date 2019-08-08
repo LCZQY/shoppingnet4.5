@@ -44,7 +44,7 @@ namespace DAL
         public List<Detail> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Detail { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Detail { }) ;;//limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Detail> list = null;
             if (da.Rows.Count > 0)
@@ -68,7 +68,7 @@ namespace DAL
         /// <returns></returns>
         public Detail GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Detail { })} WHERE DetailId =@DetailId ";
+            string sql =  CreateSqlString.SelectSqlString(new Detail { })+" WHERE DetailId =@DetailId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@DetailId",SqlDbType.Int)
                                   };
@@ -102,7 +102,7 @@ namespace DAL
         /// <returns></returns>
         public int UpdateDetail(Detail Detail)
         {
-            string sql = $"{ CreateSqlString.UpdateSqlString(Detail)    } WHERE DetailId =@DetailId";
+            string sql =  CreateSqlString.UpdateSqlString(Detail)     +" WHERE DetailId =@DetailId";
             var pars = CreateSqlString.SqlServerParameterArray(Detail);
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
@@ -116,7 +116,7 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Detail { }) }  WHERE DetailId = @DetailId";
+                string sql =  CreateSqlString.DeleteSqlString(new Detail { }) + "WHERE DetailId = @DetailId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@DetailId",SqlDbType.VarChar,36)
                                   };

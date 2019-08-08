@@ -54,7 +54,7 @@ namespace DAL
         public List<Product> GetList(int page, int index)
         {
 
-            string sql = $"{CreateSqlString.SelectSqlString(new Product { }) }limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Product { });//}limit  {((page - 1) * index)}, {index}";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Product> list = null;
             if (da.Rows.Count > 0)
@@ -78,7 +78,7 @@ namespace DAL
         /// <returns></returns>
         public Product GetDeail(int id)
         {
-            string sql = $"{ CreateSqlString.SelectSqlString(new Product { })} WHERE ProductId =@ProductId ";
+            string sql = CreateSqlString.SelectSqlString(new Product { }) + " WHERE ProductId =@ProductId ";
             SqlParameter[] pars ={
                                       new SqlParameter("@ProductId",SqlDbType.Int)
                                   };
@@ -132,7 +132,7 @@ namespace DAL
         public int UpdateProduct(Product Product)
         {
 
-            string sql = $"{ CreateSqlString.UpdateSqlString(Product)    } WHERE ProductId =@ProductId";
+            string sql = CreateSqlString.UpdateSqlString(Product) + " WHERE ProductId =@ProductId";
             var pars = CreateSqlString.SqlServerParameterArray(Product);
             //SqlParameter[] pars = {
             //                    new SqlParameter("@ProductId",SqlDbType.VarChar,32),
@@ -164,7 +164,7 @@ namespace DAL
         {
             try
             {
-                string sql = $"{ CreateSqlString.DeleteSqlString(new Product { }) }  WHERE ProductId = @ProductId";
+                string sql = CreateSqlString.DeleteSqlString(new Product { }) + " WHERE ProductId = @ProductId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@ProductId",SqlDbType.VarChar,36)
                                   };

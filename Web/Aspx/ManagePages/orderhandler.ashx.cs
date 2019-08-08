@@ -121,7 +121,7 @@ namespace System.Web.Aspx.ManagePages
                 var index = context.Request.Form["limit"];
                 if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
                 {
-                    var list = _infoService.OrderCartList().Where(y => y.UserId == userId)?.ToList();
+                    var list = _infoService.OrderCartList().Where(y => y.UserId == userId).ToList();
                     list = list ?? new List<OrdersDetailExtend> { };
                     var res = SerializeHelp.ToTableJson(list);
                     context.Response.Write(res);
@@ -129,7 +129,7 @@ namespace System.Web.Aspx.ManagePages
                 }
                 else
                 {
-                    var list = _infoService.OrderCartList().Where(y => y.UserId == userId)?.ToList();
+                    var list = _infoService.OrderCartList().Where(y => y.UserId == userId).ToList();
                     list = list ?? new List<OrdersDetailExtend> { };
                     var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
                     var res = SerializeHelp.ToTableJson(list1, list.Count());
@@ -157,14 +157,14 @@ namespace System.Web.Aspx.ManagePages
             var index = context.Request.Form["limit"];
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
-                var list = _infoService.OrderDetailJoinList().Where(y => y.OrdersId.Contains(id))?.ToList();
+                var list = _infoService.OrderDetailJoinList().Where(y => y.OrdersId.Contains(id)).ToList();
                 list = list ?? new List<OrdersDetailExtend> { };
                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
             else
             {
-                var list = _infoService.OrderDetailJoinList().Where(y => y.OrdersId.Contains(id))?.ToList();
+                var list = _infoService.OrderDetailJoinList().Where(y => y.OrdersId.Contains(id)).ToList();
                 list = list ?? new List<OrdersDetailExtend> { };
                 var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
                 var res = SerializeHelp.ToTableJson(list1, list.Count());
@@ -218,21 +218,27 @@ namespace System.Web.Aspx.ManagePages
 
                 //订单动作
                 string action = context.Request.Form["action"];
-                string deliveryId = context.Request.Form["DeliveryId"];
                 string ordersId = context.Request.Form["OrdersId"];
-                string remark = context.Request.Form["Remark"];
-
-                var order = _infoService.GetList()?.Where(y => y.OrdersId == ordersId  ).FirstOrDefault();
-
-                //订单            
-                order.Remark = remark;
-                order.OrdersId = ordersId;
-                order.Orderdate = DateTime.Now;
+                var order = _infoService.GetList().Where(y => y.OrdersId == ordersId).FirstOrDefault();
                 if (action == "1")
                 {
+                    string deliveryId = context.Request.Form["DeliveryId"];
+                    string remark = context.Request.Form["Remark"];
+                    //订单            
+                    order.Remark = remark;
+                    order.OrdersId = ordersId;
+                    order.Orderdate = DateTime.Now;
                     order.States = 1;
-                }             
-                order.DeliveryId = deliveryId;           
+                    order.DeliveryId = deliveryId;
+                }
+                else if (action == "3")
+                {
+                    order.States = 3;
+                }
+                else if (action == "4")
+                {
+                    order.States = 4;
+                }
                 var add1 = _infoService.Update(order);             
                 if (add1)
                 {
@@ -267,7 +273,7 @@ namespace System.Web.Aspx.ManagePages
                 string productId = context.Request.Form["ProductId"];
                 string userId = context.Request.Form["UserId"];
 
-                var exist = _infodetailService.GetList()?.Where(y => y.UserId == userId && y.ProductId == productId).SingleOrDefault();
+                var exist = _infodetailService.GetList().Where(y => y.UserId == userId && y.ProductId == productId).SingleOrDefault();
                 if (exist != null)
                 {
                     response.code = 101;

@@ -106,7 +106,7 @@
                                             <th class="address-remove">操作</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="address_tbody">                                       
+                                    <tbody id="address_tbody">
                                     </tbody>
                                 </table>
                                 <div class="row">
@@ -125,6 +125,7 @@
                                             <th class="appraise-thumbnail">图片</th>
                                             <th class="appraise-name">商品</th>
                                             <th class="appraise-price">评价等级</th>
+                                            <th class="appraise-price">评价内容</th>
                                             <th class="appraise-subtotal">评价时间</th>
                                             <th class="appraise-remove">操作</th>
                                         </tr>
@@ -133,9 +134,10 @@
                                         <tr>
                                             <td class="product-quantity"><a href="#">
                                                 <img src="img/product/10.jpg" alt=""></a></td>
-                                            <td class="appraise-quantity">的说法是手动阀手动阀撒旦发射点</td>
-                                            <td class="appraise-quantity">的说法是手动阀手动阀撒旦发射点</td>
-                                            <td class="appraise-quantity">的说法是手动阀手动阀撒旦发射点</td>
+                                            <td class="appraise-quantity">名称</td>
+                                            <td class="appraise-quantity">评价等级</td>
+                                            <td class="appraise-quantity">评价内容</td>
+                                               <td class="appraise-quantity">评价时间</td>
                                             <td class="appraise-remove"><a href="#">删除</a></td>
                                         </tr>
                                     </tbody>
@@ -156,13 +158,13 @@
                                         <form method="post">
                                             <div class="form-group">
                                                 <label for="recipient-name" class="control-label">收件人姓名:</label>
-                                                <input type="text"  class="form-control" id="Consignee">
+                                                <input type="text" class="form-control" id="Consignee">
                                             </div>
                                             <div class="form-group">
                                                 <label for="message-text" class="control-label">详细地址:</label>
                                                 <input type="text" class="form-control" id="Complete">
-                                            </div>                                           
-                                            <div class="form-group registration" >
+                                            </div>
+                                            <div class="form-group registration">
                                                 <label for="message-text" class="control-label">手机号:</label>
                                                 <input type="text" class="form-control " id="Phone">
                                             </div>
@@ -177,8 +179,8 @@
                         </div>
                         <%--用户登陆模态框结束--%>
 
-                         <%--商品支付界面开始--%>
-                          <div class="modal fade" id="PayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                        <%--商品支付界面开始--%>
+                        <div class="modal fade" id="PayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                             <div class="modal-dialog model-sm" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -216,6 +218,42 @@
                             </div>
                         </div>
                         <%--商品支付界面结束--%>
+                        <%--商品评论界面开始--%>
+                        <div class="modal fade" id="evaluateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog model-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">商品评价</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">商品名称:<label class="spmc">1</label></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">等级:</label>
+                                                <select class="form-control" id="evaluate_selects">
+                                                    <option>请选择</option>
+                                                    <option value="0">很好</option>
+                                                    <option value="1">好</option>
+                                                    <option value="2">不好</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">内容:</label>
+                                                <textarea class="form-control" id="evaluate_conent" rows="3"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button type="button" id="sumbit_evaluate" class="btn btn-primary">立即评价</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%--商品评论界面结束--%>
                     </div>
                 </div>
             </div>
@@ -273,7 +311,7 @@
                 });
                 var arrlist = [];
                 //我的地址列表
-                var addreeslist =function() {
+                var addreeslist = function () {
                     ajax_request({
                         url: "Aspx/ManagePages/deliveryhandler.ashx?action=list",
                         data: { "UserId": userid },
@@ -290,6 +328,25 @@
                     });
                 }
                 addreeslist();
+
+                //我的评价列表
+                ajax_request({
+                    url: "Aspx/ManagePages/appraisehandler.ashx?action=list",
+                    data: { "UserId": userid },
+                    callback: function (e) {
+                        if (e) {
+                            e = JSON.parse(e);
+                            console.log(e, "我的地址列表！！！！！");
+                            if (e.code === 0) {
+                                arrlist = e.data;
+                                MyPingjiaList(e.data);
+                            }
+                        }
+                    }
+                });
+
+
+
                 //模态框添加地址
                 $("#submitadrees").click(function () {
                     ajax_request({
@@ -310,7 +367,7 @@
 
                 /*监听模态框关闭事件*/
                 $(function () {
-                    $('#AddreesModal').on('hidden.bs.modal', function () {                     
+                    $('#AddreesModal').on('hidden.bs.modal', function () {
                         $(this).removeData('bs.modal');
                     });
                 });
@@ -319,19 +376,20 @@
                 var deliveryId = "";
                 var orderid = "";
                 $("#selects").change(function () {
-                    deliveryId = $(this).val();                    
+                    deliveryId = $(this).val();
                 });
 
                 //展示模态框
                 $(".paymoeny").click(function () {
                     orderid = $(this).attr("name");
-                    $('#PayModal').modal('show');                   
+                    $('#PayModal').modal('show');
                     if (arrlist) {
                         $.each(arrlist, function (index, item) {
-                            $("#selects").append('<option name="' + item.DeliveryId + '">' + item.Complete+'<option>');
+                            $("#selects").append('<option name="' + item.DeliveryId + '">' + item.Complete + '<option>');
                         });
-                    }                    
+                    }
                 });
+
 
                 //修改改订单状态
                 $("#sumbitpay").click(function () {
@@ -339,13 +397,14 @@
                         layer.msg("请选择收货地址");
                         return false;
                     } else {
-
+                        var request = { "UserId": userid, "action": "1", "DeliveryId": deliveryId, "OrdersId": orderid, "Remark": $("#bzxx").val() };
+                        console.log(request, "修改订单参数~~~");
                         ajax_request({
                             url: "Aspx/ManagePages/orderhandler.ashx?action=update",
-                            data: { "UserId": userid, "action": "1", "DeliveryId": deliveryId, "OrdersId": orderid, "Remark": $("#bzxx").val() },
+                            data: request,
                             callback: function (e) {
                                 if (e) {
-                                    e = JSON.parse(e);                               
+                                    e = JSON.parse(e);
                                     if (e.code === 0) {
                                         layer.msg("正在支付中.......");
                                         $('#PayModal').modal('hide');
@@ -356,12 +415,82 @@
                                 }
                             }
                         });
-
-
-
                     }
                 });
 
+                //确定收货
+                $(".Receiving").click(function () {
+                    orderid = $(this).attr("name");
+                    layer.confirm('是否确定收货', function (index) {
+
+                        var request = { "UserId": userid, "action": "3", "OrdersId": orderid, };
+                        ajax_request({
+                            url: "Aspx/ManagePages/orderhandler.ashx?action=update",
+                            data: request,
+                            callback: function (e) {
+                                if (e) {
+                                    e = JSON.parse(e);
+                                    if (e.code === 0) {
+                                        layer.msg("收货成功");
+                                       // window.parent.location.reload();
+                                    } else {
+                                        layer.msg("失败,请重试");
+                                    }
+                                }
+                            }
+                        });
+                    });
+                });
+
+                //评价   
+                var grade = "";
+                var ProId = "";
+                $("#evaluate_selects").change(function () {
+                    grade = $(this).val();
+                });
+                $(".pingjia").click(function () {
+                    $('#evaluateModal').modal('show');                  
+                        orderid = $(this).attr("name");
+                        ProId = $("#" + orderid).attr("name");                                        
+                });               
+                $("#sumbit_evaluate").click(function () {
+                    if (grade == "") {
+                        layer.msg("请选择评价等级");
+                        return false;
+                    } else {
+                        ajax_request({
+                            url: "Aspx/ManagePages/appraisehandler.ashx?action=add",
+                            data: { "UserId": userid, "ProductId": ProId, "Grade": grade, "Content": $("#evaluate_conent").val() },
+                            callback: function (e) {
+                                if (e) {
+                                    e = JSON.parse(e);
+                                    if (e.code === 0) {
+
+                                        //修改订单状态
+                                        var request = { "UserId": userid, "action": "4", "OrdersId": orderid};
+                                        ajax_request({
+                                            url: "Aspx/ManagePages/orderhandler.ashx?action=update",
+                                            data: request,
+                                            callback: function (e) {
+                                                if (e) {
+                                                    e = JSON.parse(e);
+                                                    if (e.code === 0) {
+                                                        layer.msg("评论成功");
+                                                        window.parent.location.reload();
+                                                    } else {
+                                                        layer.msg("失败,请重试");
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        layer.msg("失败,请重试");
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });              
             } else {
                 layer.msg("请先登陆");
             }

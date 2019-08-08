@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using Common;
 
 /// <summary>
 /// 数据处理层
@@ -47,7 +48,8 @@ namespace DAL
         public List<Users> GetList(int page, int index)
         {
 
-            string sql = $"select UserId,UserName,Pwd,Nick,Email,DeliveryId from Users limit  {((page - 1) * index)}, {index}";
+            //string sql = $"select UserId,UserName,Pwd,Nick,Email,DeliveryId from Users limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Users { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
             List<Users> list = null;
             if (da.Rows.Count > 0)

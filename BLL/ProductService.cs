@@ -23,24 +23,29 @@ namespace BLL
         public List<ProductEx> FavoriteProductList(List<string> productId)
         {
 
+            try
+            {
+                var prolist = _infoProductDal.GetList().Where(y => productId.Contains(y.ProductId)).ToList();
+                var ex = from c in prolist
+                         join b in _infoPhotoDal.GetList().ToList()
+                          on c.ProductId equals b.ProductId
+                         select new ProductEx
+                         {
 
-            var prolist = _infoProductDal.GetList().Where(y => productId.Contains(y.ProductId))?.ToList();
-            var ex = from c in prolist
-                     join b in _infoPhotoDal.GetList()?.ToList()
-                      on c.ProductId equals b.ProductId
-                     select new ProductEx
-                     {
-
-                         Content = c.Content,
-                         CateId = c.CateId,
-                         MarketPrice = c.MarketPrice,
-                         Path = b.PhotoUrl == null ? "" : b.PhotoUrl,
-                         Price = c.Price,
-                         ProductId = c.ProductId,
-                         Title = c.Title,
-                         Stock = c.Stock
-                     };
-            return ex.ToList();
+                             Content = c.Content,
+                             CateId = c.CateId,
+                             MarketPrice = c.MarketPrice,
+                             Path = b.PhotoUrl == null ? "" : b.PhotoUrl,
+                             Price = c.Price,
+                             ProductId = c.ProductId,
+                             Title = c.Title,
+                             Stock = c.Stock
+                         };
+                return ex.ToList();
+            }
+            catch {
+                return null;
+            }
 
         }
 

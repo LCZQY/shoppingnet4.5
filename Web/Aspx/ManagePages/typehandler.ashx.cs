@@ -68,7 +68,7 @@ namespace System.Web.Aspx.ManagePages
             var index = context.Request.Form["limit"];
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
-                var list = _infoProductService.GetList().Where(y => y.CateId == id)?.ToList();             
+                var list = _infoProductService.GetList().Where(y => y.CateId == id).ToList();             
                 foreach (var y in list)
                 {
                     y.CateId = typename;
@@ -79,7 +79,7 @@ namespace System.Web.Aspx.ManagePages
             }
             else
             {
-                var list = _infoProductService.GetList().Where(y => y.CateId == id)?.ToList();
+                var list = _infoProductService.GetList().Where(y => y.CateId == id).ToList();
 
                 list = list ?? new List<Product> { };
                 var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
