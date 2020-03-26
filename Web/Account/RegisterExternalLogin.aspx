@@ -7,7 +7,7 @@
         <div class="form-horizontal">
             <h4>关联表单</h4>
             <hr />
-            <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
+            <asp:ValidationSummary runat="server" ShowNetcoreWeb.ModelsStateErrors="true" CssClass="text-danger" />
             <p class="text-info">
                 你已使用 <strong><%: ProviderName %></strong>. 进行身份验证。请在下面输入当前站点的用户名，
                 然后单击“登录”按钮。
@@ -19,7 +19,7 @@
                     <asp:TextBox runat="server" ID="userName" CssClass="form-control" />
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="userName"
                         Display="Dynamic" CssClass="text-danger" ErrorMessage="必须填写用户名" />
-                    <asp:ModelErrorMessage runat="server" ModelStateKey="UserName" CssClass="text-error" />
+                    <asp:NetcoreWeb.ModelsErrorMessage runat="server" NetcoreWeb.ModelsStateKey="UserName" CssClass="text-error" />
                 </div>
             </div>
 

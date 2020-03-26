@@ -3,7 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Web.Models;
+using Web.NetcoreWeb.Modelss;
 
 namespace Web.Account
 {
@@ -118,7 +118,7 @@ namespace Web.Account
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                NetcoreWeb.ModelsState.AddNetcoreWeb.ModelsError("", error);
             }
         }
     }

@@ -21,7 +21,7 @@
                     </p>
                     <div class="form-horizontal">
                         <h4>设置密码表单</h4>
-                        <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
+                        <asp:ValidationSummary runat="server" ShowNetcoreWeb.ModelsStateErrors="true" CssClass="text-danger" />
                         <hr />
                         <div class="form-group">
                             <asp:Label runat="server" AssociatedControlID="password" CssClass="col-md-2 control-label">密码</asp:Label>
@@ -30,7 +30,7 @@
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="password"
                                     CssClass="text-danger" ErrorMessage="“密码”字段是必填字段。"
                                     Display="Dynamic" ValidationGroup="SetPassword" />
-                                <asp:ModelErrorMessage runat="server" ModelStateKey="NewPassword" AssociatedControlID="password"
+                                <asp:NetcoreWeb.ModelsErrorMessage runat="server" NetcoreWeb.ModelsStateKey="NewPassword" AssociatedControlID="password"
                                     CssClass="text-error" SetFocusOnError="true" />
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                     <div class="form-horizontal">
                         <h4>“更改密码”表单</h4>
                         <hr />
-                        <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
+                        <asp:ValidationSummary runat="server" ShowNetcoreWeb.ModelsStateErrors="true" CssClass="text-danger" />
                         <div class="form-group">
                             <asp:Label runat="server" ID="CurrentPasswordLabel" AssociatedControlID="CurrentPassword" CssClass="col-md-2 control-label">当前密码</asp:Label>
                             <div class="col-md-10">

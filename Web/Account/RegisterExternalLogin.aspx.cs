@@ -2,7 +2,7 @@
 using Microsoft.Owin.Security;
 using System;
 using System.Web;
-using Web.Models;
+using Web.NetcoreWeb.Modelss;
 
 namespace Web.Account
 {
@@ -106,7 +106,7 @@ namespace Web.Account
         {
             foreach (var error in result.Errors) 
             {
-                ModelState.AddModelError("", error);
+                NetcoreWeb.ModelsState.AddNetcoreWeb.ModelsError("", error);
             }
         }
     }

@@ -1,0 +1,2 @@
+﻿swagger
+https://localhost:44326/swagger/index.html
