@@ -18,22 +18,22 @@ namespace System.Web.Aspx.ManagePages
             switch (action)
             {
                 case "add":
-                    AddUsersRequest(context);
+                    AddCustomerRequest(context);
                     break;
                 case "list":
-                    ListUsersRequest(context);
+                    ListCustomerRequest(context);
                     break;
                 case "update":
-                    UpdateUsersRequest(context);
+                    UpdateCustomerRequest(context);
                     break;
                 case "delete":
-                    DeleteUsersRequest(context);
+                    DeleteCustomerRequest(context);
                     break;
                 case "search":
-                    SeachUsersRequest(context);
+                    SeachCustomerRequest(context);
                     break;
                 case "removelist":
-                    DeleteListUsersRequest(context);
+                    DeleteListCustomerRequest(context);
                     break;
                 case "login":
                     LoginRequest(context);
@@ -80,7 +80,7 @@ namespace System.Web.Aspx.ManagePages
         /// 批量删除
         /// </summary>
         /// <param name="context"></param>
-        public void DeleteListUsersRequest(HttpContext context)
+        public void DeleteListCustomerRequest(HttpContext context)
         {
             // ?
         }
@@ -90,11 +90,11 @@ namespace System.Web.Aspx.ManagePages
         /// 搜索用户
         /// </summary>
         /// <param name="context"></param>
-        public void SeachUsersRequest(HttpContext context)
+        public void SeachCustomerRequest(HttpContext context)
         {
             var username = context.Request["name"];
             var list = _userInfoService.GetList().Where(y => y.UserName.Contains(username)).ToList();
-            var res = SerializeHelp.ToTableJson<Users>(list);
+            var res = SerializeHelp.ToTableJson<Customer>(list);
             context.Response.Write(res);
         }
 
@@ -102,7 +102,7 @@ namespace System.Web.Aspx.ManagePages
         ///删除用户
         /// </summary>
         /// <param name="context"></param>
-        public void DeleteUsersRequest(HttpContext context)
+        public void DeleteCustomerRequest(HttpContext context)
         {
             var response = new ResponseMessage();
             try
@@ -130,7 +130,7 @@ namespace System.Web.Aspx.ManagePages
         /// 修改用户
         /// </summary>
         /// <param name="context"></param>
-        public void UpdateUsersRequest(HttpContext context)
+        public void UpdateCustomerRequest(HttpContext context)
         {
             var response = new ResponseMessage();
             try
@@ -142,7 +142,7 @@ namespace System.Web.Aspx.ManagePages
                 string usernick = context.Request.Form["Nick"];
                 string id = context.Request.Form["UserId"];
                 string deliveryId = context.Request.Form["DeliveryId"];
-                Users userInfo = new Users();
+                Customer userInfo = new Customer();
                 userInfo.UserName = userName;
                 userInfo.Pwd = userPwd;
                 userInfo.Email = userEmail;
@@ -168,7 +168,7 @@ namespace System.Web.Aspx.ManagePages
         /// 添加用户
         /// </summary>
         /// <param name="context"></param>
-        public void AddUsersRequest(HttpContext context)
+        public void AddCustomerRequest(HttpContext context)
         {
             var response = new ResponseMessage<string>();
             try
@@ -177,7 +177,7 @@ namespace System.Web.Aspx.ManagePages
                 string userPwd = context.Request.Form["pwd"];
                 string userEmail = context.Request.Form["email"];
                 string usernick = context.Request.Form["nick"];
-                Users userInfo = new Users();
+                Customer userInfo = new Customer();
                 userInfo.UserId = Guid.NewGuid().ToString();
                 userInfo.UserName = userName;
                 userInfo.Pwd = userPwd;
@@ -212,15 +212,15 @@ namespace System.Web.Aspx.ManagePages
         /// 用户列表查询
         /// </summary>
         /// <param name="context"></param>
-        public void ListUsersRequest(HttpContext context)
+        public void ListCustomerRequest(HttpContext context)
         {
 
             var page = context.Request.Form["page"];
             var index = context.Request.Form["limit"];
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
-                List<Users> list = _userInfoService.GetList();
-                var res = SerializeHelp.ToTableJson<Users>(list);
+                List<Customer> list = _userInfoService.GetList();
+                var res = SerializeHelp.ToTableJson<Customer>(list);
                 context.Response.Write(res);
 
             }
@@ -228,7 +228,7 @@ namespace System.Web.Aspx.ManagePages
             {
                 var list = _userInfoService.GetList();
                 var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
-                var res = SerializeHelp.ToTableJson<Users>(list1, list.Count());
+                var res = SerializeHelp.ToTableJson<Customer>(list1, list.Count());
                 context.Response.Write(res);
             }
         }

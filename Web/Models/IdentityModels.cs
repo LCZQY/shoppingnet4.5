@@ -24,7 +24,7 @@ namespace Web.Models
     public class UserManager : UserManager<ApplicationUser>
     {
         public UserManager()
-            : base(new UserStore<ApplicationUser>(new ApplicationDbContext()))
+            : base(new Customertore<ApplicationUser>(new ApplicationDbContext()))
         {
         }
     }

@@ -6,9 +6,7 @@ namespace NetcoreWeb.Models
     ///订单表
     /// </summary>
     public class Orders :Base
-    {
-   
-
+    {   
         /// <summary>
         /// 下单时间
         /// </summary>

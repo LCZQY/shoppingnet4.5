@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CacheControl.cs" />
     <Compile Include="CreateSqlString.cs" />
+    <Compile Include="Interface\Baseinterface.cs" />
     <Compile Include="LayerTableJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeHelp.cs" />

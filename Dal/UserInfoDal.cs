@@ -21,20 +21,20 @@ namespace DAL
         /// 获取用户列表
         /// </summary>
         /// <returns></returns>
-        public List<Users> GetList()
+        public List<Customer> GetList()
         {
-            string sql = "select UserId,UserName,Pwd,Nick,Email,DeliveryId from Users";
+            string sql = "select UserId,UserName,Pwd,Nick,Email,DeliveryId from Customer";
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Users> list = new List<Users> { };
+            List<Customer> list = new List<Customer> { };
             if (da.Rows.Count > 0)
             {
-                list = new List<Users>();
-                Users Users = null;
+                list = new List<Customer>();
+                Customer Customer = null;
                 foreach (DataRow row in da.Rows)
                 {
-                    Users = new Users();
-                    LoadEntity(Users, row);
-                    list.Add(Users);
+                    Customer = new Customer();
+                    LoadEntity(Customer, row);
+                    list.Add(Customer);
                 }
             }
             return list;
@@ -45,22 +45,22 @@ namespace DAL
         /// 获取用户列表
         /// </summary>
         /// <returns></returns>
-        public List<Users> GetList(int page, int index)
+        public List<Customer> GetList(int page, int index)
         {
 
-            //string sql = $"select UserId,UserName,Pwd,Nick,Email,DeliveryId from Users limit  {((page - 1) * index)}, {index}";
-            string sql = CreateSqlString.SelectSqlString(new Users { });
+            //string sql = $"select UserId,UserName,Pwd,Nick,Email,DeliveryId from Customer limit  {((page - 1) * index)}, {index}";
+            string sql = CreateSqlString.SelectSqlString(new Customer { });
             DataTable da = SqlHelper.GetDataTable(sql, CommandType.Text);
-            List<Users> list = new List<Users> { };
+            List<Customer> list = new List<Customer> { };
             if (da.Rows.Count > 0)
             {
-                list = new List<Users>();
-                Users Users = null;
+                list = new List<Customer>();
+                Customer Customer = null;
                 foreach (DataRow row in da.Rows)
                 {
-                    Users = new Users();
-                    LoadEntity(Users, row);
-                    list.Add(Users);
+                    Customer = new Customer();
+                    LoadEntity(Customer, row);
+                    list.Add(Customer);
                 }
             }
             return list;
@@ -71,18 +71,18 @@ namespace DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Users GetDeail(int id)
+        public Customer GetDeail(int id)
         {
-            string sql = "SELECT UserId,Username,Userpass,regtime,email FROM Users where id = @UserId";
+            string sql = "SELECT UserId,Username,Userpass,regtime,email FROM Customer where id = @UserId";
             SqlParameter[] pars ={
                                       new SqlParameter("@UserId",SqlDbType.Int)
                                   };
             pars[0].Value = id;
             DataTable dt = SqlHelper.GetDataTable(sql, CommandType.Text, pars);
-            Users instance = null;
+            Customer instance = null;
             if (dt.Rows.Count > 0)
             {
-                instance = new Users();
+                instance = new Customer();
                 LoadEntity(instance, dt.Rows[0]);
             }
             return instance;
@@ -91,36 +91,36 @@ namespace DAL
         /// <summary>
         /// 添加用户信息
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <returns></returns>
-        public int AddUsers(Users Users)
+        public int AddCustomer(Customer Customer)
         {
-            string sql = "insert into Users(UserName,Pwd,Nick,Email,UserId,DeliveryId) values(@UsersName,@Pwd,@Nick,@Email,@UserId,@DeliveryId)";
+            string sql = "insert into Customer(UserName,Pwd,Nick,Email,UserId,DeliveryId) values(@CustomerName,@Pwd,@Nick,@Email,@UserId,@DeliveryId)";
             SqlParameter[] pars = {
-                                new SqlParameter("@UsersName",SqlDbType.VarChar,32),
+                                new SqlParameter("@CustomerName",SqlDbType.VarChar,32),
                                   new SqlParameter("@Pwd",SqlDbType.VarChar,32),
                                          new SqlParameter("@Nick",SqlDbType.VarChar,32),
                                     new SqlParameter("@Email",SqlDbType.VarChar,32),
                                         new SqlParameter("@UserId",SqlDbType.VarChar,32),
                                           new SqlParameter("@DeliveryId",SqlDbType.VarChar,32)
                                   };
-            pars[0].Value = Users.UserName;
-            pars[1].Value = Users.Pwd;
-            pars[2].Value = Users.Nick;
-            pars[3].Value = Users.Email;
-            pars[4].Value = Users.UserId;
-            pars[5].Value = Users.DeliveryId;
+            pars[0].Value = Customer.UserName;
+            pars[1].Value = Customer.Pwd;
+            pars[2].Value = Customer.Nick;
+            pars[3].Value = Customer.Email;
+            pars[4].Value = Customer.UserId;
+            pars[5].Value = Customer.DeliveryId;
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
 
         /// <summary>
         /// 更新用户信息
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <returns></returns>
-        public int UpdateUsers(Users Users)
+        public int UpdateCustomer(Customer Customer)
         {
-            string sql = "UPDATE Users SET UserName = @UserName,Pwd = @Pwd,Nick = @Nick,Email = @Email,DeliveryId = @DeliveryId WHERE UserId = @UserId";
+            string sql = "UPDATE Customer SET UserName = @UserName,Pwd = @Pwd,Nick = @Nick,Email = @Email,DeliveryId = @DeliveryId WHERE UserId = @UserId";
             SqlParameter[] pars = {
                                        new SqlParameter("@UserName",SqlDbType.VarChar,50),
                                        new SqlParameter("@Pwd",SqlDbType.VarChar,50),
@@ -129,12 +129,12 @@ namespace DAL
                                        new SqlParameter("@UserId",SqlDbType.VarChar,36),
                                        new SqlParameter("@DeliveryId",SqlDbType.VarChar,36)
                                    };
-            pars[0].Value = Users.UserName;
-            pars[1].Value = Users.Pwd;
-            pars[2].Value = Users.Nick;
-            pars[3].Value = Users.Email;
-            pars[4].Value = Users.UserId;
-            pars[5].Value = Users.DeliveryId;
+            pars[0].Value = Customer.UserName;
+            pars[1].Value = Customer.Pwd;
+            pars[2].Value = Customer.Nick;
+            pars[3].Value = Customer.Email;
+            pars[4].Value = Customer.UserId;
+            pars[5].Value = Customer.DeliveryId;
             return SqlHelper.ExecuteNonquery(sql, CommandType.Text, pars);
         }
 
@@ -143,11 +143,11 @@ namespace DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public int DeleteUsers(string id)
+        public int DeleteCustomer(string id)
         {
             try
             {
-                string sql = "DELETE FROM Users WHERE UserId = @UserId";
+                string sql = "DELETE FROM Customer WHERE UserId = @UserId";
                 SqlParameter[] pars ={
                                       new SqlParameter("@UserId",SqlDbType.VarChar,36)
                                   };
@@ -164,16 +164,16 @@ namespace DAL
         /// <summary>
         ///  初始化实体
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <param name="row"></param>
-        private void LoadEntity(Users Users, DataRow row)
+        private void LoadEntity(Customer Customer, DataRow row)
         {
-            Users.UserName = row["UserName"] != DBNull.Value ? row["UserName"].ToString() : string.Empty;
-            Users.Pwd = row["Pwd"] != DBNull.Value ? row["Pwd"].ToString() : string.Empty;
-            Users.Email = row["Email"] != DBNull.Value ? row["Email"].ToString() : string.Empty;
-            Users.UserId = row["UserId"] != DBNull.Value ? row["UserId"].ToString() : string.Empty;
-            Users.Nick = row["Nick"] != DBNull.Value ? row["Nick"].ToString() : string.Empty;
-            Users.DeliveryId = row["DeliveryId"] != DBNull.Value ? row["DeliveryId"].ToString() : string.Empty;
+            Customer.UserName = row["UserName"] != DBNull.Value ? row["UserName"].ToString() : string.Empty;
+            Customer.Pwd = row["Pwd"] != DBNull.Value ? row["Pwd"].ToString() : string.Empty;
+            Customer.Email = row["Email"] != DBNull.Value ? row["Email"].ToString() : string.Empty;
+            Customer.UserId = row["UserId"] != DBNull.Value ? row["UserId"].ToString() : string.Empty;
+            Customer.Nick = row["Nick"] != DBNull.Value ? row["Nick"].ToString() : string.Empty;
+            Customer.DeliveryId = row["DeliveryId"] != DBNull.Value ? row["DeliveryId"].ToString() : string.Empty;
         }
 
     }

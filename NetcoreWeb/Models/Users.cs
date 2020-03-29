@@ -1,17 +1,15 @@
-﻿/// <summary>
-/// 数据模型层
-/// </summary>
+﻿
 namespace NetcoreWeb.Models
 {
     /// <summary>
-    /// 用户
+    /// 顾客
     /// </summary>
-    public class Users : Base
+    public class Customer : Base
     {
         /// <summary>
         /// 用户名
         /// </summary>
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 密码

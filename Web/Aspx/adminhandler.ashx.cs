@@ -12,7 +12,7 @@ namespace System.Web.Aspx
     public class adminhandler : IHttpHandler
     {
 
-        private AdminUserService _userInfoService = new AdminUserService(); //CacheControl.Get<AdminUserService>();
+        private AdminCustomerervice _userInfoService = new AdminCustomerervice(); //CacheControl.Get<AdminCustomerervice>();
 
         public void ProcessRequest(HttpContext context)
         {

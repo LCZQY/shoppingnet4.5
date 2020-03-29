@@ -12,7 +12,7 @@ namespace Model
     /// <summary>
     /// 用户
     /// </summary>
-    public class Users
+    public class Customer
     {    
         /// <summary>
         /// key

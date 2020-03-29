@@ -11,7 +11,7 @@ namespace System.Web.Aspx.ManagePages
     public class adminhandler : IHttpHandler
     {
 
-        private AdminUserService _AdminUserService = new AdminUserService(); //CacheControl.Get<AdminUserService>();
+        private AdminCustomerervice _AdminCustomerervice = new AdminCustomerervice(); //CacheControl.Get<AdminCustomerervice>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -19,22 +19,22 @@ namespace System.Web.Aspx.ManagePages
             switch (action)
             {
                 case "add":
-                    AddUsersRequest(context);
+                    AddCustomerRequest(context);
                     break;
                 case "list":
-                    ListUsersRequest(context);
+                    ListCustomerRequest(context);
                     break;
                 case "update":
-                    UpdateUsersRequest(context);
+                    UpdateCustomerRequest(context);
                     break;
                 case "delete":
-                    DeleteUsersRequest(context);
+                    DeleteCustomerRequest(context);
                     break;
                 case "search":
-                    SeachUsersRequest(context);
+                    SeachCustomerRequest(context);
                     break;
                 case "removelist":
-                    DeleteListUsersRequest(context);
+                    DeleteListCustomerRequest(context);
                     break;
             }
         }
@@ -43,7 +43,7 @@ namespace System.Web.Aspx.ManagePages
         /// 批量删除
         /// </summary>
         /// <param name="context"></param>
-        public void DeleteListUsersRequest(HttpContext context)
+        public void DeleteListCustomerRequest(HttpContext context)
         {
             // ?
         }
@@ -55,7 +55,7 @@ namespace System.Web.Aspx.ManagePages
         /// 搜索用户
         /// </summary>
         /// <param name="context"></param>
-        public void SeachUsersRequest(HttpContext context)
+        public void SeachCustomerRequest(HttpContext context)
         {
             var username = context.Request["name"];
             var page = context.Request.Form["page"];
@@ -63,13 +63,13 @@ namespace System.Web.Aspx.ManagePages
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
                 //排除超级管理员
-                var list = _AdminUserService.GetList().Where(y => y.Role != 1 && y.UserName.Contains(username)).ToList();
+                var list = _AdminCustomerervice.GetList().Where(y => y.Role != 1 && y.UserName.Contains(username)).ToList();
                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
             else
             {
-                var list = _AdminUserService.GetList().Where(y => y.Role != 1 && y.UserName.Contains(username));
+                var list = _AdminCustomerervice.GetList().Where(y => y.Role != 1 && y.UserName.Contains(username));
                 var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
                 var res = SerializeHelp.ToTableJson(list1, list.Count());
                 context.Response.Write(res);
@@ -80,13 +80,13 @@ namespace System.Web.Aspx.ManagePages
         ///删除管理员账号
         /// </summary>
         /// <param name="context"></param>
-        public void DeleteUsersRequest(HttpContext context)
+        public void DeleteCustomerRequest(HttpContext context)
         {
             var response = new ResponseMessage();
             try
             {
                 var id = context.Request["id"];
-                var del = _AdminUserService.Delete(id);
+                var del = _AdminCustomerervice.Delete(id);
 
                 response.code = del == true ? 0 : 500;
                 response.msg = "删除成功";
@@ -108,7 +108,7 @@ namespace System.Web.Aspx.ManagePages
         /// 修改管理员账号
         /// </summary>
         /// <param name="context"></param>
-        public void UpdateUsersRequest(HttpContext context)
+        public void UpdateCustomerRequest(HttpContext context)
         {
             var response = new ResponseMessage();
             try
@@ -123,7 +123,7 @@ namespace System.Web.Aspx.ManagePages
                 adminUser.UserName = userName;
                 adminUser.Pwd = "123456";
 
-                var edi = _AdminUserService.Update(adminUser);
+                var edi = _AdminCustomerervice.Update(adminUser);
                 if (edi)
                 {
                     response.code = 0;
@@ -148,7 +148,7 @@ namespace System.Web.Aspx.ManagePages
         /// 添加用户
         /// </summary>
         /// <param name="context"></param>
-        public void AddUsersRequest(HttpContext context)
+        public void AddCustomerRequest(HttpContext context)
         {
             var response = new ResponseMessage();
             try
@@ -161,7 +161,7 @@ namespace System.Web.Aspx.ManagePages
                 adminUser.Role = 2;//新开账户不给予赋予权限
                 adminUser.UserName = userName;
                 adminUser.Pwd = "123456";
-                var add = _AdminUserService.Add(adminUser);
+                var add = _AdminCustomerervice.Add(adminUser);
                 if (add)
                 {
                     response.code = 0;
@@ -187,7 +187,7 @@ namespace System.Web.Aspx.ManagePages
         /// 用户列表查询
         /// </summary>
         /// <param name="context"></param>
-        public void ListUsersRequest(HttpContext context)
+        public void ListCustomerRequest(HttpContext context)
         {
 
             var page = context.Request.Form["page"];
@@ -195,13 +195,13 @@ namespace System.Web.Aspx.ManagePages
             if (string.IsNullOrWhiteSpace(page) && string.IsNullOrWhiteSpace(index))
             {
                 //排除超级管理员
-                var list = _AdminUserService.GetList().Where(y => y.Role != 1).ToList();
+                var list = _AdminCustomerervice.GetList().Where(y => y.Role != 1).ToList();
                 var res = SerializeHelp.ToTableJson(list);
                 context.Response.Write(res);
             }
             else
             {
-                var list = _AdminUserService.GetList().Where(y => y.Role != 1);
+                var list = _AdminCustomerervice.GetList().Where(y => y.Role != 1);
                 var list1 = list.Skip((int.Parse(page) - 1) * int.Parse(index)).Take(int.Parse(index)).ToList();
                 var res = SerializeHelp.ToTableJson(list1, list.Count());
                 context.Response.Write(res);

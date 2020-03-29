@@ -38,17 +38,17 @@ namespace System.DAL
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <returns></returns>
-        int AddUsers(T model, string sql);
+        int AddCustomer(T model, string sql);
 
 
         /// <summary>
         /// 更新
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <returns></returns>
-        int UpdateUsers(T model);
+        int UpdateCustomer(T model);
 
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace System.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        int DeleteUsers(string sql, string id);
+        int DeleteCustomer(string sql, string id);
 
     }
 

@@ -27,14 +27,16 @@ namespace NetcoreWeb.Models
         {
             base.OnModelCreating(builder);
 
-
+            builder.Entity<Customer>(b => {
+                b.ToTable("Customer");
+            });
 
         }
 
         /// <summary>
         /// 权限管理【考虑新建一个服务，独立出去】
         /// </summary>
-        public DbSet<AdminUser> AdminUsers { get; set; }
+        public DbSet<AdminUser> AdminCustomer { get; set; }
 
         /// <summary>
         /// 商品评价
@@ -77,9 +79,9 @@ namespace NetcoreWeb.Models
         public DbSet<Product> Product { get; set; }
 
         /// <summary>
-        /// 客户
+        /// 顾客【可以成为卖家】
         /// </summary>
-        public DbSet<Users> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 
 }

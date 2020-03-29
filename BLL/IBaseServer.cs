@@ -33,7 +33,7 @@ namespace BLL
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <returns></returns>
         bool Add(T model);
 
@@ -41,7 +41,7 @@ namespace BLL
         /// <summary>
         /// 更新
         /// </summary>
-        /// <param name="Users"></param>
+        /// <param name="Customer"></param>
         /// <returns></returns>
         bool Update(T model);
 

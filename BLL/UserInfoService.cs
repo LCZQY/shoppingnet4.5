@@ -17,7 +17,7 @@ namespace BLL
         /// 返回数据列表
         /// </summary>
         /// <returns></returns>
-        public List<Users> GetList()
+        public List<Customer> GetList()
         {
             return UserInfoDal.GetList();
         }
@@ -26,7 +26,7 @@ namespace BLL
         /// 返回数据列表
         /// </summary>
         /// <returns></returns>
-        public List<Users> GetList(int page, int index)
+        public List<Customer> GetList(int page, int index)
         {
             return UserInfoDal.GetList(page, index);
         }
@@ -35,7 +35,7 @@ namespace BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Users GetDeail(int id)
+        public Customer GetDeail(int id)
         {
             return UserInfoDal.GetDeail(id);
         }
@@ -45,9 +45,9 @@ namespace BLL
         /// </summary>
         /// <param name="userInfo"></param>
         /// <returns></returns>
-        public bool AddUserInfo(Users userInfo)
+        public bool AddUserInfo(Customer userInfo)
         {
-            return UserInfoDal.AddUsers(userInfo) > 0;
+            return UserInfoDal.AddCustomer(userInfo) > 0;
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace BLL
         /// </summary>
         /// <param name="userInfo"></param>
         /// <returns></returns>
-        public bool UpdateUserInfo(Users userInfo)
+        public bool UpdateUserInfo(Customer userInfo)
         {
-            return UserInfoDal.UpdateUsers(userInfo) > 0;
+            return UserInfoDal.UpdateCustomer(userInfo) > 0;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace BLL
         /// <returns></returns>
         public bool DeleteUserInfo(string id)
         {
-            return UserInfoDal.DeleteUsers(id) > 0;
+            return UserInfoDal.DeleteCustomer(id) > 0;
         }
     }
 }

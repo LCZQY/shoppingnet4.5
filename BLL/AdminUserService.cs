@@ -11,7 +11,7 @@ namespace BLL
     /// <summary>
     ///  管理员表
     /// </summary>
-    public class AdminUserService : IBaseServer<AdminUser>
+    public class AdminCustomerervice : IBaseServer<AdminUser>
     {
         private AdminUserDal _infoDal = new AdminUserDal();// Common.CacheControl.Get<AdminUserDal>();
 

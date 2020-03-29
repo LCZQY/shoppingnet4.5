@@ -8,7 +8,8 @@ using System;
 using System.IO;
 using NetcoreWeb.Models;
 using Microsoft.EntityFrameworkCore;
-
+using NetcoreWeb.Stores.Interface;
+using NetcoreWeb.Stores;
 namespace NetcoreWeb
 {
     public class Startup
@@ -50,6 +51,7 @@ namespace NetcoreWeb
                 c.IncludeXmlComments(xmlPath);
             });
             #endregion
+            ServiceRegistration.Start(services);
             services.AddControllers();
         }
 
