@@ -1,12 +1,12 @@
 ﻿/// <summary>
 /// 数据模型层
 /// </summary>
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 管理员表
     /// </summary>
-    public class AdminUser : Base
+    public class AdminUser : BaseField
     {
         /// <summary>
         /// 管理员账号

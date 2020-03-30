@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     ///商品图片表
     /// </summary>
-    public class Photo :Base
+    public class Photo : BaseField
     {
             
         /// <summary>

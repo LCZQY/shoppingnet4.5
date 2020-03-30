@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 促销资讯表
     /// </summary>
-    public class News :Base
+    public class News : BaseField
     {
 
 

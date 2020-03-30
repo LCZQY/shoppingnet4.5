@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 收藏夹表
     /// </summary>
-    public class Favorite :Base
+    public class Favorite : BaseField
     {
 
 

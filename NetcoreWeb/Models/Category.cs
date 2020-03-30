@@ -1,9 +1,9 @@
-﻿namespace NetcoreWeb.Models
+﻿namespace ShoppingApi.Models
 {
     /// <summary>
     /// 商品类别表
     /// </summary>
-    public class Category : Base
+    public class Category : BaseField
     {
 
 

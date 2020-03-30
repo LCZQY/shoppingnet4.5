@@ -1,129 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NetcoreWeb.Models;
+using ShoppingApi.Managers;
+using ShoppingApi.Models;
+using System;
+using System.Threading.Tasks;
+using ZapiCore;
+using ShoppingApi.Dto.Request;
+using System.Collections.Generic;
 
-namespace NetcoreWeb.Controllers
+namespace ShoppingApi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
         private readonly ShoppingDbContext _context;
         private readonly ILogger<CustomersController> _logger;
-        public CustomersController(ShoppingDbContext context, ILogger<CustomersController> logger)
+        private readonly CustomerManager _customerManager;
+        public CustomersController(ShoppingDbContext context, ILogger<CustomersController> logger, CustomerManager customerManager)
         {
             _context = context;
             _logger = logger;
+            _customerManager = customerManager;
         }
 
-       /// <summary>
-       /// 获取客户信息
-       /// </summary>
-       /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("login")]
+        public async Task<ResponseMessage<bool>> LoginJudge(string name, string pwd)
         {
-            _logger.LogInformation("访问开始》》》》》》》》》》》》》》》》》》》》》》》》》");
-            return await _context.Customers.ToListAsync();
-        }
-
-        // GET: api/Customers/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(string id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
-
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return customer;
-        }
-
-        // PUT: api/Customers/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(string id, Customer customer)
-        {
-            if (id != customer.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(customer).State = EntityState.Modified;
-
+            var response = new ResponseMessage<bool>();
             try
             {
-                await _context.SaveChangesAsync();
+                response = await _customerManager.LoginJudgeAsync(name, pwd);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e)
             {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "用户登录失败，请重试";
+                _logger.LogInformation($"用户登录发生异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
         }
 
-        // POST: api/Customers
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        /// <summary>
+        /// 客户列表【列表数据应该是POST 还是 Get？】
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("list")]
+        public async Task<PagingResponseMessage<Customer>> CustomerList([FromBody]SearchCustomerRequest search)
         {
-            _context.Customers.Add(customer);
+            var response = new PagingResponseMessage<Customer>(){Extension  = new List<Customer> { } };
             try
             {
-                await _context.SaveChangesAsync();
+                response = await _customerManager.CustomerListAsync(search);
             }
-            catch (DbUpdateException)
+            catch (Exception e)
             {
-                if (CustomerExists(customer.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "客户列表查询失败，请重试";
+                _logger.LogInformation($"客户列表查询失败异常:{JsonHelper.ToJson(e)}");
             }
-
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return response;
         }
 
-        // DELETE: api/Customers/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(string id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
-
-            return customer;
-        }
-
-        private bool CustomerExists(string id)
-        {
-            return _context.Customers.Any(e => e.Id == id);
-        }
     }
 }

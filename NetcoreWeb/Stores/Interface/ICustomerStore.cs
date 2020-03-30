@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common.Interface;
-using NetcoreWeb.Models;
+﻿using ShoppingApi.Common.Interface;
+using ShoppingApi.Models;
 
-namespace NetcoreWeb.Stores.Interface
+namespace ShoppingApi.Stores.Interface
 {
 
     /// <summary>

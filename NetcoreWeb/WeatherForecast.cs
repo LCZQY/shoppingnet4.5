@@ -1,6 +1,6 @@
 using System;
 
-namespace NetcoreWeb
+namespace ShoppingApi
 {
     public class WeatherForecast
     {

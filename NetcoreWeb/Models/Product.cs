@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 商品表
     /// </summary>
-    public class Product : Base
+    public class Product : BaseField
     {
      
 

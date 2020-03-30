@@ -1,10 +1,10 @@
 ﻿
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 顾客
     /// </summary>
-    public class Customer : Base
+    public class Customer : BaseField
     {
         /// <summary>
         /// 用户名

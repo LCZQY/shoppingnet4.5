@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NetcoreWeb.Models;
-using NetcoreWeb.Stores.Interface;
-namespace NetcoreWeb.Stores
+using ShoppingApi.Models;
+using ShoppingApi.Stores.Interface;
+namespace ShoppingApi.Stores
 {
     /// <summary>
     /// 客户表数据库处理
@@ -24,7 +24,7 @@ namespace NetcoreWeb.Stores
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> AddEntity(Customer entity)
+        public async Task<bool> AddEntityAsync(Customer entity)
         {
             _context.Customers.Add(entity);
             return await _context.SaveChangesAsync() > 0;
@@ -47,7 +47,7 @@ namespace NetcoreWeb.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Customer> Get(string id)
+        public async Task<Customer> GetAsync(string id)
         {
             var customer = await _context.Customers.FindAsync(id);
 
@@ -62,7 +62,7 @@ namespace NetcoreWeb.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Customer>> EnumerableList()
+        public async Task<IEnumerable<Customer>> EnumerableListAsync()
         {
             return await _context.Customers.AsNoTracking().ToListAsync();
 
@@ -72,7 +72,7 @@ namespace NetcoreWeb.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IQueryable<Customer>> IQueryableList()
+        public async Task<IQueryable<Customer>> IQueryableListAsync()
         {
             return _context.Customers.AsNoTracking();
 
@@ -84,7 +84,7 @@ namespace NetcoreWeb.Stores
         /// <param name="id"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> PutEntity(string id, Customer entity)
+        public async Task<bool> PutEntityAsync(string id, Customer entity)
         {
             if (!IsExists(id))
             {
@@ -101,7 +101,7 @@ namespace NetcoreWeb.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<bool> Delete(string id)
+        public Task<bool> DeleteAsync(string id)
         {
             throw new NotImplementedException();
         }

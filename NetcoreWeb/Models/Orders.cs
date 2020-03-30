@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     ///订单表
     /// </summary>
-    public class Orders :Base
+    public class Orders : BaseField
     {   
         /// <summary>
         /// 下单时间

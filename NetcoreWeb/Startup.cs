@@ -6,11 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
-using NetcoreWeb.Models;
+using ShoppingApi.Models;
 using Microsoft.EntityFrameworkCore;
-using NetcoreWeb.Stores.Interface;
-using NetcoreWeb.Stores;
-namespace NetcoreWeb
+using ShoppingApi.Stores.Interface;
+using ShoppingApi.Stores;
+namespace ShoppingApi
 {
     public class Startup
     {
@@ -47,7 +47,7 @@ namespace NetcoreWeb
                     }
                 });
                 var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-                var xmlPath = Path.Combine(basePath, "NetcoreWeb.xml");
+                var xmlPath = Path.Combine(basePath, "ShoppingApi.xml");
                 c.IncludeXmlComments(xmlPath);
             });
             #endregion

@@ -3,7 +3,7 @@
 /// <summary>
 /// 数据模型层
 /// </summary>
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 商品评价表
@@ -31,12 +31,14 @@ namespace NetcoreWeb.Models
                 b.ToTable("Customer");
             });
 
+
+
         }
 
         /// <summary>
         /// 权限管理【考虑新建一个服务，独立出去】
         /// </summary>
-        public DbSet<AdminUser> AdminCustomer { get; set; }
+        public DbSet<AdminUser> AdminUsers { get; set; }
 
         /// <summary>
         /// 商品评价

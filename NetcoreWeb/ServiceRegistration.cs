@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using NetcoreWeb.Stores;
-using NetcoreWeb.Stores.Interface;
-
-namespace NetcoreWeb
+using ShoppingApi.Stores;
+using ShoppingApi.Stores.Interface;
+using ShoppingApi.Managers;
+namespace ShoppingApi
 {
     /// <summary>
     /// 服务注册
@@ -14,6 +14,7 @@ namespace NetcoreWeb
         /// </summary>
         public static void Start(IServiceCollection services)
         {
+            services.AddScoped<CustomerManager>();
             services.AddScoped<ICustomerStore, CustomerStore>();
         }
 

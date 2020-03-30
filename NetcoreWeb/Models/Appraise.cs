@@ -3,12 +3,12 @@
 /// <summary>
 /// 数据模型层
 /// </summary>
-namespace NetcoreWeb.Models
+namespace ShoppingApi.Models
 {
     /// <summary>
     /// 商品评价表
     /// </summary>
-    public class Appraise : Base
+    public class Appraise : BaseField
     {
         /// <summary>
         /// 用户id

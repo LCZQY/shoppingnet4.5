@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{6FCE7F0C-A7F7-4CEA-94BA-D578E568EE44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetcoreWeb", "NetcoreWeb\NetcoreWeb.csproj", "{8828FB14-BECD-46F2-B7CD-9039B3964593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingApi", "NetcoreWeb\ShoppingApi.csproj", "{8828FB14-BECD-46F2-B7CD-9039B3964593}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
