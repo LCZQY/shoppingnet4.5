@@ -11,3 +11,13 @@ https://element.eleme.cn/#/zh-CN
 
 后台管理界面
 https://www.cnblogs.com/taotaozhuanyong/p/11903750.html
+
+// 用户权限认证教程
+https://blog.csdn.net/KingCruel/article/details/88722775
+
+
+用户权限认证视频
+https://www.bilibili.com/video/av42364337/
+
+项目结构参考
+http://www.likecs.com/show-30304.html

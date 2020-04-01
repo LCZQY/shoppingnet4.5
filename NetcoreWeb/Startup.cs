@@ -10,6 +10,8 @@ using ShoppingApi.Models;
 using Microsoft.EntityFrameworkCore;
 using ShoppingApi.Stores.Interface;
 using ShoppingApi.Stores;
+using System.Collections.Generic;
+
 namespace ShoppingApi
 {
     public class Startup
@@ -48,9 +50,54 @@ namespace ShoppingApi
                 });
                 var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 var xmlPath = Path.Combine(basePath, "ShoppingApi.xml");
-                c.IncludeXmlComments(xmlPath);
+                //显示对控制器的注释   
+                c.IncludeXmlComments(xmlPath, true);
+               
+                //添加header验证信息
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });//添加一个必须的全局安全信息，和AddSecurityDefinition方法指定的方案名称要一致，这里是Bearer。
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Scheme= "Bearer ",
+                    BearerFormat ="JWT",
+                    Description = "JWT授权(数据将在请求头中进行传输) 参数结构: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",//jwt默认的参数名称
+                    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+                    Type = SecuritySchemeType.ApiKey
+                });
             });
             #endregion
+
+            #region CORS
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowAnyOrigin", policy =>
+                {
+                    policy.AllowAnyOrigin()//允许任何源
+                    .AllowAnyMethod()//允许任何方式
+                    .AllowAnyHeader()//允许任何头
+                    .AllowCredentials();//允许cookie
+                });
+                c.AddPolicy("AllowSpecificOrigin", policy =>
+                {
+                    policy.WithOrigins("http://localhost:8083")
+                    .WithMethods("GET", "POST", "PUT", "DELETE")
+                    .WithHeaders("authorization");
+                });
+            });
+            #endregion
+            //服务注册
             ServiceRegistration.Start(services);
             services.AddControllers();
         }
@@ -79,6 +126,8 @@ namespace ShoppingApi
             {
                 endpoints.MapControllers();
             });
+
         }
     }
+
 }

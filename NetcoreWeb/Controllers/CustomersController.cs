@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 using ZapiCore;
 using ShoppingApi.Dto.Request;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingApi.Controllers
 {
 
+    /// <summary>
+    /// 客户API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -28,7 +32,7 @@ namespace ShoppingApi.Controllers
         /// <summary>
         /// 登录
         /// </summary>
-        /// <returns></returns>
+        /// <returns></returns>       
         [HttpGet("login")]
         public async Task<ResponseMessage<bool>> LoginJudge(string name, string pwd)
         {
