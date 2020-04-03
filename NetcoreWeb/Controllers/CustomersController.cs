@@ -15,7 +15,7 @@ namespace ShoppingApi.Controllers
     /// <summary>
     /// 客户API
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/customers")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -30,16 +30,26 @@ namespace ShoppingApi.Controllers
         }
 
         /// <summary>
+        /// 测试
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get")]
+        public string get()
+        {
+            return "get";
+        }
+
+        /// <summary>
         /// 登录
         /// </summary>
         /// <returns></returns>       
-        [HttpGet("login")]
-        public async Task<ResponseMessage<bool>> LoginJudge(string name, string pwd)
+        [HttpPost("login")]
+        public async Task<ResponseMessage<bool>> LoginJudge([FromBody]LoginRequest loginRequest)
         {
             var response = new ResponseMessage<bool>();
             try
             {
-                response = await _customerManager.LoginJudgeAsync(name, pwd);
+                response = await _customerManager.LoginJudgeAsync(loginRequest.Name, loginRequest.Password);
             }
             catch (Exception e)
             {
@@ -61,7 +71,7 @@ namespace ShoppingApi.Controllers
             var response = new PagingResponseMessage<Customer>(){Extension  = new List<Customer> { } };
             try
             {
-                response = await _customerManager.CustomerListAsync(search);
+                response = await _customerManager.CustomerListAsync(search, HttpContext.RequestAborted);
             }
             catch (Exception e)
             {

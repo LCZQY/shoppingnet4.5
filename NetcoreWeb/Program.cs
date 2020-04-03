@@ -15,7 +15,8 @@ namespace ShoppingApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
+                .UseStartup<Startup>()            
+               .UseUrls("https://*:3001")
             .ConfigureLogging(logging =>
             {
                 logging.ClearProviders();

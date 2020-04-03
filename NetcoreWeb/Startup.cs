@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Builder;
+ï»¿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ShoppingApi.Models;
 using System;
 using System.IO;
-using ShoppingApi.Models;
-using Microsoft.EntityFrameworkCore;
-using ShoppingApi.Stores.Interface;
-using ShoppingApi.Stores;
-using System.Collections.Generic;
 
 namespace ShoppingApi
 {
@@ -22,11 +19,36 @@ namespace ShoppingApi
         }
 
         public IConfiguration Configuration { get; }
-
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";//åå­—éšä¾¿èµ·
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region CORS ä¸å¯ä»¥åŒæ—¶æ‰“å¼€AllowAnyOriginï¼ŒAllowAnyMethodï¼ŒAllowAnyHeaderï¼ŒAllowCredentials è¿™ä¸ªä¸œè¥¿æäº†å¤ªä¹…äº† ï¼ˆä¸€å®šè¦è®¾ç½® SetIsOriginAllowedToAllowWildcardSubdomains)
 
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins, corsbuilder =>
+                {
+                    corsbuilder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .WithMethods("GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS");
+
+                });
+            });         
+            //ä»¥ä¸‹æ˜¯é”™è¯¯çš„
+            //services.AddCors(c =>
+            //{
+            //    c.AddPolicy("AllowAnyOrigin", policy =>
+            //    {
+            //        policy.AllowAnyOrigin()//å…è®¸ä»»ä½•æº
+            //        .AllowAnyMethod()//å…è®¸ä»»ä½•æ–¹å¼
+            //        .AllowAnyHeader()//å…è®¸ä»»ä½•å¤´
+            //        .AllowCredentials();//å…è®¸cookie
+            //    });
+            //});
+            #endregion
             #region Mysql                    
             services.AddDbContext<ShoppingDbContext>(options =>
      options.UseMySql(Configuration.GetConnectionString("MysqlConnection")));
@@ -39,7 +61,7 @@ namespace ShoppingApi
                 {
                     Version = "v1",
                     Title = "ShoppingSystem Api",
-                    Description = "ºóÌ¨¹ÜÀíÏµÍ³API",
+                    Description = "åå°ç®¡ç†ç³»ç»ŸAPI",
                     //TermsOfService = new Uri("api/"),
                     Contact = new OpenApiContact
                     {
@@ -50,54 +72,37 @@ namespace ShoppingApi
                 });
                 var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 var xmlPath = Path.Combine(basePath, "ShoppingApi.xml");
-                //ÏÔÊ¾¶Ô¿ØÖÆÆ÷µÄ×¢ÊÍ   
+                //æ˜¾ç¤ºå¯¹æ§åˆ¶å™¨çš„æ³¨é‡Š   
                 c.IncludeXmlComments(xmlPath, true);
-               
-                //Ìí¼ÓheaderÑéÖ¤ĞÅÏ¢
+
+                //æ·»åŠ headeréªŒè¯ä¿¡æ¯
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
-                    }
-                });//Ìí¼ÓÒ»¸ö±ØĞëµÄÈ«¾Ö°²È«ĞÅÏ¢£¬ºÍAddSecurityDefinition·½·¨Ö¸¶¨µÄ·½°¸Ãû³ÆÒªÒ»ÖÂ£¬ÕâÀïÊÇBearer¡£
+                           {
+                               new OpenApiSecurityScheme
+                               {
+                                   Reference = new OpenApiReference {
+                                       Type = ReferenceType.SecurityScheme,
+                                       Id = "Bearer"
+                                   }
+                               },
+                               new string[] { }
+                           }
+                });//æ·»åŠ ä¸€ä¸ªå¿…é¡»çš„å…¨å±€å®‰å…¨ä¿¡æ¯ï¼Œå’ŒAddSecurityDefinitionæ–¹æ³•æŒ‡å®šçš„æ–¹æ¡ˆåç§°è¦ä¸€è‡´ï¼Œè¿™é‡Œæ˜¯Bearerã€‚
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Scheme= "Bearer ",
-                    BearerFormat ="JWT",
-                    Description = "JWTÊÚÈ¨(Êı¾İ½«ÔÚÇëÇóÍ·ÖĞ½øĞĞ´«Êä) ²ÎÊı½á¹¹: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",//jwtÄ¬ÈÏµÄ²ÎÊıÃû³Æ
-                    In = ParameterLocation.Header,//jwtÄ¬ÈÏ´æ·ÅAuthorizationĞÅÏ¢µÄÎ»ÖÃ(ÇëÇóÍ·ÖĞ)
+                    Scheme = "Bearer ",
+                    BearerFormat = "JWT",
+                    Description = "JWTæˆæƒ(æ•°æ®å°†åœ¨è¯·æ±‚å¤´ä¸­è¿›è¡Œä¼ è¾“) å‚æ•°ç»“æ„: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",//jwté»˜è®¤çš„å‚æ•°åç§°
+                    In = ParameterLocation.Header,//jwté»˜è®¤å­˜æ”¾Authorizationä¿¡æ¯çš„ä½ç½®(è¯·æ±‚å¤´ä¸­)
                     Type = SecuritySchemeType.ApiKey
                 });
             });
             #endregion
 
-            #region CORS
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowAnyOrigin", policy =>
-                {
-                    policy.AllowAnyOrigin()//ÔÊĞíÈÎºÎÔ´
-                    .AllowAnyMethod()//ÔÊĞíÈÎºÎ·½Ê½
-                    .AllowAnyHeader()//ÔÊĞíÈÎºÎÍ·
-                    .AllowCredentials();//ÔÊĞícookie
-                });
-                c.AddPolicy("AllowSpecificOrigin", policy =>
-                {
-                    policy.WithOrigins("http://localhost:8083")
-                    .WithMethods("GET", "POST", "PUT", "DELETE")
-                    .WithHeaders("authorization");
-                });
-            });
-            #endregion
-            //·şÎñ×¢²á
+
+            //æœåŠ¡æ³¨å†Œ
             ServiceRegistration.Start(services);
             services.AddControllers();
         }
@@ -109,6 +114,8 @@ namespace ShoppingApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+         
             #region Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -116,15 +123,14 @@ namespace ShoppingApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
             });
             #endregion
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseCors(MyAllowSpecificOrigins); //æ­¤é¡¹å¿…é¡»åœ¨app.UseRouting()å’Œapp.UseAuthorization()ä¹‹é—´ï¼Œå¦åˆ™ä¼šæŠ¥é”™ã€‚
+            app.UseHttpsRedirection();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireCors(MyAllowSpecificOrigins);
             });
 
         }

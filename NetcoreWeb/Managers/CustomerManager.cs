@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -41,13 +42,14 @@ namespace ShoppingApi.Managers
             }
             return response;
         }
-        
+
         /// <summary>
         /// 列表数据
         /// </summary>
         /// <param name="search"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<PagingResponseMessage<Customer>> CustomerListAsync(SearchCustomerRequest  search)
+        public async Task<PagingResponseMessage<Customer>> CustomerListAsync(SearchCustomerRequest  search, CancellationToken cancellationToken)
         {
             var response = new PagingResponseMessage<Customer>() { };
             var entity =await _customerStore.IQueryableListAsync();
@@ -55,13 +57,27 @@ namespace ShoppingApi.Managers
             {
                 entity.Where(y => y.Name == search.Name);
             }
-            var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync();
+            var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             response.PageIndex = search.PageIndex;
             response.PageSize = search.PageSize;
             response.Extension = list;
             return response;
         }
-
-
+       
+        /// <summary>
+        /// 批量新增
+        /// </summary>
+        /// <param name="customers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponseMessage<bool>> AddRanageAsync(List<Customer> customers, CancellationToken cancellationToken)
+        {
+            var response = new ResponseMessage<bool>() {  Extension = false };       
+            if (customers.Count == 0) {
+                throw new ArgumentNullException();
+            }
+            response.Extension =  await _customerStore.AddRangeEntityAsync(customers);
+            return response;
+        }
     }
 }

@@ -1,3 +1,4 @@
+
 layui.extend({
     admin: 'sources/js/shopping/admin'
 });
@@ -12,20 +13,26 @@ layui.use(['form', 'admin'], function () {
             shade: [0.1, '#000'] //0.2透明度的白色背景
         });
         ajax_request({
-            url: "adminhandler.ashx?action=isexist",
-            data: data.field,
+            url: WEBURL + "/api/customers/login",
+            data: JSON.stringify(data.field),
             callback(e) {
                 layer.close(loading);
-                e = JSON.parse(e);
                 console.log(e, "-----------------------");
                 if (e.code == 0) {
-                    //JSON对象转JSON字符串
-                    var obj = { "user": data.field.UserName, "r": e.model };
-                    obj = JSON.stringify(obj); //转化为JSON字符串
-                    localStorage.setItem("login", obj);
-                    window.location.href = 'ManageIndex.aspx';
+                    if (e.extension == true) {
+                        alert("suceess");
+                        ////JSON对象转JSON字符串
+                        //var obj = { "user": data.field.UserName, "r": e.model };
+                        //obj = JSON.stringify(obj); //转化为JSON字符串
+                        //localStorage.setItem("login", obj);
+                        //window.location.href = 'ManageIndex.aspx';
+                    } else {
+                        alert("fail");
+                        //layer.msg("密码或者账号错误");
+                    }
                 } else {
-                    layer.msg(e.msg);
+                    alert("error");
+                    //layer.msg(e.message);
                 }
             }
         });

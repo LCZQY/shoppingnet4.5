@@ -21,7 +21,8 @@ namespace ShoppingApi.Common.Interface
 
         Task<bool> AddEntityAsync(T entity);
 
-       
+        Task<bool> AddRangeEntityAsync(List<T> listentity);
+
         Task<bool> DeleteAsync(string id);
       
         bool IsExists(string id);

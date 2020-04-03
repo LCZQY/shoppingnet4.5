@@ -26,6 +26,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<bool> AddEntityAsync(Customer entity)
         {
+            _context.Attach(entity);
             _context.Customers.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
@@ -101,9 +102,30 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            if (!IsExists(id))
+            {
+                return false;
+            }
+            var model = await _context.Customers.FindAsync(id);
+            model.IsDeleted = true;
+            _context.Attach(model);
+            var entity = _context.Entry(model);
+            entity.Property(y => y.IsDeleted).IsModified = true;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        /// <summary>
+        /// 批量新增
+        /// </summary>
+        /// <param name="listentity"></param>
+        /// <returns></returns>
+        public async Task<bool> AddRangeEntityAsync(List<Customer> listentity)
+        {
+            _context.AttachRange(listentity);
+            await _context.AddRangeAsync(listentity);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
