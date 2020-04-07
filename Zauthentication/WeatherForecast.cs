@@ -1,6 +1,6 @@
 using System;
 
-namespace OAuth2IdentityServer
+namespace Zauthentication
 {
     public class WeatherForecast
     {

@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:56951",
-      "sslPort": 44316
+      "applicationUrl": "http://localhost:61844",
+      "sslPort": 44395
     }
   },
   "profiles": {
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "OAuth2IdentityServer": {
+    "IdentityServer4": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",

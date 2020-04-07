@@ -101,6 +101,15 @@ namespace ShoppingApi
             });
             #endregion
 
+            #region 认证授权
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://localhost:5000";
+                options.RequireHttpsMetadata = false;
+                options.Audience = "api1";
+            });
+            #endregion
 
             //服务注册
             ServiceRegistration.Start(services);
@@ -126,7 +135,9 @@ namespace ShoppingApi
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins); //此项必须在app.UseRouting()和app.UseAuthorization()之间，否则会报错。
             app.UseHttpsRedirection();
-            app.UseAuthorization();
+         
+            app.UseAuthentication(); //使用认证
+            app.UseAuthorization(); //使用授权
 
             app.UseEndpoints(endpoints =>
             {

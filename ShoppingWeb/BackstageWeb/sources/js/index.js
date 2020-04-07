@@ -20,12 +20,11 @@ layui.use(['form', 'admin'], function () {
                 console.log(e, "-----------------------");
                 if (e.code == 0) {
                     if (e.extension == true) {
-                        alert("suceess");
                         ////JSON对象转JSON字符串
-                        //var obj = { "user": data.field.UserName, "r": e.model };
-                        //obj = JSON.stringify(obj); //转化为JSON字符串
-                        //localStorage.setItem("login", obj);
-                        //window.location.href = 'ManageIndex.aspx';
+                        var obj = { "user": data.field.UserName};
+                        obj = JSON.stringify(obj); //转化为JSON字符串
+                        localStorage.setItem("login", obj);
+                        window.location.href = 'page/home.html';
                     } else {
                         alert("fail");
                         //layer.msg("密码或者账号错误");

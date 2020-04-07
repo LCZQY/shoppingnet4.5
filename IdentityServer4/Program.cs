@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace OAuth2IdentityServer
+namespace IdentityServer4
 {
     public class Program
     {

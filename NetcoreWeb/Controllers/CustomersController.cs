@@ -33,6 +33,7 @@ namespace ShoppingApi.Controllers
         /// 测试
         /// </summary>
         /// <returns></returns>
+        [Authorize]        
         [HttpGet("get")]
         public string get()
         {

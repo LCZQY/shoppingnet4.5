@@ -107,7 +107,7 @@
             , version: '101100'
         }).extend({ //设定模块别名
             admin: 'admin'
-            , menu: 'menu'
+            ,menu: 'menu'
         });
         layui.use(['jquery', 'admin', 'menu'], function () {
             var $ = layui.jquery,

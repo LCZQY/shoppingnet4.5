@@ -15,6 +15,8 @@ https://www.cnblogs.com/taotaozhuanyong/p/11903750.html
 // 用户权限认证教程
 https://blog.csdn.net/KingCruel/article/details/88722775
 
+https://identityserver4.readthedocs.io/en/latest/quickstarts/1_client_credentials.html
+
 
 用户权限认证视频
 https://www.bilibili.com/video/av42364337/
