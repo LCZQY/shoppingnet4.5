@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,10 @@ namespace ShoppingApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            #region AutoMapper
+            services.AddAutoMapper(typeof(ServiceProfile));  //ServiceProfile为你Mapper的类
+            #endregion      
             #region CORS 不可以同时打开AllowAnyOrigin，AllowAnyMethod，AllowAnyHeader，AllowCredentials 这个东西搞了太久了 （一定要设置 SetIsOriginAllowedToAllowWildcardSubdomains)
 
 

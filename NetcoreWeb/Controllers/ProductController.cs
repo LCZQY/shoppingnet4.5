@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingApi.Dto.Request;
+using ShoppingApi.Dto.Response;
 using ShoppingApi.Managers;
 using ShoppingApi.Models;
 using System;
@@ -12,56 +13,35 @@ namespace ShoppingApi.Controllers
 {
 
     /// <summary>
-    /// 客户API
+    /// 商品 API
     /// </summary>
     [Route("api/customers")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class ProductController : ControllerBase
     {
 
         private readonly ShoppingDbContext _context;
-        private readonly ILogger<CustomersController> _logger;
+        private readonly ILogger<ProductController> _logger;
         private readonly CustomerManager _customerManager;
-        public CustomersController(ShoppingDbContext context, ILogger<CustomersController> logger, CustomerManager customerManager)
+        public ProductController(ShoppingDbContext context, ILogger<ProductController> logger, CustomerManager customerManager)
         {
             _context = context;
             _logger = logger;
             _customerManager = customerManager;
         }
 
+        
         /// <summary>
-        /// 登录
-        /// </summary>
-        /// <returns></returns>       
-        [HttpPost("login")]
-        public async Task<ResponseMessage<bool>> LoginJudge([FromBody]LoginRequest loginRequest)
-        {
-            var response = new ResponseMessage<bool>();
-            try
-            {
-                response = await _customerManager.LoginJudgeAsync(loginRequest.Name, loginRequest.Password);
-            }
-            catch (Exception e)
-            {
-
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "用户登录失败，请重试";
-                _logger.LogInformation($"用户登录发生异常:{JsonHelper.ToJson(e)}");
-            }
-            return response;
-        }
-
-        /// <summary>
-        /// 客户列表【列表数据应该是POST 还是 Get？】
+        /// 商品列表
         /// </summary>
         /// <returns></returns>
         [HttpPost("list")]
-        public async Task<PagingResponseMessage<Customer>> CustomerList([FromBody]SearchCustomerRequest search)
+        public async Task<PagingResponseMessage<ProductListResponse>> ProductList([FromBody]SearchProductRequest search)
         {
-            var response = new PagingResponseMessage<Customer>() { Extension = new List<Customer> { } };
+            var response = new PagingResponseMessage<ProductListResponse>() { Extension = new List<ProductListResponse> { } };
             try
             {
-                response = await _customerManager.CustomerListAsync(search, HttpContext.RequestAborted);
+                response = await _customerManager.ProductListAsync(search, HttpContext.RequestAborted);
             }
             catch (Exception e)
             {
@@ -71,6 +51,10 @@ namespace ShoppingApi.Controllers
             }
             return response;
         }
+
+
+
+
 
         /// <summary>
         /// 增加/修改客户(传入Id如果不存在直接新增否则直接修改)        
