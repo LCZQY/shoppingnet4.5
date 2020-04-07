@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ShoppingApi.Models
+namespace ShoppingApi.Dto.Request
 {
     /// <summary>
-    /// 商品表
+    /// 商品编辑请求体
     /// </summary>
-    public class Product : BaseField
+    public class ProductEditRequest
     {
+        /// <summary>
+        /// 主键
+        /// </summary>
+        public string Id { get; set; }
 
 
         /// <summary>
@@ -51,25 +58,9 @@ namespace ShoppingApi.Models
         public string Icon { get; set; }
 
 
-    }
-
-    public class ProductEx : Product
-    {
         /// <summary>
-        /// 图片路径
+        /// 图片
         /// </summary>
-        public string Path { get; set; }
-
-        /// <summary>
-        /// 收藏时间 / 评价时间
-        /// </summary>
-        public DateTime FavoriDate { get; set; }
-
-        /// <summary>
-        /// 评价内容
-        /// </summary>
-        public string Content { get; set; }
-
-
+        public List<string> Files { get; set; }
     }
 }

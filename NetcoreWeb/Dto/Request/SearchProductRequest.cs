@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ShoppingApi.Common;
 
 namespace ShoppingApi.Dto.Request
 {
     /// <summary>
     /// 商品列表搜索
     /// </summary>
-    public class SearchProductRequest
+    public class SearchProductRequest : PageCondition
     {
-
+        /// <summary>
+        /// 商品名称
+        /// </summary>
+        public string Name { get; set; }
     }
 }

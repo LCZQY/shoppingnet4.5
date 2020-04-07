@@ -60,7 +60,7 @@ namespace System.Web.Aspx.ManagePages
                 var title = context.Request["Title"];
                 var list1 = _InfoService.GetList().ToList();
                 var list2 = _photoInfoService.GetList().ToList();
-                //全关联
+                //全关联   
                 var list3 = from c in list1
                             join b in list2
                             on c.ProductId equals b.ProductId

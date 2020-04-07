@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ShoppingApi.Dto.Request;
+using ShoppingApi.Dto.Response;
 using ShoppingApi.Models;
 
 namespace ShoppingApi
@@ -12,8 +13,15 @@ namespace ShoppingApi
     {
         public ServiceProfile()
         {
+            #region request
             CreateMap<CustomerEditRequest, Customer>();
             CreateMap<Customer, CustomerEditRequest>();
+            #endregion
+
+            #region Resposne
+            CreateMap<ProductListResponse, Product>();
+            CreateMap<Product, ProductListResponse>();
+            #endregion
         }
     }
 }

@@ -78,7 +78,7 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 商品
         /// </summary>
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         /// <summary>
         /// 顾客【可以成为卖家】

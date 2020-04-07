@@ -22,6 +22,5 @@ namespace ShoppingApi.Models
         /// </summary>
         public string PhotoUrl { get; set; }
 
-
     }
 }

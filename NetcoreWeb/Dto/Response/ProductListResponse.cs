@@ -10,6 +10,9 @@ namespace ShoppingApi.Dto.Response
     /// </summary>
     public class ProductListResponse
     {
+
+        public string Id { get; set; }
+
         /// <summary>
         /// 商品名
         /// </summary>
@@ -50,6 +53,11 @@ namespace ShoppingApi.Dto.Response
         /// 封面【由于这里只是一张图片，直接把图片冗余在本表中，避免一次Sql语句的查询！】
         /// </summary>
         public string Icon { get; set; }
+
+        /// <summary>
+        /// 商品图片【包括封面图和其他图片】
+        /// </summary>
+        public List<string> Files {get;set;}
 
     }
 }
