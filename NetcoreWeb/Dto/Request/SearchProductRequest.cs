@@ -1,4 +1,4 @@
-﻿using ShoppingApi.Common;
+﻿using ZapiCore;
 
 namespace ShoppingApi.Dto.Request
 {

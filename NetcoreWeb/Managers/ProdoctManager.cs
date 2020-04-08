@@ -24,12 +24,14 @@ namespace ShoppingApi.Managers
         private readonly IProductStore _ProductStore;
         private readonly IPhotoStore _photoStore;
         private readonly ILogger<ProdoctManager> _logger;
-        public ProdoctManager(IProductStore ProductStore, ILogger<ProdoctManager> logger, IMapper mapper , IPhotoStore photoStore)
+        private readonly ITransaction<ShoppingDbContext> _transaction;
+        public ProdoctManager(IProductStore ProductStore, ILogger<ProdoctManager> logger, IMapper mapper, IPhotoStore photoStore, ITransaction<ShoppingDbContext> transaction)
         {
             _ProductStore = ProductStore;
             _photoStore = photoStore;
             _logger = logger;
             _mapper = mapper;
+            _transaction = transaction;
         }
 
         /// <summary>
@@ -41,16 +43,17 @@ namespace ShoppingApi.Managers
         public async Task<PagingResponseMessage<ProductListResponse>> ProductListAsync(SearchProductRequest search, CancellationToken cancellationToken)
         {
             var response = new PagingResponseMessage<ProductListResponse>() { };
-            var entity = await _ProductStore.IQueryableListAsync();                         
+            var entity = await _ProductStore.IQueryableListAsync();
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
                 entity.Where(y => y.Title.Contains(search.Name));
             }
             var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<ProductListResponse>>(list);
-            data.ForEach(async item => {               
+            data.ForEach(async item =>
+            {
                 var img = await _photoStore.IQueryableListAsync();
-                item.Files =await img.Where(y => y.ProductId == item.Id && !y.IsDeleted).Select(y => y.PhotoUrl).ToListAsync(cancellationToken);
+                item.Files = await img.Where(y => y.ProductId == item.Id && !y.IsDeleted).Select(y => y.PhotoUrl).ToListAsync(cancellationToken);
             });
             response.PageIndex = search.PageIndex;
             response.PageSize = search.PageSize;
@@ -70,24 +73,33 @@ namespace ShoppingApi.Managers
             if (editRequest == null)
             {
                 throw new ArgumentNullException();
-            }            
-            //事务处理？？ 
-
-            var Product = _mapper.Map<Product>(editRequest);
-            //新增图片
-            var images = new List<Photo> { };
-            editRequest.Files.ForEach(img =>
+            }
+            using (var transaction = await _transaction.BeginTransaction())
             {
-                images.Add(new Photo
+                try
                 {
-                    IsDeleted = false,
-                    Id = Guid.NewGuid().ToString(),
-                    PhotoUrl = img,
-                    ProductId = editRequest.Id
-                });
-            });
-            await _photoStore.AddRangeEntityAsync(images);
-            response.Extension = await _ProductStore.AddEntityAsync(Product);
+                    var Product = _mapper.Map<Product>(editRequest);
+                    //新增图片
+                    var images = new List<Photo> { };
+                    editRequest.Files.ForEach(img =>
+                    {
+                        images.Add(new Photo
+                        {
+                            IsDeleted = false,
+                            Id = Guid.NewGuid().ToString(),
+                            PhotoUrl = img,
+                            ProductId = editRequest.Id
+                        });
+                    });
+                    await _photoStore.AddRangeEntityAsync(images);
+                    response.Extension = await _ProductStore.AddEntityAsync(Product);
+                }
+                catch (Exception e)
+                {
+                    await transaction.RollbackAsync();
+                    throw e;
+                }
+            }
             return response;
         }
 
@@ -114,13 +126,42 @@ namespace ShoppingApi.Managers
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             var Product = _mapper.Map<Product>(editRequest);
-
-            //存在修改图片 先判断原来是否有图片  存在判断是否有修改 对比异常 删除原理和新增现有数据？
-            if (await _ProductStore.PutEntityAsync(Product.Id, Product))
+            using (var transaction = await _transaction.BeginTransaction())
             {
-                response.Extension = true;
+                try
+                {
+                    //存在修改图片 先判断原来是否有图片  存在判断是否有修改 对比异常 删除原理和新增现有数据？
+                    var photos = await _photoStore.IQueryableListAsync();
+                    var oldfile = await photos.Where(item => !item.IsDeleted && item.ProductId == editRequest.Id).Select(img => img.PhotoUrl).ToListAsync();//1,5,4,3
+                    var newfile = editRequest.Files; //1,2,3,4     
+                                                     //求差集 TODO 待测试
+                    var except = oldfile.Except(newfile).ToList(); //2
+                    if (except.Any())
+                    {
+                        var photo = new List<Photo>() { };
+                        except.ForEach(file =>
+                           {
+                               photo.Add(new Photo
+                               {
+                                   Id = Guid.NewGuid().ToString(),
+                                   IsDeleted = false,
+                                   PhotoUrl = file,
+                                   ProductId = editRequest.Id
+                               });
+                           });
+                        await _photoStore.AddRangeEntityAsync(photo);
+                    }
+                    if (await _ProductStore.PutEntityAsync(Product.Id, Product))
+                    {
+                        response.Extension = true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    await transaction.RollbackAsync();
+                    throw e;
+                }
             }
-
             return response;
         }
 
