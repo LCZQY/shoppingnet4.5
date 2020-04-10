@@ -11,5 +11,10 @@ namespace ShoppingApi.Dto.Request
         /// 商品名称
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 商品类型Id
+        /// </summary>
+        public string CateId { get; set; }
     }
 }

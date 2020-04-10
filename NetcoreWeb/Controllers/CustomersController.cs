@@ -18,13 +18,10 @@ namespace ShoppingApi.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-
-        private readonly ShoppingDbContext _context;
         private readonly ILogger<CustomersController> _logger;
         private readonly CustomerManager _customerManager;
-        public CustomersController(ShoppingDbContext context, ILogger<CustomersController> logger, CustomerManager customerManager)
+        public CustomersController(ILogger<CustomersController> logger, CustomerManager customerManager)
         {
-            _context = context;
             _logger = logger;
             _customerManager = customerManager;
         }

@@ -1,11 +1,241 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>用户管理</title>
+    <link href="../../AppData/layui/css/layui.css" rel="stylesheet" />
 </head>
 <body>
-    用户管理
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <div id="add-main" style="display: none;">
+
+        <div class="my-form">
+            <form class="layui-form" method="POST" lay-skin="line">
+                <div class="layui-form-item my-form-item">
+                    <label class="layui-form-label layui-icon">&#xe770;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" lay-verify="required" placeholder="请输入用户名" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-form-item">
+                    <label class="layui-form-label layui-icon">&#xe673;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="pwd" lay-verify="required" placeholder="请输入密码" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item my-form-item">
+                    <label class="layui-form-label layui-icon">&#xe612;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="nick" lay-verify="required" placeholder="昵称" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-form-item">
+                    <label class="layui-form-label layui-icon">&#xe63a;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="email" lay-verify="required" placeholder="电子邮件" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-form-item">
+                    <div class="layui-input-block item">
+                        <button class="layui-btn" lay-submit="" lay-filter="demo1" id="submit1">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../../Scripts/jquery-3.3.1.min.js"></script>
+    <script src="../../AppData/layui/layui.js"></script>
+    <script src="../../Scripts/Shopping/master.js"></script>
 </body>
+
+<script type="text/html" id="toolbarDemo">
+
+    <div class="layui-btn-container">
+        <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="add">&#xe654;</button>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="batchDel">&#xe640;</button>
+        <div class="layui-btn layui-btn-sm">
+            <span>用户名搜索：</span> <input type="text" name="search">
+        </div>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="search">&#xe615;</button>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="flush">&#xe669;</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs layui-icon" lay-event="del">&#xe640;</a>
+</script>
+
+<script>
+    layui.use(['table', 'layer', 'form'], function () {
+        var table = layui.table,
+            layer = layui.layer,
+            form = layui.form;
+        var $ = layui.$;
+
+        table.render({
+            url: "userhandler.ashx?action=list"
+            , method: "POST"
+            //, where: { page: 0, limit: 10 }
+            , elem: '#test'
+            , toolbar: '#toolbarDemo'
+            , title: '用户数据表'
+            , location: true
+            , cols: [
+                [
+                    { type: 'checkbox', fixed: 'left' }
+                    , { field: 'UserName', title: '用户名', width: 120, edit: 'text' }
+                    , { field: 'Nick', title: '昵称', width: 120, edit: 'text' }
+                    , { field: 'Email', title: '邮箱', width: 120, edit: 'text' }
+                    , {
+                        field: 'updateTime', title: '更新时间', minwidth: 50, sort: true, templet: function (d) {
+                            return layui.util.toDateString(d.updateTime);
+                        }
+                    }
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                ]
+            ]
+            , page: true
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+                case 'add':
+                    layer.open({
+                        title: '增加用户',
+                        /*如果是外部的html，type2，内部，type1*/
+                        type: 1,
+                        btnAlign: 'c',
+                        area: ['400px', '340px'],
+                        content: $("#add-main").html()
+                        //未做的是去监听表单提交，给后台发送ajax请求
+                    }
+                    );
+                    break;
+                case
+                    'batchDel'
+                    :
+                    layer.msg("开发中...");
+                    /*发送ajax请求到后台执行批量删除*/
+                    break;
+                case
+                    'flush'
+                    :
+                    table.reload('test', {
+                        url: "userhandler.ashx?action=list"
+                        , method: "GET"
+                    });
+                    break;
+                case
+                    'search'
+                    :
+                    layer.msg("根据用户名查找");
+                    var name = $('input[name="search"]').val();
+                    table.reload('test', {
+                        url: 'userhandler.ashx?action=search',
+                        where: {
+                            name: name,
+                        },
+                        page: {
+                            curr: 1
+                        }
+                    });
+                    break;
+            };
+        });
+
+        //监听单元格编辑，修改
+        table.on('edit(test)', function (obj) {
+            var value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+            $.ajax({
+                url: 'userhandler.ashx?action=update',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (e) {
+                    if (e.code == 0) {
+                        layer.msg(e.msg);
+                    } else {
+                        layer.msg(e.msg);
+                    }
+                },
+                error: function (e) {
+                    layer.msg(e);
+                }
+            })
+        });
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') { //删除
+                layer.confirm('亲爱的,你要删除我吗？', function (index) {
+                    obj.del();
+                    layer.close(index);
+                    $.ajax({
+                        url: "userhandler.ashx?action=delete",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: data.UserId
+                        },
+                        success: function (e) {
+                            if (e.code == 0) {
+                                layer.msg(e.msg);
+                            } else {
+                                layer.msg(e.msg);
+                            }
+                        },
+                        error: function (e) {
+                            layer.msg(e);
+                        }
+                    })
+                });
+            }
+        });
+        //添加
+        form.on('submit(demo1)', function (data) {
+            $.ajax({
+                url: "userhandler.ashx?action=add",
+                type: "POST",
+                dataType: "json",
+                data: data.field,
+                success: function (e) {
+                    if (e.code == 0) {
+                        layer.msg(e.msg);
+                        page_reload();
+                    } else {
+                        layer.msg(e.msg);
+                    }
+                },
+                error: function (e) {
+                    layer.msg(e);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </html>

@@ -21,6 +21,9 @@ namespace ShoppingApi
             #region Resposne
             CreateMap<ProductListResponse, Product>();
             CreateMap<Product, ProductListResponse>();
+
+            CreateMap<CategoryListResponse, Category>();
+            CreateMap<Category, CategoryListResponse>();
             #endregion
         }
     }

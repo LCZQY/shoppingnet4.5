@@ -48,6 +48,10 @@ namespace ShoppingApi.Managers
             {
                 entity.Where(y => y.Title.Contains(search.Name));
             }
+            if (!string.IsNullOrWhiteSpace(search.CateId))
+            {
+                entity.Where(y => y.CateId == search.CateId);
+            }
             var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<ProductListResponse>>(list);
             data.ForEach(async item =>
@@ -134,7 +138,7 @@ namespace ShoppingApi.Managers
                     var photos = await _photoStore.IQueryableListAsync();
                     var oldfile = await photos.Where(item => !item.IsDeleted && item.ProductId == editRequest.Id).Select(img => img.PhotoUrl).ToListAsync();//1,5,4,3
                     var newfile = editRequest.Files; //1,2,3,4     
-                                                     //求差集 TODO 待测试
+                     //求差集 TODO 待测试
                     var except = oldfile.Except(newfile).ToList(); //2
                     if (except.Any())
                     {
