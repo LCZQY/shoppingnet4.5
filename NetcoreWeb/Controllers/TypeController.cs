@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ShoppingApi.Common;
 using ShoppingApi.Dto.Request;
 using ShoppingApi.Dto.Response;
 using ShoppingApi.Managers;
@@ -29,6 +30,29 @@ namespace ShoppingApi.Controllers
             _typeManager = typeManager;
         }
 
+
+        /// <summary>
+        /// 商品类型树状结构
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("tree")]
+        public async Task<ResponseMessage<List<LayerTreeJson>>> CreateTypeTree()
+        {
+            var response = new ResponseMessage<List<LayerTreeJson>>() { Extension = new List<LayerTreeJson>() { } };
+            try
+            {
+                response.Extension = await _typeManager.CreateTypeTreeResponseListAsync(HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "商品类型树状结构查询失败，请重试";
+                _logger.LogInformation($"商品类型树状结构查询失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+
+
+        }
 
         /// <summary>
         /// 商品类型列表

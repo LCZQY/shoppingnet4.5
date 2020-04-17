@@ -26,7 +26,7 @@ namespace ShoppingApi.Stores
         public async Task<bool> AddEntityAsync(Product entity)
         {
             _context.Attach(entity);
-            _context.Products.Add(entity);
+            _context.Product.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -39,7 +39,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.Products.AsNoTracking().Any(e => e.Id == id);
+            return _context.Product.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<Product> GetAsync(string id)
         {
-            var Product = await _context.Products.FindAsync(id);
+            var Product = await _context.Product.FindAsync(id);
 
             if (Product == null)
             {
@@ -64,7 +64,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<IEnumerable<Product>> EnumerableListAsync()
         {
-            return await _context.Products.AsNoTracking().ToListAsync();
+            return await _context.Product.AsNoTracking().ToListAsync();
 
         }
 
@@ -74,7 +74,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<IQueryable<Product>> IQueryableListAsync()
         {
-            return _context.Products.AsNoTracking();
+            return _context.Product.AsNoTracking();
 
         }
 
@@ -107,7 +107,7 @@ namespace ShoppingApi.Stores
             {
                 return false;
             }
-            var model = await _context.Products.FindAsync(id);
+            var model = await _context.Product.FindAsync(id);
             model.IsDeleted = true;
             _context.Attach(model);
             var entity = _context.Entry(model);

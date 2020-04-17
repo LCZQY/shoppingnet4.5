@@ -31,34 +31,32 @@ namespace ShoppingApi.Models
                 b.ToTable("Customer");
             });
 
-
-
         }
 
         /// <summary>
         /// 权限管理【考虑新建一个服务，独立出去】
         /// </summary>
-        public DbSet<AdminUser> AdminUsers { get; set; }
+        public DbSet<AdminUser> AdminUser { get; set; }
 
         /// <summary>
         /// 商品评价
         /// </summary>
-        public DbSet<Appraise> Appraises { get; set; }
+        public DbSet<Appraise> Appraise { get; set; }
 
         /// <summary>
         /// 商品类别    
         /// </summary>
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Category { get; set; }
         /// <summary>
         /// 收货地址
         /// </summary>
 
-        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<Delivery> Delivery { get; set; }
 
         /// <summary>
         /// 收藏
         /// </summary>
-        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Favorite> Favorite { get; set; }
 
         /// <summary>
         /// 促销资讯表
@@ -73,17 +71,17 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 图片
         /// </summary>
-        public DbSet<Photo> Photos { get; set; }
+        public DbSet<Photo> Photo { get; set; }
 
         /// <summary>
         /// 商品
         /// </summary>
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Product { get; set; }
 
         /// <summary>
         /// 顾客【可以成为卖家】
         /// </summary>
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Customer> Customer { get; set; }
     }
 
 }

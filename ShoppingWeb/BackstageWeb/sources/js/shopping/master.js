@@ -19,14 +19,14 @@ layui.use(['layer', 'form'], function () {
 var ajax_request = function (options) {
 
     $.ajax({
-        type: "post",
+        method: "post",
         async: false,           
         dataType: "json",        
         contentType: "application/json;charset=UTF-8",//指定消息请求类型        
-        data: options.data,
+        data: JSON.stringify(options.data),
         //headers: { "Authorization": "Bearer " + $("#jwt").val().trim() },
         url: options.url,
-       //crossDomain: true,     
+   
         success: function (data, textStatus) {
             options.callback(data);
         },

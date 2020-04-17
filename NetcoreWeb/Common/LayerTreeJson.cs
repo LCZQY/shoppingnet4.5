@@ -15,17 +15,17 @@ namespace ShoppingApi.Common
         /// <summary>
         /// 文本
         /// </summary>
-        public string title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// key
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// 数据
         /// </summary>
-        public List<LayerTreeJson> children { get; set; }
+        public List<LayerTreeJson> Children { get; set; }
 
     }
 

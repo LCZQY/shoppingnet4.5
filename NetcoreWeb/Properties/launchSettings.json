@@ -19,7 +19,7 @@
     },
     "ShoppingApi": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:3001;http://localhost:3000",
       "environmentVariables": {

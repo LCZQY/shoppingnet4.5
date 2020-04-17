@@ -25,14 +25,14 @@ namespace ShoppingApi.Managers
 
         private readonly ITypeStore _typeStore;
         private readonly ILogger<TypeManager> _logger;
-        private readonly ITransaction<ShoppingDbContext> _transaction;
-        public TypeManager(ILogger<TypeManager> logger, IMapper mapper, ITypeStore typeStore, ITransaction<ShoppingDbContext> transaction)
+      //  private readonly ITransaction<ShoppingDbContext> _transaction;
+        public TypeManager(ILogger<TypeManager> logger, IMapper mapper, ITypeStore typeStore/* ,ITransaction<ShoppingDbContext> transaction*/)
         {
 
             _typeStore = typeStore;
             _logger = logger;
             _mapper = mapper;
-            _transaction = transaction;
+           // _transaction = transaction;
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace ShoppingApi.Managers
         public async Task<PagingResponseMessage<CategoryListResponse>> TypeListAsync(SearchTypeRequest search, CancellationToken cancellationToken)
         {
             var response = new PagingResponseMessage<CategoryListResponse>() { };
-            var entity = await _typeStore.IQueryableListAsync();
-            var list = await entity.Where(type => type.Id == search.Parentid).Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
+            var entity = await _typeStore.IQueryableListAsync();   
+            var list = await entity.Where(type => type.ParentId == search.Parentid).Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<CategoryListResponse>>(list);
             response.PageIndex = search.PageIndex;
             response.PageSize = search.PageSize;
@@ -58,18 +58,20 @@ namespace ShoppingApi.Managers
         /// 组合商品类型树状结构(仅是支持Layui树状结构)
         /// </summary>
         /// <param name="parentId"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<List<LayerTreeJson>> CreateTypeTreeResponseListAsync(string parentId = "0")
+        public async Task<List<LayerTreeJson>> CreateTypeTreeResponseListAsync(CancellationToken cancellationToken,string parentId = "0")
         {
             var jsontree = new List<LayerTreeJson>();
             var entity = await _typeStore.IQueryableListAsync();
-            foreach (var item in entity.Where(y => y.ParentId == parentId))
+            var data = await entity.Where(y => y.ParentId == parentId).ToListAsync(cancellationToken);
+            foreach (var item in data)
             {
                 jsontree.Add(new LayerTreeJson
                 {
-                    id = item.Id,
-                    title = item.CateName,
-                    children = await CreateTypeTreeResponseListAsync(item.Id)
+                    Id = item.Id,
+                    Title = item.CateName,
+                    Children = await CreateTypeTreeResponseListAsync(cancellationToken, item.Id)
                 });
             }
             return jsontree;

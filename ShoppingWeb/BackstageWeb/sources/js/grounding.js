@@ -1,38 +1,36 @@
-
+ï»¿/**ä¸Šä¼ å›¾ç‰‡ */
 var uploadfile = function () {
     layui.use(['upload', 'jquery'], function () {
         var upload = layui.upload;
         var $ = layui.$;
-        //Ö´ĞĞÊµÀı
+        //æ‰§è¡Œå®ä¾‹
         var uploadInst = upload.render({
-            elem: '#files'                //°ó¶¨ÔªËØ
-            , url: 'groundinghandler.ashx?action=upload'      //ÉÏ´«½Ó¿Ú
-
-            //*********************´«ÊäÏŞÖÆ
-            , size: 100                   //´«Êä´óĞ¡100k
-            , exts: 'jpg|png|gif|'        //¿É´«ÊäÎÄ¼şµÄºó×º
+            elem: '#files'                //ç»‘å®šå…ƒç´ 
+            , url: 'groundinghandler.ashx?action=upload'      //ä¸Šä¼ æ¥å£
+            //*********************ä¼ è¾“é™åˆ¶
+            , size: 100                   //ä¼ è¾“å¤§å°100k
+            , exts: 'jpg|png|gif|'        //å¯ä¼ è¾“æ–‡ä»¶çš„åç¼€
             , accept: 'file'              //video audio images
-
-            //****************´«Êä²Ù×÷Ïà¹ØÉèÖÃ
-            , data: { Parm1: "hello", Parm2: "world" }    //¶îÍâ´«ÊäµÄ²ÎÊı
-            , headers: { token: 'sasasasa' }                   //¶îÍâÌí¼ÓµÄÇëÇóÍ·
-            , auto: true                                 //×Ô¶¯ÉÏ´«,Ä¬ÈÏÊÇ´ò¿ªµÄ
-            , bindAction: '#btnUpload'                    //autoÎªfalseÊ±£¬µã»÷´¥·¢ÉÏ´«
-            , multiple: false                             //¶àÎÄ¼şÉÏ´«
-            //, number: 100                               //multiple:trueÊ±ÓĞĞ§
-            , done: function (res) {                      //´«ÊäÍê³ÉµÄ»Øµ÷
+            //****************ä¼ è¾“æ“ä½œç›¸å…³è®¾ç½®
+            , data: { Parm1: "hello", Parm2: "world" }    //é¢å¤–ä¼ è¾“çš„å‚æ•°
+            , headers: { token: 'sasasasa' }                   //é¢å¤–æ·»åŠ çš„è¯·æ±‚å¤´
+            , auto: true                                 //è‡ªåŠ¨ä¸Šä¼ ,é»˜è®¤æ˜¯æ‰“å¼€çš„
+            , bindAction: '#btnUpload'                    //autoä¸ºfalseæ—¶ï¼Œç‚¹å‡»è§¦å‘ä¸Šä¼ 
+            , multiple: false                             //å¤šæ–‡ä»¶ä¸Šä¼ 
+            //, number: 100                               //multiple:trueæ—¶æœ‰æ•ˆ
+            , done: function (res) {                      //ä¼ è¾“å®Œæˆçš„å›è°ƒ
                 $('#myPic').attr("src", "../.." + res.src);
-                //¸´Öµµ½ºó¶Ë
+                //å¤å€¼åˆ°åç«¯
                 $("#Photo").val("../.." + res.src);
             }
-            , error: function () {                         //´«ÊäÊ§°ÜµÄ»Øµ÷
-                //ÇëÇóÒì³£»Øµ÷
+            , error: function () {                         //ä¼ è¾“å¤±è´¥çš„å›è°ƒ
+                //è¯·æ±‚å¼‚å¸¸å›è°ƒ
             }
         });
     });
 }
 
-//ÉÏ´«Í¼Æ¬
+//ä¸Šä¼ å›¾ç‰‡
 uploadfile();
 
 layui.use(['form', 'layedit', 'laydate'], function () {
@@ -41,18 +39,18 @@ layui.use(['form', 'layedit', 'laydate'], function () {
         , layer = layui.layer
         , layedit = layui.layedit
         , laydate = layui.laydate;
-    //ÈÕÆÚ¿Ø¼ş
+    //æ—¥æœŸæ§ä»¶
     laydate.render({
-        elem: '#test11' //Ö¸¶¨ÔªËØ
+        elem: '#test11' //æŒ‡å®šå…ƒç´ 
     });
-    //´´½¨Ò»¸ö±à¼­Æ÷
+    //åˆ›å»ºä¸€ä¸ªç¼–è¾‘å™¨
     var editIndex = layedit.build('LAY_demo_editor');
 
-    //¼àÌıÌá½»
+    //ç›‘å¬æäº¤
     form.on('submit(demo1)', function (data) {
-        console.log(data.field, "11111111111111111×îºóÉÏ´«µÄÊÇ");
+        console.log(data.field, "11111111111111111æœ€åä¸Šä¼ çš„æ˜¯");
         //layer.alert(JSON.stringify(data.field), {
-        //    title: '×îÖÕµÄÌá½»ĞÅÏ¢'
+        //    title: 'æœ€ç»ˆçš„æäº¤ä¿¡æ¯'
         //})
         ajax_request({
             url: "groundinghandler.ashx?action=add",
@@ -74,30 +72,26 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     });
 });
 
-
-//ÉÌÆ·ÀàĞÍ
+//åŠ è½½çˆ¶çº§å•†å“ç±»å‹
 ajax_request({
-    url: "typehandler.ashx?action=tree",
+    url: WEBURL + "/api/type/list",
+    data: { pageIndex: 0, pageSize: 1000 },
     callback: function (data) {
-
-        json = JSON.parse(data);
-        console.log(json, "0000");
-
-        var html = ' <select name="CateId">';
-        $.each(json, function (index, item) {
-            if (index == 0) html += ' <option value="">ÇëÑ¡ÔñÉÌÆ·ÀàĞÍ</option>';
-            console.log(item, "--------------");
-            html += '<optgroup label="' + item.title + '">';
-            if (item.children != null)
-                $.each(item.children, function (i, childname) {
-                    html += '<option value="' + childname.id + '">' + childname.title + '</option>';
-                });
-            html += ' </optgroup>';
-        });
-        html += '</select>';
-        console.log(html, "Éú³É");
-        $("#appendsSelect").html(html);
-
+        if (data.code === "0") {
+            var json = data.extension;
+            var html = ' <select name="id">';
+            $.each(json, function (index, item) {
+                if (index === 0) html += ' <option value="">å•†å“ç±»å‹</option>';            
+                html += '<optgroup label="' + item.cateName + '">';
+                if (item.children !== null)
+                    $.each(item.children, function (i, childname) {
+                        html += '<option value="' + childname.id + '">' + childname.cateName + '</option>';
+                    });
+                html += ' </optgroup>';
+            });
+            html += '</select>';
+            $("#appendsSelect").html(html);
+        }
     }
 });
 

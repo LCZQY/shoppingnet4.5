@@ -26,7 +26,7 @@ namespace ShoppingApi.Stores
         public async Task<bool> AddEntityAsync(Category entity)
         {
             _context.Attach(entity);
-            _context.Categories.Add(entity);
+            _context.Category.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -39,7 +39,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.Categories.AsNoTracking().Any(e => e.Id == id);
+            return _context.Category.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<Category> GetAsync(string id)
         {
-            var Category = await _context.Categories.FindAsync(id);
+            var Category = await _context.Category.FindAsync(id);
 
             if (Category == null)
             {
@@ -64,7 +64,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<IEnumerable<Category>> EnumerableListAsync()
         {
-            return await _context.Categories.AsNoTracking().ToListAsync();
+            return await _context.Category.AsNoTracking().ToListAsync();
 
         }
 
@@ -74,7 +74,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<IQueryable<Category>> IQueryableListAsync()
         {
-            return _context.Categories.AsNoTracking();
+            return _context.Category.AsNoTracking();
 
         }
 
@@ -107,7 +107,7 @@ namespace ShoppingApi.Stores
             {
                 return false;
             }
-            var model = await _context.Categories.FindAsync(id);
+            var model = await _context.Category.FindAsync(id);
             model.IsDeleted = true;
             _context.Attach(model);
             var entity = _context.Entry(model);

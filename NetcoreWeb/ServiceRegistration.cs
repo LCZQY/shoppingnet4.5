@@ -2,6 +2,10 @@
 using ShoppingApi.Stores;
 using ShoppingApi.Stores.Interface;
 using ShoppingApi.Managers;
+using Swashbuckle.AspNetCore.Swagger;
+using ZapiCore;
+using ShoppingApi.Models;
+
 namespace ShoppingApi
 {
     /// <summary>
@@ -14,11 +18,14 @@ namespace ShoppingApi
         /// </summary>
         public static void Start(IServiceCollection services)
         {
+            services.AddScoped<ITransaction<ShoppingDbContext>, Transaction<ShoppingDbContext>>();
+        
             services.AddScoped<CustomerManager>();
             services.AddScoped<ICustomerStore, CustomerStore>();
-
+       
             services.AddScoped<ProdoctManager>();
             services.AddScoped<IProductStore, ProductStore>();
+            services.AddScoped<IPhotoStore, PhotoStore>();
 
             services.AddScoped<TypeManager>();
             services.AddScoped<ITypeStore, TypeStore>();
