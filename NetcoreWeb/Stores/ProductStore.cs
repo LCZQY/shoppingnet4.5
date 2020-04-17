@@ -72,7 +72,7 @@ namespace ShoppingApi.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IQueryable<Product>> IQueryableListAsync()
+        public  IQueryable<Product> IQueryableListAsync()
         {
             return _context.Product.AsNoTracking();
 

@@ -1,5 +1,5 @@
-/**
-        * Ò»°ãÓÃÓÚÉ¾³ıÊı¾İĞĞÊ¹ÓÃ
+ï»¿/**
+        * ä¸€èˆ¬ç”¨äºåˆ é™¤æ•°æ®è¡Œä½¿ç”¨
         */
 var table_confirm = function (options) {
     layer.confirm(options.tips, function (index) {
@@ -22,181 +22,100 @@ var table_confirm = function (options) {
         });
     });
 };
+
 /**
- * °ó¶¨Êı¾İ±í¸ñ
+ * ç»‘å®šæ•°æ®è¡¨æ ¼
  * */
-var reload = function (typeid, typename) {
+var loadtable = function (typeid, typename) {
     layui.use(['table', 'layer', 'form'], function () {
         var table = layui.table;
+        console.log(table, "tables")
         table.render({
-            url: "typehandler.ashx?action=type"
+            url: WEBURL + "/api/product/layui/table/list"
             , method: "POST"
-            , where: { CateId: typeid, Name: typename }
+            , startByZero: 0
+            , where: { cateId: typeid }
+            //,headers: {""} æºå¸¦token
+            , contentType: 'application/json'
             , elem: '#test'
             , toolbar: '#toolbarDemo'
-            , title: 'ÓÃ»§Êı¾İ±í'
+            , title: 'å•†å“åˆ—è¡¨'
             , location: true
             , cols: [
                 [
                     { type: 'checkbox', fixed: 'left' }
-                    , { field: 'Title', title: 'ÉÌÆ·Ãû³Æ', width: 120, edit: 'text' }
-                    , { field: 'CateId', title: 'ÉÌÆ·ÀàĞÍ', width: 120, sort: true, }
-                    , { field: 'MarketPrice', title: 'ÊĞ³¡¼Û¸ñ', width: 120, edit: 'text' }
-                    , { field: 'Price', title: '±¾Õ¾¼Û¸ñ', width: 120, sort: true, edit: 'text' }
+                    , { field: 'title', title: 'å•†å“åç§°', align: "center", width: 120, edit: 'text' }
+                    , { field: 'icon', title: 'å°é¢', width: 100, align: "center", templet: "#imgtmp" }
+                    , { field: 'cateId', title: 'å•†å“ç±»å‹', width: 120, align: "center", sort: true, }
+                    , { field: 'marketPrice', title: 'å¸‚åœºä»·æ ¼(å…ƒ)', width: 120, align: "center", edit: 'text' }
+                    , { field: 'price', title: 'æœ¬ç«™ä»·æ ¼(å…ƒ)', width: 120, sort: true, align: "center", edit: 'text' }
                     , {
-                        field: 'PostTime', title: 'ÉÏ¼ÜÊ±¼ä', width: 120, sort: true, templet: function (d) {
+                        field: 'postTime', title: 'ä¸Šæ¶æ—¶é—´', width: 120, sort: true, align: "center", templet: function (d) {
                             return layui.util.toDateString(d.DeliveryDate);
                         }, edit: ''
                     }
-                    , { field: 'Stock', title: '¿â´æÊıÁ¿', width: 120, edit: 'text', edit: 'text' }
-                    , { field: 'Content', title: 'ÉÌÆ·ÃèÊö', width: 120, edit: 'text' }
-                    //, { field: 'DetailStates', title: '¶©µ¥¸ú×Ù×´Ì¬', width: 120, templet: '#table-DetailStates' }
-                    , { fixed: 'right', title: '²Ù×÷', toolbar: '#takeaction', width: 140 }
+                    , { field: 'stock', title: 'åº“å­˜æ•°é‡(ä»¶)', width: 120, align: "center", edit: 'text' }
+                    , { field: 'content', title: 'å•†å“æè¿°', width: 120, align: "center", edit: 'text' }
+                    //, { field: 'DetailStates', title: 'è®¢å•è·Ÿè¸ªçŠ¶æ€', width: 120, templet: '#table-DetailStates' }
+                    , { fixed: 'right', title: 'æ“ä½œ', align: "center", toolbar: '#takeaction', width: 140 }
                 ]
             ]
-            , page: true
+            , page: { limit: 10}
         });
     });
 };
 
-//Ê÷ĞÎ½á¹¹
-function loadtree() {
-    $.ajax({
-        type: "get",
-        url: WEBURL +"/api/type/tree",
-        dataType: 'json',
-        success: function (res) {
-            console.log(res, "Êı¾İÔ´");
-            var data = [{}];
-            layui.use(['tree', 'util'], function () {
-                var tree = layui.tree,
-                    layer = layui.layer,
-                    util = layui.util,
-                    data1 = res.extension
-                tree.render({
-                    elem: '#test9',
-                    id: 'treedept',
-                    data: data1,
-                    showCheckbox: true,//ÏÔÊ¾¶àÑ¡¿ò
-                    showLine: true,//ÏÔÊ¾Ïß
-                    accordion: true,//ÊÖ·çÇÙÄ£Ê½
-                    drag: false,//ÍÏ×§
-                    skin: "laySimple", // laySimpleÖ÷Ìâ·ç¸ñ
-                    showSearch: true,//ÏÔÊ¾ËÑË÷¿ò
-                    //edit: false,
-                    edit: ['update'], //²Ù×÷½ÚµãµÄÍ¼±ê,
-                    click: function (obj) {
-                        //  $(".radio").eq(0).removeAttr("checked");
-                        $("#parentId").val(obj.data.title);
-                        $("#parentId").attr("guid", obj.data.id);
-                        $("#type").val("×Ó¼¶");
-                        console.log(obj.data.title, "µã»÷²é¿´ÉÌÆ·");
-                        //±í¸ñÕ¹Ê¾Çø
-                        reload(obj.data.id, obj.data.title);
-                        table_show();
-                    },
-                    //Ê÷ĞÎ²Ëµ¥µÄÔöÉ¾¸Ä²é£¬²Ù×÷
-                    operate: function (obj) {
-                        var type = obj.type; //µÃµ½²Ù×÷ÀàĞÍ£ºadd¡¢edit¡¢del
-                        var data = obj.data; //µÃµ½µ±Ç°½ÚµãµÄÊı¾İ
-                        var elem = obj.elem; //µÃµ½µ±Ç°½ÚµãÔªËØ
-                        console.log(type, "µ±Ç°Ñ¡ÔñÖĞµÄÊÇ..");
-                        if (type === 'del') { //É¾³ıµÄ×é¼şlayui ÀïÃæÓĞ¸öBug £¡£¡ Ö±½Óµã»÷É¾³ı¾Í²»¼ûÁË
-                            console.log(0);
-                            var arr = obj.data;
-                            if (arr.id > 0 && (!typeof arr.id != 'undefined')) {
-                                if (arr.children.length > 0) {
-                                    layer.msg("¸ÃÉÌÆ·ÀàĞÍÏÂÓĞ×ÓÀàĞÍ²»ÔÊĞíÉ¾³ı");
-                                    return false;
-                                } else {
-                                    table_confirm({
-                                        obj: obj,
-                                        url: "typehandler.ashx?action=update",
-                                        tips: "ÊÇ·ñÈ·¶¨É¾³ı£¿",
-                                        data: { id: arr.id }
-                                    });
-                                }
-                            } else {
-                                elem.remove();
-                            }
-                        } else if (type === 'update') {
-                            console.log(data, "---------------")
-                            table_confirm({
-                                obj: obj,
-                                url: "typehandler.ashx?action=update",
-                                tips: "ÊÇ·ñÈ·¶¨ĞŞ¸Ä£¿",
-                                data: { CateName: data.title, id: data.id }
-                            });
-                            page_reload();
-                        }
-                    }
-                });
-            });
-        }
-    });
-}
-loadtree();
-
-//±í¸ñ²Ù×÷
+//è¡¨æ ¼æ“ä½œ
 var table_show = function () {
-
     layui.use(['table', 'layer', 'form'], function () {
         var table = layui.table;
-
-        //Í·¹¤¾ßÀ¸ÊÂ¼ş
+        //å¤´å·¥å…·æ äº‹ä»¶
         table.on('toolbar(test)', function (obj) {
-
             switch (obj.event) {
-
                 case 'add':
                     layer.open({
                         title: '',
-                        /*Èç¹ûÊÇÍâ²¿µÄhtml£¬type2£¬ÄÚ²¿£¬type1*/
+                        /*å¦‚æœæ˜¯å¤–éƒ¨çš„htmlï¼Œtype2ï¼Œå†…éƒ¨ï¼Œtype1*/
                         type: 1,
                         btnAlign: 'c',
                         area: '50%',
                         content: $("#add-main").html()
-                        //Î´×öµÄÊÇÈ¥¼àÌı±íµ¥Ìá½»£¬¸øºóÌ¨·¢ËÍajaxÇëÇó
-                    }
-                    );
-                    break;
-                case
-                    'batchDel'
-                    :
-                    layer.msg("¿ª·¢ÖĞ...");
-                    /*·¢ËÍajaxÇëÇóµ½ºóÌ¨Ö´ĞĞÅúÁ¿É¾³ı*/
-                    break;
-                case
-                    'flush'
-                    :
-                    table.reload('test', {
-                        url: "groundinghandler.ashx?action=list"
-                        , method: "GET"
+                        //æœªåšçš„æ˜¯å»ç›‘å¬è¡¨å•æäº¤ï¼Œç»™åå°å‘é€ajaxè¯·æ±‚
                     });
                     break;
-                case
-                    'search'
-                    :
-                    //   layer.msg("¸ù¾İÓÃ»§Ãû²éÕÒ");
+                case 'batchDel':
+                    layer.msg("å¼€å‘ä¸­...");
+                    /*å‘é€ajaxè¯·æ±‚åˆ°åå°æ‰§è¡Œæ‰¹é‡åˆ é™¤*/
+                    break;
+                case 'flush':
+                    console.log(0);
+                    table.reload('test', {
+                        url: WEBURL + "/api/product/layui/table/list"
+                        , method: "POST"
+                        , where: { name: null }
+                    });
+                    break;
+                case 'search':                    
                     var name = $('input[name="search"]').val();
-                    table.reload('test', {
-                        url: 'groundinghandler.ashx?action=search',
-                        where: {
-                            Title: name,
-                        },
-                        page: {
-                            curr: 1
-                        }
-                    });
+                    if (name === '') {
+                        layer.msg("è¯·è¾“å…¥å•†å“åç§°");
+                    } else {
+                        table.reload('test', {
+                            url: WEBURL + "/api/product/layui/table/list"
+                            //, method: "POST"
+                            , where: { name: name }
+                            , page: { curr: 1 }
+                        });
+                    }
                     break;
             };
         });
 
-        //¼àÌıµ¥Ôª¸ñ±à¼­£¬ĞŞ¸Ä
+        //ç›‘å¬å•å…ƒæ ¼ç¼–è¾‘ï¼Œä¿®æ”¹
         table.on('edit(test)', function (obj) {
-            var value = obj.value //µÃµ½ĞŞ¸ÄºóµÄÖµ
-                , data = obj.data //µÃµ½ËùÔÚĞĞËùÓĞ¼üÖµ
-                , field = obj.field; //µÃµ½×Ö¶Î
+            var value = obj.value //å¾—åˆ°ä¿®æ”¹åçš„å€¼
+                , data = obj.data //å¾—åˆ°æ‰€åœ¨è¡Œæ‰€æœ‰é”®å€¼
+                , field = obj.field; //å¾—åˆ°å­—æ®µ
             var loading = layer.load(2, {
                 shade: [0.1, '#000']
             });
@@ -216,18 +135,18 @@ var table_show = function () {
                 }
             });
         });
-        //¼àÌıĞĞ¹¤¾ßÊÂ¼ş
+        //ç›‘å¬è¡Œå·¥å…·äº‹ä»¶
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
-                case 'del'://É¾³ı
+                case 'del'://åˆ é™¤
                     table_confirm({
                         obj: obj,
                         url: "groundinghandler.ashx?action=delete",
-                        tips: "Ç×°®µÄ,ÄãÒªÉ¾³ıÎÒÂğ£¿",
+                        tips: "æ˜¯å¦ç¡®è®¤åˆ é™¤",
                         data: { id: data.ProductId }
                     });
-                    //      page_reload();
+                    //page_reload();
                     break;
             }
         });
@@ -236,65 +155,155 @@ var table_show = function () {
     });
 }
 
-//²Ëµ¥ËÑË÷£¡£¡
-//$("input[placeholder='ÇëÊäÈë¹Ø¼ü×Ö½øĞĞ¹ıÂË']").change(function () {
+
+//æ ‘å½¢ç»“æ„
+function loadtree() {
+    $.ajax({
+        type: "get",
+        url: WEBURL +"/api/type/tree",
+        dataType: 'json',
+        success: function (res) {
+            console.log(res, "æ•°æ®æº");
+            var data = [{}];
+            layui.use(['tree', 'util'], function () {
+                var tree = layui.tree,
+                    layer = layui.layer,
+                    util = layui.util,
+                    data1 = res.extension
+                tree.render({
+                    elem: '#test9',
+                    id: 'treedept',
+                    data: data1,
+                    showCheckbox: true,//æ˜¾ç¤ºå¤šé€‰æ¡†
+                    showLine: true,//æ˜¾ç¤ºçº¿
+                    accordion: true,//æ‰‹é£ç´æ¨¡å¼
+                    drag: false,//æ‹–æ‹½
+                    skin: "laySimple", // laySimpleä¸»é¢˜é£æ ¼
+                    showSearch: true,//æ˜¾ç¤ºæœç´¢æ¡†
+                    //edit: false,
+                    edit: ['update'], //æ“ä½œèŠ‚ç‚¹çš„å›¾æ ‡,
+                    click: function (obj) {
+                        //  $(".radio").eq(0).removeAttr("checked");
+                        $("#parentId").val(obj.data.title);
+                        $("#parentId").attr("guid", obj.data.id);
+                        $("#type").val("å­çº§");
+                        console.log(obj.data, "ç‚¹å‡»æŸ¥çœ‹å•†å“");
+                        //è¡¨æ ¼å±•ç¤ºåŒº
+                        reload(obj.data.id, obj.data.title);
+                        //è¡¨å•æ“ä½œ
+                        table_show();
+                    },
+                    //æ ‘å½¢èœå•çš„å¢åˆ æ”¹æŸ¥ï¼Œæ“ä½œ
+                    operate: function (obj) {
+                        var type = obj.type; //å¾—åˆ°æ“ä½œç±»å‹ï¼šaddã€editã€del
+                        var data = obj.data; //å¾—åˆ°å½“å‰èŠ‚ç‚¹çš„æ•°æ®
+                        var elem = obj.elem; //å¾—åˆ°å½“å‰èŠ‚ç‚¹å…ƒç´ 
+                        console.log(type, "å½“å‰é€‰æ‹©ä¸­çš„æ˜¯..");
+                        if (type === 'del') { //åˆ é™¤çš„ç»„ä»¶layui é‡Œé¢æœ‰ä¸ªBug ï¼ï¼ ç›´æ¥ç‚¹å‡»åˆ é™¤å°±ä¸è§äº†
+                            console.log(0);
+                            var arr = obj.data;
+                            if (arr.id > 0 && (!typeof arr.id != 'undefined')) {
+                                if (arr.children.length > 0) {
+                                    layer.msg("è¯¥å•†å“ç±»å‹ä¸‹æœ‰å­ç±»å‹ä¸å…è®¸åˆ é™¤");
+                                    return false;
+                                } else {
+                                    table_confirm({
+                                        obj: obj,
+                                        url: "typehandler.ashx?action=update",
+                                        tips: "æ˜¯å¦ç¡®å®šåˆ é™¤ï¼Ÿ",
+                                        data: { id: arr.id }
+                                    });
+                                }
+                            } else {
+                                elem.remove();
+                            }
+                        } else if (type === 'update') {
+                            console.log(data, "---------------")
+                            table_confirm({
+                                obj: obj,
+                                url: "typehandler.ashx?action=update",
+                                tips: "æ˜¯å¦ç¡®å®šä¿®æ”¹ï¼Ÿ",
+                                data: { CateName: data.title, id: data.id }
+                            });
+                            page_reload();
+                        }
+                    }
+                });
+            });
+        }
+    });
+}
+
+
+//èœå•æœç´¢ï¼ï¼
+//$("input[placeholder='è¯·è¾“å…¥å…³é”®å­—è¿›è¡Œè¿‡æ»¤']").change(function () {
 //    console.log(1);
 //});
 
-layui.use(['form', 'tree', 'util', 'layer'], function () {
-    layer = layui.layer
-        , form = layui.form
+var inserttype = function () {
 
-    /**Ìí¼ÓÉÌÆ·ÀàĞÍ */
-    var active = {
-        offset: function (othis) {
+    layui.use(['form', 'tree', 'util', 'layer'], function () {
+        layer = layui.layer
+            , form = layui.form
 
-            var type = othis.data('type')
-            layer.open({
-                type: 1
-                , title: "Ìí¼ÓÉÌÆ·ÀàĞÍ"
-                , area: '50%'
-                , offset: type
-                , id: 'layerDemo' + type //·ÀÖ¹ÖØ¸´µ¯³ö
-                , content: $('#from')
-                // , btn: '¹Ø±ÕÈ«²¿'
-                , btnAlign: 'l' //°´Å¥¾ÓÖĞ
-                , shade: .1 //²»ÏÔÊ¾ÕÚÕÖ
-                , yes: function () {
-                    layer.closeAll();
+        /**æ·»åŠ å•†å“ç±»å‹ */
+        var active = {
+            offset: function (othis) {
+
+                var type = othis.data('type')
+                layer.open({
+                    type: 1
+                    , title: "æ·»åŠ å•†å“ç±»å‹"
+                    , area: '50%'
+                    , offset: type
+                    , id: 'layerDemo' + type //é˜²æ­¢é‡å¤å¼¹å‡º
+                    , content: $('#from')
+                    // , btn: 'å…³é—­å…¨éƒ¨'
+                    , btnAlign: 'l' //æŒ‰é’®å±…ä¸­
+                    , shade: .1 //ä¸æ˜¾ç¤ºé®ç½©
+                    , yes: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        };
+        $('#layerDemo').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+        //è¡¨å•çš„æäº¤
+        form.on('submit(demo1)', function (data) {
+            console.log(data.field, "è¯·æ±‚å‚æ•°");
+            data.field.type = data.field.type == "é¡¶çº§" ? "1" : "2";
+            data.field.parentId = $("#parentId").attr("guid");
+
+            //åŠ è½½çˆ¶çº§èœå•
+            ajax_request({
+                url: "typehandler.ashx?action=add",
+                data: data.field,
+                callback: function (data) {
+                    data = JSON.parse(data);
+                    if (data.code == 0) {
+                        layer.msg("æ·»åŠ æˆåŠŸ");
+                        layer.closeAll("page"); //å…³é—­ï¼ˆä¿¡æ¯æ¡†ï¼Œé»˜è®¤dialogï¼‰1ï¼ˆpageé¡µé¢å±‚ï¼‰2ï¼ˆiframeå±‚ï¼‰3ï¼ˆloadingåŠ è½½å±‚ï¼‰4ï¼ˆtipså±‚ï¼‰
+                        $("input[name='cateName']").val(" ");
+                        loadtree();
+
+                    } else {
+                        console.log(data);
+                        layer.msg("æœåŠ¡å™¨å‡ºé”™äº†ï¼Œè¯·é‡è¯•");
+                    }
                 }
             });
-        }
-    };
-    $('#layerDemo').on('click', function () {
-        var othis = $(this), method = othis.data('method');
-        active[method] ? active[method].call(this, othis) : '';
-    });
-
-    //±íµ¥µÄÌá½»
-    form.on('submit(demo1)', function (data) {
-        console.log(data.field, "ÇëÇó²ÎÊı");
-        data.field.type = data.field.type == "¶¥¼¶" ? "1" : "2";
-        data.field.parentId = $("#parentId").attr("guid");
-
-        //¼ÓÔØ¸¸¼¶²Ëµ¥
-        ajax_request({
-            url: "typehandler.ashx?action=add",
-            data: data.field,
-            callback: function (data) {
-                data = JSON.parse(data);
-                if (data.code == 0) {
-                    layer.msg("Ìí¼Ó³É¹¦");
-                    layer.closeAll("page"); //¹Ø±Õ£¨ĞÅÏ¢¿ò£¬Ä¬ÈÏdialog£©1£¨pageÒ³Ãæ²ã£©2£¨iframe²ã£©3£¨loading¼ÓÔØ²ã£©4£¨tips²ã£©
-                    $("input[name='cateName']").val(" ");
-                    loadtree();
-
-                } else {
-                    console.log(data);
-                    layer.msg("·şÎñÆ÷³ö´íÁË£¬ÇëÖØÊÔ");
-                }
-            }
+            return false;
         });
-        return false;
     });
-});
+}
+
+
+
+loadtree(); //åŠ è½½æ ‘
+loadtable(); //åŠ è½½è¡¨æ ¼
+table_show();//åŠ è½½è¡¨æ ¼æ“ä½œ
+inserttype(); //æ·»åŠ å•†å“

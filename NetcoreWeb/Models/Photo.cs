@@ -11,6 +11,10 @@ namespace ShoppingApi.Models
     /// </summary>
     public class Photo : BaseField
     {
+        /// <summary>
+        /// 是否封面
+        /// </summary>
+        public bool IsIcon { get; set; }
             
         /// <summary>
         /// 商品ID

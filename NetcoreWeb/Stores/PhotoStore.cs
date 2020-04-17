@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ShoppingApi.Models;
+using ShoppingApi.Stores.Interface;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ShoppingApi.Models;
-using ShoppingApi.Stores.Interface;
 namespace ShoppingApi.Stores
 {
     /// <summary>
@@ -73,7 +72,7 @@ namespace ShoppingApi.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IQueryable<Photo>> IQueryableListAsync()
+        public IQueryable<Photo> IQueryableListAsync()
         {
             return _context.Photo.AsNoTracking();
 

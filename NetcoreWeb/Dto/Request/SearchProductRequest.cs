@@ -7,6 +7,8 @@ namespace ShoppingApi.Dto.Request
     /// </summary>
     public class SearchProductRequest : PageCondition
     {
+
+
         /// <summary>
         /// 商品名称
         /// </summary>

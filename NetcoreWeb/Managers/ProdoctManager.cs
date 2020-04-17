@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ShoppingApi.Common;
 using ShoppingApi.Dto.Request;
 using ShoppingApi.Dto.Response;
 using ShoppingApi.Models;
@@ -34,6 +35,46 @@ namespace ShoppingApi.Managers
             _transaction = transaction;
         }
 
+
+        /// <summary>
+        /// 列表数据
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<LayerTableJson> LayuiProductListAsync(LayuiTableRequest search, CancellationToken cancellationToken)
+        {
+            var response = new LayerTableJson() { };
+            var entity = _ProductStore.IQueryableListAsync();
+            if (!string.IsNullOrWhiteSpace(search.Name))
+            {
+                entity = entity.Where(y => y.Title.Contains(search.Name));
+            }           
+            if (!string.IsNullOrWhiteSpace(search.CateId))
+            {
+                entity = entity.Where(y => y.CateId == search.CateId);
+            }
+            var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
+            var data = _mapper.Map<List<ProductListResponse>>(list);
+            var img = await _photoStore.IQueryableListAsync().Where(y => data.Select(pro => pro.Id).Contains(y.ProductId) && !y.IsDeleted).ToListAsync(cancellationToken); 
+            data.ForEach(item =>
+            {
+                if (img.Where(y => y.ProductId == item.Id).Any())
+                {
+                    item.Files = img.Select(y => y.PhotoUrl).ToList();
+                }
+                else
+                {
+                    item.Files = new List<string>() { };
+                }
+            });
+            response.Count = data.Count();
+            response.Data = data;
+            return response;
+        }
+
+
+
         /// <summary>
         /// 列表数据
         /// </summary>
@@ -43,21 +84,28 @@ namespace ShoppingApi.Managers
         public async Task<PagingResponseMessage<ProductListResponse>> ProductListAsync(SearchProductRequest search, CancellationToken cancellationToken)
         {
             var response = new PagingResponseMessage<ProductListResponse>() { };
-            var entity = await _ProductStore.IQueryableListAsync();
+            var entity =  _ProductStore.IQueryableListAsync();
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
-                entity.Where(y => y.Title.Contains(search.Name));
-            }
+                entity= entity.Where(y => y.Title.Contains(search.Name));
+            }            
             if (!string.IsNullOrWhiteSpace(search.CateId))
             {
-                entity.Where(y => y.CateId == search.CateId);
+                entity= entity.Where(y => y.CateId == search.CateId);
             }
             var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<ProductListResponse>>(list);
-            data.ForEach(async item =>
-            {
-                var img = await _photoStore.IQueryableListAsync();
-                item.Files = await img.Where(y => y.ProductId == item.Id && !y.IsDeleted).Select(y => y.PhotoUrl).ToListAsync(cancellationToken);
+            var img = await _photoStore.IQueryableListAsync().Where(y => data.Select(pro=>pro.Id).Contains(y.ProductId) && !y.IsDeleted).ToListAsync(cancellationToken); //>>>> 不能在循环里找到数据库
+            data.ForEach(item =>
+            {                    
+                if (img.Where(y=>y.ProductId == item.Id).Any())
+                {
+                    item.Files = img.Select(y => y.PhotoUrl).ToList();
+                }
+                else
+                {
+                    item.Files = new List<string>() { };
+                }
             });
             response.PageIndex = search.PageIndex;
             response.PageSize = search.PageSize;
@@ -134,9 +182,8 @@ namespace ShoppingApi.Managers
             {
                 try
                 {
-                    //存在修改图片 先判断原来是否有图片  存在判断是否有修改 对比异常 删除原理和新增现有数据？
-                    var photos = await _photoStore.IQueryableListAsync();
-                    var oldfile = await photos.Where(item => !item.IsDeleted && item.ProductId == editRequest.Id).Select(img => img.PhotoUrl).ToListAsync();//1,5,4,3
+                    //存在修改图片 先判断原来是否有图片  存在判断是否有修改 对比异常 删除原理和新增现有数据？               
+                    var oldfile = await _photoStore.IQueryableListAsync().Where(item => !item.IsDeleted && item.ProductId == editRequest.Id).Select(img => img.PhotoUrl).ToListAsync();//1,5,4,3
                     var newfile = editRequest.Files; //1,2,3,4     
                      //求差集 TODO 待测试
                     var except = oldfile.Except(newfile).ToList(); //2

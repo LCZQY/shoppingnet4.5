@@ -34,24 +34,22 @@ namespace ShoppingApi.Common
     /// </summary>
     public class LayerTableJson
     {
-
-
         /// <summary>
         /// 行数
         /// </summary>
-        public int count { get; set; }
+        public int Count { get; set; }
         /// <summary>
         /// 状态码
         /// </summary>
-        public int code { get; set; }
+        public int Code { get; set; } = 0;
         /// <summary>
         /// 消息
         /// </summary>
-        public string msg { get; set; }
+        public string Msg { get; set; } = "请求成功";
         /// <summary>
         /// 数据
         /// </summary>
-        public dynamic data { get; set; }
+        public dynamic Data { get; set; }
 
     }
 }

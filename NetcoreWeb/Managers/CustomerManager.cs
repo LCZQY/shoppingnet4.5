@@ -38,7 +38,7 @@ namespace ShoppingApi.Managers
         public async Task<ResponseMessage<bool>> LoginJudgeAsync(string name, string pwd)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            var customer = await _customerStore.IQueryableListAsync();
+            var customer =  _customerStore.IQueryableListAsync();
             if (customer.Where(y => y.Name == name && y.Pwd == pwd).Any())
             {
                 response.Extension = true;
@@ -55,10 +55,10 @@ namespace ShoppingApi.Managers
         public async Task<PagingResponseMessage<Customer>> CustomerListAsync(SearchCustomerRequest search, CancellationToken cancellationToken)
         {
             var response = new PagingResponseMessage<Customer>() { };
-            var entity = await _customerStore.IQueryableListAsync();
+            var entity =  _customerStore.IQueryableListAsync();
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
-                entity.Where(y => y.Name == search.Name);
+                entity = entity.Where(y => y.Name == search.Name);
             }
             var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             response.PageIndex = search.PageIndex;

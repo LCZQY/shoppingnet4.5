@@ -12,7 +12,7 @@ namespace ShoppingApi.Common.Interface
 
         Task<IEnumerable<T>> EnumerableListAsync();
 
-        Task<IQueryable<T>> IQueryableListAsync();
+        IQueryable<T> IQueryableListAsync();
 
         Task<T> GetAsync(string id);
 

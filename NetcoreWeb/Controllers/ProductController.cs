@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ShoppingApi.Common;
 using ShoppingApi.Dto.Request;
 using ShoppingApi.Dto.Response;
 using ShoppingApi.Managers;
@@ -30,7 +31,38 @@ namespace ShoppingApi.Controllers
             _prodoctManager =  prodoctManager;
         }
 
-        
+
+
+
+
+
+        /// <summary>
+        /// 兼容Layui表格数据结构得商品列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("layui/table/list")]
+        public async Task<LayerTableJson> ProductList([FromBody]LayuiTableRequest search)
+        {
+            var response = new LayerTableJson() { };
+            try
+            {
+                response = await _prodoctManager.LayuiProductListAsync(search, HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                response.Code = 500;
+                response.Msg = "商品列表查询失败，请重试";
+                _logger.LogInformation($"商品列表查询失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// 商品列表
         /// </summary>
@@ -90,7 +122,7 @@ namespace ShoppingApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("delete")]
-        public async Task<ResponseMessage<bool>> ProductDelete([FromRoute]string id)
+        public async Task<ResponseMessage<bool>> ProductDelete(string id)
         {
             var response = new ResponseMessage<bool> { Extension = false };
             try

@@ -81,7 +81,7 @@ ajax_request({
             var json = data.extension;
             var html = ' <select name="id">';
             $.each(json, function (index, item) {
-                if (index === 0) html += ' <option value="">商品类型</option>';            
+                if (index === 0) html += ' <option value="">商品类型</option>';
                 html += '<optgroup label="' + item.cateName + '">';
                 if (item.children !== null)
                     $.each(item.children, function (i, childname) {
@@ -91,6 +91,17 @@ ajax_request({
             });
             html += '</select>';
             $("#appendsSelect").html(html);
+        }
+    }
+});
+
+
+//加载父级商品类型
+ajax_request({
+    url: WEBURL + "/api/product/list",
+    data: { pageIndex: 0, pageSize: 1000 },
+    callback: function (data) {
+        console.log(data,"data>>>>>>>>>>>>>>>>>>>>>>>")
         }
     }
 });

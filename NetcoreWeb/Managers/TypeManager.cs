@@ -43,9 +43,8 @@ namespace ShoppingApi.Managers
         /// <returns></returns>
         public async Task<PagingResponseMessage<CategoryListResponse>> TypeListAsync(SearchTypeRequest search, CancellationToken cancellationToken)
         {
-            var response = new PagingResponseMessage<CategoryListResponse>() { };
-            var entity = await _typeStore.IQueryableListAsync();   
-            var list = await entity.Where(type => type.ParentId == search.Parentid).Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
+            var response = new PagingResponseMessage<CategoryListResponse>() { };   
+            var list = await _typeStore.IQueryableListAsync().Where(type => type.ParentId == search.Parentid).Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<CategoryListResponse>>(list);
             response.PageIndex = search.PageIndex;
             response.PageSize = search.PageSize;
@@ -63,8 +62,7 @@ namespace ShoppingApi.Managers
         public async Task<List<LayerTreeJson>> CreateTypeTreeResponseListAsync(CancellationToken cancellationToken,string parentId = "0")
         {
             var jsontree = new List<LayerTreeJson>();
-            var entity = await _typeStore.IQueryableListAsync();
-            var data = await entity.Where(y => y.ParentId == parentId).ToListAsync(cancellationToken);
+            var data = await _typeStore.IQueryableListAsync().Where(y => y.ParentId == parentId).ToListAsync(cancellationToken);
             foreach (var item in data)
             {
                 jsontree.Add(new LayerTreeJson
