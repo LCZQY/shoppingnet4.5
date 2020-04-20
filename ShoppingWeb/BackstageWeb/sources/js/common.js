@@ -20,9 +20,8 @@ layui.use(['layer', 'form'], function () {
  */
 var table_confirm = function (options) {
     layer.confirm(options.tips, function (index) {
-
         var loading = layer.load(2, {
-            shade: [0.1, '#000']
+            shade: false
         });
         ajax_request({
             url: options.url,
@@ -35,15 +34,37 @@ var table_confirm = function (options) {
 };
 
 /**
- * PSOT ajax 请求方式
+ * 删除确认框
+ * @param {any} options
+ */
+var delte_confirm = function (options) {
+    layer.confirm(options.tips, function (index) {
+        var loading = layer.load(2, {
+            shade: [0.1, '#000']
+        });
+        ajax_request({
+            url: options.url,
+            data: options.data,
+            callback: function (e) {
+                options.active(e);
+            }
+        },"DELETE");
+    });
+};
+
+
+
+/**
+ * 默认POST ajax 请求方式
  * @param {any} options
  * data: 对象请求体
  * url: 请求路径
+ * type: PSOT,GET,DELETE,PUT
  */
-var ajax_request = function (options) {
+var ajax_request = function (options,type="post") {
 
     $.ajax({
-        method: "post",
+        method: type,
         async: false,
         dataType: "json",
         contentType: "application/json;charset=UTF-8",//指定消息请求类型        

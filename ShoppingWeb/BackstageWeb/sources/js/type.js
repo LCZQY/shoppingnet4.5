@@ -37,7 +37,7 @@ var loadtable = function (typeid, typename) {
                     , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction', width: 140 }
                 ]
             ]
-            , page: { limit: 10}
+            , page: { limit: 10 }
         });
     });
 };
@@ -72,7 +72,7 @@ var table_show = function () {
                         , where: { name: null }
                     });
                     break;
-                case 'search':                    
+                case 'search':
                     var name = $('input[name="search"]').val();
                     if (name === '') {
                         layer.msg("请输入商品名称");
@@ -137,7 +137,7 @@ var table_show = function () {
 function loadtree() {
     $.ajax({
         type: "get",
-        url: WEBURL +"/api/type/tree",
+        url: WEBURL + "/api/type/tree",
         dataType: 'json',
         success: function (res) {
             console.log(res, "数据源");
@@ -158,7 +158,7 @@ function loadtree() {
                     skin: "laySimple", // laySimple主题风格
                     showSearch: true,//显示搜索框
                     //edit: false,
-                    edit: ['update'], //操作节点的图标,
+                    edit: ['update', "del"], //操作节点的图标,
                     click: function (obj) {
                         //  $(".radio").eq(0).removeAttr("checked");
                         $("#parentId").val(obj.data.title);
@@ -175,42 +175,47 @@ function loadtree() {
                         var type = obj.type; //得到操作类型：add、edit、del
                         var data = obj.data; //得到当前节点的数据
                         var elem = obj.elem; //得到当前节点元素
-                        console.log(type, "当前选择中的是..");
-                        if (type === 'del') { //删除的组件layui 里面有个Bug ！！ 直接点击删除就不见了
-                            console.log(0);
+                        if (type === 'del') {
+                            //删除的组件layui 里面有个Bug ！！ 直接点击删除就不见了,现已解决，在源码中添加确认框
                             var arr = obj.data;
-                            if (arr.id > 0 && (!typeof arr.id != 'undefined')) {
+                            if (arr.id > 0 && (!typeof arr.id !== 'undefined')) {
                                 if (arr.children.length > 0) {
                                     layer.msg("该商品类型下有子类型不允许删除");
                                     return false;
-                                } else {
-                                    table_confirm({
-                                        obj: obj,
-                                        url: "typehandler.ashx?action=update",
-                                        tips: "是否确定删除？",
-                                        data: { id: arr.id }
-                                    });
                                 }
                             } else {
-                                elem.remove();
+                                ajax_request({
+                                    url: WEBURL + "/api/type/delete?id=" + arr.id,
+                                    callback: function (e) {
+                                        if (e.code === '0') {
+                                            layer.closeAll();
+                                            loadtree();
+                                            layer.msg("删除成功");
+                                        } else {
+                                            console.log(e.message);
+                                            layer.msg("服务器出错了，请重试");
+                                        }
+                                    }
+                                }, "DELETE");
                             }
-                        } else if (type === 'update') {                            
+                        } else if (type === 'update') {
                             table_confirm({
                                 obj: obj,
                                 url: WEBURL + "/api/type/edit",
                                 tips: "是否修改商品类型名称",
                                 data: { cateName: data.title, id: data.id },
-                                active: function (e) {                                    
-                                    if (e.code === '0') {                                       
-                                        layer.closeAll();                                        
+                                active: function (e) {
+                                    if (e.code === '0') {
+                                        layer.closeAll();
                                         loadtree();
-                                    } else {                                        
+                                        layer.msg("修改成功");
+                                    } else {
                                         console.log(e.message);
                                         layer.msg("服务器出错了，请重试");
                                     }
                                 }
                             });
-                 
+
                         }
                     }
                 });
@@ -229,7 +234,7 @@ var inserttype = function () {
 
     layui.use(['form', 'tree', 'util', 'layer'], function () {
         layer = layui.layer
-                , form = layui.form
+            , form = layui.form
 
         /**添加商品类型 */
         var active = {
@@ -265,6 +270,7 @@ var inserttype = function () {
                 data: data.field,
                 callback: function (data) {
                     if (data.code === '0') {
+
                         layer.msg("添加成功");
                         layer.closeAll("page"); //关闭（信息框，默认dialog）1（page页面层）2（iframe层）3（loading加载层）4（tips层）
                         $("input[name='cateName']").val(" ");
@@ -286,4 +292,4 @@ var inserttype = function () {
 loadtree(); //加载树
 loadtable(); //加载表格
 table_show();//加载表格操作
-inserttype(); //添加商品
+inserttype(); //添加商品类型

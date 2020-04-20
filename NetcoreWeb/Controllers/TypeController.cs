@@ -113,7 +113,7 @@ namespace ShoppingApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("delete")]
-        public async Task<ResponseMessage<bool>> ProductDelete([FromRoute]string id)
+        public async Task<ResponseMessage<bool>> ProductDelete(string id)
         {
             var response = new ResponseMessage<bool> { Extension = false };
             try
