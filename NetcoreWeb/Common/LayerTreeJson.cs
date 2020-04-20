@@ -18,6 +18,11 @@ namespace ShoppingApi.Common
         public string Title { get; set; }
 
         /// <summary>
+        /// 兼容选择树响应数据类型
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
         /// key
         /// </summary>
         public string Id { get; set; }

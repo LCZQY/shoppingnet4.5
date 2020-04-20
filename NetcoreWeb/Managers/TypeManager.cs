@@ -62,13 +62,14 @@ namespace ShoppingApi.Managers
         public async Task<List<LayerTreeJson>> CreateTypeTreeResponseListAsync(CancellationToken cancellationToken,string parentId = "0")
         {
             var jsontree = new List<LayerTreeJson>();
-            var data = await _typeStore.IQueryableListAsync().Where(y => y.ParentId == parentId).ToListAsync(cancellationToken);
+            var data = await _typeStore.IQueryableListAsync().Where(y => y.ParentId == parentId && !y.IsDeleted ).ToListAsync(cancellationToken);
             foreach (var item in data)
             {
                 jsontree.Add(new LayerTreeJson
                 {
                     Id = item.Id,
                     Title = item.CateName,
+                    Label =item.CateName,
                     Children = await CreateTypeTreeResponseListAsync(cancellationToken, item.Id)
                 });
             }
@@ -91,6 +92,7 @@ namespace ShoppingApi.Managers
             }
 
             var category = _mapper.Map<Category>(editRequest);
+            category.Id = Guid.NewGuid().ToString();
             response.Extension = await _typeStore.AddEntityAsync(category);
             return response;
         }
@@ -106,7 +108,9 @@ namespace ShoppingApi.Managers
         public async Task<ResponseMessage<bool>> TypeUpdateAsync(CategoryEditRequest editRequest)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            var category = _mapper.Map<Category>(editRequest);
+            var category = await _typeStore.GetAsync(editRequest.Id);
+            category.CateName = editRequest.CateName;
+            category.IsDeleted = false;
             response.Extension = await _typeStore.PutEntityAsync(editRequest.Id, category);
             return response;
         }

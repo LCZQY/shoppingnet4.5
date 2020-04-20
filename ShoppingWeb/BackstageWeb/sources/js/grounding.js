@@ -72,37 +72,52 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     });
 });
 
-//加载父级商品类型
-ajax_request({
-    url: WEBURL + "/api/type/list",
-    data: { pageIndex: 0, pageSize: 1000 },
-    callback: function (data) {
-        if (data.code === "0") {
-            var json = data.extension;
-            var html = ' <select name="id">';
-            $.each(json, function (index, item) {
-                if (index === 0) html += ' <option value="">商品类型</option>';
-                html += '<optgroup label="' + item.cateName + '">';
-                if (item.children !== null)
-                    $.each(item.children, function (i, childname) {
-                        html += '<option value="' + childname.id + '">' + childname.cateName + '</option>';
-                    });
-                html += ' </optgroup>';
-            });
-            html += '</select>';
-            $("#appendsSelect").html(html);
-        }
-    }
-});
+/**
+ * 选择树的加载
+ * */
+var select_tree = function () {
+    //学习网址： https://fly.layui.com/extend/eleTree/#doc
+    layui.config({
+        base: "../../sources/layui/lay/mymodules/"
+    }).use(['jquery', 'table', 'eleTree', 'code', 'form', 'slider'], function () {
+        var $ = layui.jquery;
+        var eleTree = layui.eleTree;
+        var el5;
+        $("[name='title']").on("click", function (e) {
+            e.stopPropagation();
+            if (!el5) {
+                $.ajax({
+                    type: "get",
+                    url: WEBURL + "/api/type/tree",
+                    dataType: 'json',
+                    success: function (data) {
+                        el5 = eleTree.render({
+                            elem: '.ele5',
+                            method: "GET",
+                            // contentType: 'json',
+                            data: data.extension,
+                            //url: WEBURL + "/api/type/tree",
+                            //headers: {},
 
-
-//加载父级商品类型
-ajax_request({
-    url: WEBURL + "/api/product/list",
-    data: { pageIndex: 0, pageSize: 1000 },
-    callback: function (data) {
-        console.log(data,"data>>>>>>>>>>>>>>>>>>>>>>>")
-        }
-    }
-});
+                            defaultExpandAll: true,
+                            expandOnClickNode: false,
+                            highlightCurrent: true
+                        });
+                    }
+                });
+            }
+            $(".ele5").toggle();
+        })
+        eleTree.on("nodeClick(data5)", function (d) {
+            $("[name='title']").val(d.data.currentData.label)
+            console.log(d.data.currentData.label, d.data.currentData.id);
+            $(".ele5").hide();
+        })
+        $(document).on("click", function () {
+            $(".ele5").hide();
+        })
+    });
+}
+//选择树
+select_tree();
 

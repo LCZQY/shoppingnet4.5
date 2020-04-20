@@ -32,17 +32,13 @@ namespace ShoppingApi.Controllers
         }
 
 
-
-
-
-
         /// <summary>
         /// 兼容Layui表格数据结构得商品列表
         /// </summary>
         /// <returns></returns>
         [HttpPost("layui/table/list")]
         public async Task<LayerTableJson> ProductList([FromBody]LayuiTableRequest search)
-        {
+        {          
             var response = new LayerTableJson() { };
             try
             {
@@ -56,11 +52,6 @@ namespace ShoppingApi.Controllers
             }
             return response;
         }
-
-
-
-
-
 
 
         /// <summary>

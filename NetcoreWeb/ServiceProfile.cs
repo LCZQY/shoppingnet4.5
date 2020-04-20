@@ -16,6 +16,15 @@ namespace ShoppingApi
             #region request
             CreateMap<CustomerEditRequest, Customer>();
             CreateMap<Customer, CustomerEditRequest>();
+
+            CreateMap<Category, CategoryEditRequest>();
+            CreateMap<CategoryEditRequest, Category>();
+
+            CreateMap<Product, ProductEditRequest>();
+            CreateMap<ProductEditRequest, Product>();
+
+            CreateMap<Customer, CustomerEditRequest>();
+            CreateMap<CustomerEditRequest, Customer>();
             #endregion
 
             #region Resposne

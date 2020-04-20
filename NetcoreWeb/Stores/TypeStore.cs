@@ -91,7 +91,10 @@ namespace ShoppingApi.Stores
                 return false;
             }
 
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Attach(entity);
+            var entity1 = _context.Entry(entity);
+            entity1.Property(y => y.CateName).IsModified = true;
+            entity1.Property(y => y.ParentId).IsModified = true;
             return await _context.SaveChangesAsync() > 0;
 
         }

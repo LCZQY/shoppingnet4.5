@@ -89,7 +89,7 @@ namespace ShoppingApi.Controllers
             var response = new ResponseMessage<bool>() { Extension = false };
             try
             {
-                if (await _typeManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
+                if (!(await _typeManager.IsExists(request.Id)) || string.IsNullOrWhiteSpace(request.Id))
                 {
                     response = await _typeManager.TypeAddAsync(request);
                 }
@@ -113,7 +113,7 @@ namespace ShoppingApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("delete")]
-        public async Task<ResponseMessage<bool>> ProductDelete([FromRoute]string id)
+        public async Task<ResponseMessage<bool>> ProductDelete(string id)
         {
             var response = new ResponseMessage<bool> { Extension = false };
             try

@@ -29,6 +29,8 @@ namespace ShoppingApi
 
             services.AddScoped<TypeManager>();
             services.AddScoped<ITypeStore, TypeStore>();
+        
+            
         }
 
 
