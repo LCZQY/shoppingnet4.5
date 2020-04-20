@@ -1,27 +1,4 @@
-﻿/**
-        * 一般用于删除数据行使用
-        */
-var table_confirm = function (options) {
-    layer.confirm(options.tips, function (index) {
-
-        var loading = layer.load(2, {
-            shade: [0.1, '#000']
-        });
-        ajax_request({
-            url: options.url,
-            data: options.data,
-            callback: function (e) {
-                layer.close(loading);
-                e = JSON.parse(e);
-                if (e.code === 0) {
-                    layer.msg(e.msg);
-                } else {
-                    layer.msg(e.msg);
-                }
-            }
-        });
-    });
-};
+﻿
 
 /**
  * 绑定数据表格
@@ -189,7 +166,7 @@ function loadtree() {
                         $("#type").val("子级");
                         console.log(obj.data, "点击查看商品");
                         //表格展示区
-                        reload(obj.data.id, obj.data.title);
+                        loadtable(obj.data.id, obj.data.title);
                         //表单操作
                         table_show();
                     },
@@ -217,15 +194,23 @@ function loadtree() {
                             } else {
                                 elem.remove();
                             }
-                        } else if (type === 'update') {
-                            console.log(data, "---------------")
+                        } else if (type === 'update') {                            
                             table_confirm({
                                 obj: obj,
-                                url: "typehandler.ashx?action=update",
-                                tips: "是否确定修改？",
-                                data: { CateName: data.title, id: data.id }
+                                url: WEBURL + "/api/type/edit",
+                                tips: "是否修改商品类型名称",
+                                data: { cateName: data.title, id: data.id },
+                                active: function (e) {                                    
+                                    if (e.code === '0') {                                       
+                                        layer.closeAll();                                        
+                                        loadtree();
+                                    } else {                                        
+                                        console.log(e.message);
+                                        layer.msg("服务器出错了，请重试");
+                                    }
+                                }
                             });
-                            page_reload();
+                 
                         }
                     }
                 });
@@ -244,12 +229,11 @@ var inserttype = function () {
 
     layui.use(['form', 'tree', 'util', 'layer'], function () {
         layer = layui.layer
-            , form = layui.form
+                , form = layui.form
 
         /**添加商品类型 */
         var active = {
             offset: function (othis) {
-
                 var type = othis.data('type')
                 layer.open({
                     type: 1
@@ -274,24 +258,20 @@ var inserttype = function () {
 
         //表单的提交
         form.on('submit(demo1)', function (data) {
-            console.log(data.field, "请求参数");
-            data.field.type = data.field.type == "顶级" ? "1" : "2";
-            data.field.parentId = $("#parentId").attr("guid");
-
-            //加载父级菜单
+            data.field.type = data.field.type === "顶级" ? "1" : "2";
+            data.field.parentId = $("#parentId").attr("guid") === '' ? "0" : $("#parentId").attr("guid");
             ajax_request({
-                url: "typehandler.ashx?action=add",
+                url: WEBURL + "/api/type/edit",
                 data: data.field,
                 callback: function (data) {
-                    data = JSON.parse(data);
-                    if (data.code == 0) {
+                    if (data.code === '0') {
                         layer.msg("添加成功");
                         layer.closeAll("page"); //关闭（信息框，默认dialog）1（page页面层）2（iframe层）3（loading加载层）4（tips层）
                         $("input[name='cateName']").val(" ");
                         loadtree();
 
                     } else {
-                        console.log(data);
+                        console.log(data.message);
                         layer.msg("服务器出错了，请重试");
                     }
                 }

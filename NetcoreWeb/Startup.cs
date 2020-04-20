@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using ShoppingApi.Models;
 using System;
 using System.IO;
+using ZapiCore;
 
 namespace ShoppingApi
 {
@@ -41,7 +42,7 @@ namespace ShoppingApi
                     .WithMethods("GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS");
 
                 });
-            });         
+            });
             //以下是错误的
             //services.AddCors(c =>
             //{
@@ -129,7 +130,8 @@ namespace ShoppingApi
                 app.UseDeveloperExceptionPage();
             }
 
-         
+            // 加入中间件异常处理
+            app.UseMiddleware(typeof(ExceptionHandlerMiddleWare));
             #region Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -140,7 +142,7 @@ namespace ShoppingApi
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins); //此项必须在app.UseRouting()和app.UseAuthorization()之间，否则会报错。
             app.UseHttpsRedirection();
-         
+
             app.UseAuthentication(); //使用认证
             app.UseAuthorization(); //使用授权
 

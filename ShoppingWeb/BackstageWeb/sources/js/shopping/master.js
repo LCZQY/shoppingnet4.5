@@ -11,6 +11,29 @@ layui.use(['layer', 'form'], function () {
 });
 
 /**
+ * 异步交互确认框
+ * url ： url
+ * data: json
+ * active : 成功后的处理
+ * @param {any} options
+ */
+var table_confirm = function (options) {
+    layer.confirm(options.tips, function (index) {
+
+        var loading = layer.load(2, {
+            shade: [0.1, '#000']
+        });
+        ajax_request({
+            url: options.url,
+            data: options.data,
+            callback: function (e) {
+                options.active(e);
+            }
+        });
+    });
+};
+
+/**
  * PSOT ajax 请求方式
  * @param {any} options
  * data: 对象请求体
@@ -20,19 +43,19 @@ var ajax_request = function (options) {
 
     $.ajax({
         method: "post",
-        async: false,           
-        dataType: "json",        
+        async: false,
+        dataType: "json",
         contentType: "application/json;charset=UTF-8",//指定消息请求类型        
         data: JSON.stringify(options.data),
         //headers: { "Authorization": "Bearer " + $("#jwt").val().trim() },
         url: options.url,
-   
+
         success: function (data, textStatus) {
             options.callback(data);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(textStatus,"ajax请求失败");
-           // layer.msg("请求失败");
+            console.log(textStatus, "ajax请求失败");
+            // layer.msg("请求失败");
         }
     });
 };

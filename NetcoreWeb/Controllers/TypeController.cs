@@ -89,7 +89,7 @@ namespace ShoppingApi.Controllers
             var response = new ResponseMessage<bool>() { Extension = false };
             try
             {
-                if (await _typeManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
+                if (!(await _typeManager.IsExists(request.Id)) || string.IsNullOrWhiteSpace(request.Id))
                 {
                     response = await _typeManager.TypeAddAsync(request);
                 }

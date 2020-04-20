@@ -91,6 +91,7 @@ namespace ShoppingApi.Managers
             }
 
             var category = _mapper.Map<Category>(editRequest);
+            category.Id = Guid.NewGuid().ToString();
             response.Extension = await _typeStore.AddEntityAsync(category);
             return response;
         }
@@ -106,7 +107,9 @@ namespace ShoppingApi.Managers
         public async Task<ResponseMessage<bool>> TypeUpdateAsync(CategoryEditRequest editRequest)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            var category = _mapper.Map<Category>(editRequest);
+            var category = await _typeStore.GetAsync(editRequest.Id);
+            category.CateName = editRequest.CateName;
+            category.IsDeleted = false;
             response.Extension = await _typeStore.PutEntityAsync(editRequest.Id, category);
             return response;
         }
