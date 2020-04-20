@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Zauthentication
+namespace MyIdentityServer4
 {
     public class Config
     {
         public static IEnumerable<ApiResource> Apis =>
       new List<ApiResource>
-
+    
            {
                new ApiResource("api1", "my api"),
                new ApiResource("inventoryapi", "this is inventory api"),

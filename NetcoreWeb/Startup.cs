@@ -106,16 +106,22 @@ namespace ShoppingApi
             });
             #endregion
 
-            #region 认证授权
+            #region 认证
+      
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "https://localhost:5000";
+                options.Authority = "https://localhost:5001"; //认证中心地址
                 options.RequireHttpsMetadata = false;
-                options.Audience = "api1";
+                options.Audience = "api1"; //保护资源标识      
+                options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(5); //5分钟检查一下TOken的有效性
+                options.TokenValidationParameters.RequireExpirationTime = true; //接收到的Token 必须是带有超时时间的
             });
             #endregion
+            #region 授权 
 
+
+            #endregion
             //服务注册
             ServiceRegistration.Start(services);
             services.AddControllers();

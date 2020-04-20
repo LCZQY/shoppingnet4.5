@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingApi.Dto.Request;
 using ShoppingApi.Managers;
 using ShoppingApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ZapiCore;
 
@@ -25,6 +27,20 @@ namespace ShoppingApi.Controllers
             _logger = logger;
             _customerManager = customerManager;
         }
+        /// <summary>
+        /// 需要身份认证的方式请求接口
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("admin")]
+        public IActionResult Token()
+        {
+            return new JsonResult(
+                from c in User.Claims select new { c.Type , c.Value,c.Issuer,c.OriginalIssuer}
+                ) ;
+        }
+
+
 
         /// <summary>
         /// 登录
