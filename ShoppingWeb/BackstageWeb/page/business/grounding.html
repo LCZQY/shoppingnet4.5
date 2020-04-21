@@ -70,6 +70,25 @@
                 <input type="hidden" id="Photo" name="PhotoId" />
             </div>
         </div>
+
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+            <div class="layui-upload-list">
+                <table class="layui-table">
+                    <thead>
+                        <tr>
+                            <th>原图</th>
+                            <th>文件名</th>
+                            <th>大小</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="demoList"></tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label"></label>
             <div class="layui-inline">
@@ -88,17 +107,11 @@
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
-
-
     </form>
     <script src="../../sources/js/shopping/jquery-3.4.1.min.js"></script>
     <script src="../../sources/layui/layui.js"></script>
     <script src="../../sources/js/shopping/master.js"></script>
     <script src="../../sources/js/common.js"></script>
-    <!--<script src="../../sources/js/grounding.js"></script>-->
-
-
+    <script src="../../sources/js/grounding.js"></script>
 </body>
 </html>
-<script>
-</script>

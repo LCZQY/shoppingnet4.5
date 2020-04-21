@@ -1,6 +1,9 @@
 /* #region tree */
-.eleTree{
-    position: relative;
+.eleTree {
+    position: absolute;
+    z-index: 100;
+    background: #fbfbfb;
+    width: -webkit-fill-available;
 }
 .eleTree-hide,
 .eleTree-search-hide{
