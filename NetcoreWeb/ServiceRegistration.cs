@@ -25,7 +25,7 @@ namespace ShoppingApi
        
             services.AddScoped<ProdoctManager>();
             services.AddScoped<IProductStore, ProductStore>();
-            services.AddScoped<IPhotoStore, PhotoStore>();
+            services.AddScoped<IFilesStore, FilesStore>();
 
             services.AddScoped<TypeManager>();
             services.AddScoped<ITypeStore, TypeStore>();

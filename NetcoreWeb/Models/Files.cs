@@ -9,7 +9,7 @@ namespace ShoppingApi.Models
     /// <summary>
     ///商品图片表
     /// </summary>
-    public class Photo : BaseField
+    public class Files : BaseField
     {
         /// <summary>
         /// 是否封面
@@ -24,7 +24,7 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 图片地址
         /// </summary>
-        public string PhotoUrl { get; set; }
+        public string Url { get; set; }
 
     }
 }

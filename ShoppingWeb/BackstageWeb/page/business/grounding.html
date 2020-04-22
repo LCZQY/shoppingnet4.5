@@ -9,102 +9,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="../../sources/layui/css/layui.css" rel="stylesheet" />
     <link href="../../sources/layui/css/eleTree.css" rel="stylesheet" />
+    <style>
+     
+        .layui-upload-list {
+          
+            margin-left: 110px;
+        }
+        form {
+            width: 90%;
+        }
+        .layui-table th {
+            text-align: center;
+        }
+        table, th, tr {
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
     <blockquote class="layui-elem-quote">
         注意: 图片大小最多为100k
     </blockquote>
-    <form class="layui-form" action="">
+    <form class="layui-form" action="" >
         <div class="layui-form-item">
             <label class="layui-form-label">商品名</label>
             <div class="layui-input-block">
-                <input type="text" name="Title" lay-verify="required" autocomplete="off" placeholder="请输入商品名" class="layui-input">
+                <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入商品名" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">市场价格</label>
             <div class="layui-input-block">
-                <input type="text" name="MarketPrice" lay-verify="required" placeholder="请输入市场价格" autocomplete="off" class="layui-input">
+                <input type="text" name="marketPrice" lay-verify="required" placeholder="请输入市场价格" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">库存数量</label>
             <div class="layui-input-block">
-                <input type="text" name="Stock" lay-verify="required" placeholder="请输入库存数量" autocomplete="off" class="layui-input">
+                <input type="text" name="stock" lay-verify="required" placeholder="请输入库存数量" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">本站价格</label>
             <div class="layui-input-block">
-                <input type="text" name="Price" lay-verify="required" placeholder="请输入本站价格" autocomplete="off" class="layui-input">
+                <input type="text" name="price" lay-verify="required" placeholder="请输入本站价格" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-
             <label class="layui-form-label">商品类型</label>
-            <!--<div class="layui-input-inline" id="appendsSelect"></div>-->
             <div class="layui-input-block">
-                <input type="text" name="title" required lay-verify="required" placeholder="请选择商品类型" readonly autocomplete="off" class="layui-input">
+                <input type="text" name="type" required lay-verify="required" placeholder="请选择商品类型" readonly autocomplete="off" class="layui-input">
                 <div class="eleTree ele5" lay-filter="data5"></div>
             </div>
-
         </div>
 
         <div class="layui-form-item">
-
             <label class="layui-form-label">上架时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="PostTime" class="layui-input" placeholder="上架时间" id="test11">
-            </div>
-
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">商品图片</label>
-                <div class="layui-input-inline">
-                    <button type="button" class="layui-btn" id="files">
-                        <i class="layui-icon">&#xe67c;</i>上传图片
-                    </button>
-                </div>
-                <input type="hidden" id="Photo" name="PhotoId" />
-            </div>
-        </div>
-
-        <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
-            <div class="layui-upload-list">
-                <table class="layui-table">
-                    <thead>
-                        <tr>
-                            <th>原图</th>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="demoList"></tbody>
-                </table>
-            </div>
-            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label"></label>
-            <div class="layui-inline">
-                <img id="myPic" src="" width="400em" style="max-height:300em;  box-shadow:1px 2px 1px black;" />
+                <input type="text" name="postTime" class="layui-input" placeholder="上架时间" id="test11">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">商品描述</label>
             <div class="layui-input-block">
-                <textarea name="Content" placeholder="请输入内容" class="layui-textarea"></textarea>
+                <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label">商品图片</label>
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">请选择商品图片</button>
+            <button type="button" class="layui-btn layui-btn-warm " id="testListAction">开始上传</button>
+        
+            <div class="layui-upload-list">
+                <table class="layui-table " align="center">
+                    <thead>
+                        <tr>                            
+                            <th align="center">原图</th>
+                            <th align="center">文件名</th>
+                            <th align="center">大小</th>
+                            <th align="center">状态</th>
+                            <th align="center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="demoList"></tbody>
+                </table>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+               
+                <button type="button" lay-submit="" lay-filter="demo1" class="layui-btn layui-btn-radius">立即上架商品</button>
             </div>
         </div>
     </form>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link rel="stylesheet" href="layui/css/layui.css">
+    <link href="../../sources/layui/css/layui.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -34,7 +34,8 @@
     <div>
         <button type="button" class="layui-btn" id="btnDownload">下载</button>
     </div>
-    <script src="layui/layui.js"></script>
+    <script src="../../sources/js/shopping/jquery-3.4.1.min.js"></script>
+    <script src="../../sources/layui/layui.js"></script>
     <script>
         var form;
         var $;
@@ -48,7 +49,7 @@
                 $ = layui.$;
                 var upload = layui.upload;
                 var element = layui.element;
-                var host = "https://localhost:3001/api/product/";
+                var host = "https://localhost:3001/api/file/";
                 var guid = "";
                 var uploadMaxCount = 0;
                 upload.render({
@@ -75,14 +76,14 @@
                                 "fileext": file.name.substring(file.name.indexOf("."))
                             };
                             $.ajax({
-                                url: host + "RequestUpload",
+                                url: host + "request/upload",
                                 data: JSON.stringify(data),
                                 type: "POST",
                                 dataType: "json",
                                 contentType: "application/json; charset=utf-8",
                                 timeout: 3600,
                                 success: function (res) {
-                                    console.log(res,"第一次换取值");
+                                    console.log(res, "第一次换取值");
                                     if (res.code === '500') {
                                         layer.alert(decodeURIComponent(res.message));
                                         return;
@@ -101,7 +102,7 @@
                 var uploadIndex = 0;
 
                 function RequestUpload(file, guid, shardSize, size) {
-                    console.log("file"+file, guid, shardSize, size);
+                    console.log("file" + file, guid, shardSize, size);
 
                     //计算每一片的起始与结束位置
                     var start = uploadIndex * shardSize,
@@ -118,16 +119,16 @@
                     form.append("fileindex", uploadIndex); //当前是第几片
                     //Ajax提交
                     $.ajax({
-                        url: host + "Upload",
+                        url: host + "upload",
                         type: "POST",
                         data: form,
                         async: true, //异步
                         processData: false, //很重要，告诉jquery不要对form进行处理
                         contentType: false, //很重要，指定为false才能形成正确的Content-Type
                         success: function (res) {
-                            console.log(res,"第二步提交文件上传");
+                            console.log(res, "第二步提交文件上传");
 
-                            if (res.code ==='500') {
+                            if (res.code === '500') {
                                 layer.alert(decodeURIComponent(res.msg));
                                 return;
                             } else {
@@ -158,7 +159,7 @@
                         };
                         //Ajax提交
                         $.ajax({
-                            url: host + "Merge",
+                            url: host + "merge",
                             type: "POST",
                             data: JSON.stringify(data),
                             type: "POST",
@@ -166,8 +167,8 @@
                             contentType: "application/json; charset=utf-8",
                             timeout: 3600,
                             success: function (res) {
-                                console.log("guid:" +guid,res,"第三步合并完成");
-                                if (res.code ==='500') {
+                                console.log("guid:" + guid, res, "第三步合并完成");
+                                if (res.code === '500') {
                                     layer.alert(decodeURIComponent(res.message));
                                     return;
                                 } else {
@@ -233,7 +234,7 @@
                                 var filedata = res.data.fieldata;
                                 var fileext = res.data.fileext;
                                 var size = res.data.size;
-                                maxCount = count -1 ;
+                                maxCount = count - 1;
                                 download();
                                 window.clearInterval(t1);
                             }

@@ -7,7 +7,7 @@ namespace ShoppingApi.Stores.Interface
     /// <summary>
     /// 
     /// </summary>
-    public interface IPhotoStore : Baseinterface<Photo>
+    public interface IFilesStore : Baseinterface<Files>
     {
 
     }

@@ -71,7 +71,7 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 图片
         /// </summary>
-        public DbSet<Photo> Photo { get; set; }
+        public DbSet<Files>  Files { get; set; }
 
         /// <summary>
         /// 商品

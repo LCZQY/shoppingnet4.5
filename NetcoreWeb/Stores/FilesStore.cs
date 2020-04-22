@@ -9,11 +9,11 @@ namespace ShoppingApi.Stores
     /// <summary>
     /// 客户表数据库处理
     /// </summary>
-    public class PhotoStore : IPhotoStore
+    public class FilesStore : IFilesStore
     {
         private readonly ShoppingDbContext _context;
 
-        public PhotoStore(ShoppingDbContext context)
+        public FilesStore(ShoppingDbContext context)
         {
             _context = context;
         }
@@ -23,10 +23,10 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> AddEntityAsync(Photo entity)
+        public async Task<bool> AddEntityAsync(Files entity)
         {
             _context.Attach(entity);
-            _context.Photo.Add(entity);
+            _context.Files.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -39,7 +39,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.Photo.AsNoTracking().Any(e => e.Id == id);
+            return _context.Files.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -47,24 +47,24 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Photo> GetAsync(string id)
+        public async Task<Files> GetAsync(string id)
         {
-            var Photo = await _context.Photo.FindAsync(id);
+            var Files = await _context.Files.FindAsync(id);
 
-            if (Photo == null)
+            if (Files == null)
             {
                 return null;
             }
-            return Photo;
+            return Files;
         }
 
         /// <summary>
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Photo>> EnumerableListAsync()
+        public async Task<IEnumerable<Files>> EnumerableListAsync()
         {
-            return await _context.Photo.AsNoTracking().ToListAsync();
+            return await _context.Files.AsNoTracking().ToListAsync();
 
         }
 
@@ -72,9 +72,9 @@ namespace ShoppingApi.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Photo> IQueryableListAsync()
+        public IQueryable<Files> IQueryableListAsync()
         {
-            return _context.Photo.AsNoTracking();
+            return _context.Files.AsNoTracking();
 
         }
 
@@ -84,7 +84,7 @@ namespace ShoppingApi.Stores
         /// <param name="id"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> PutEntityAsync(string id, Photo entity)
+        public async Task<bool> PutEntityAsync(string id, Files entity)
         {
             if (!IsExists(id))
             {
@@ -107,7 +107,7 @@ namespace ShoppingApi.Stores
             {
                 return false;
             }
-            var model = await _context.Photo.FindAsync(id);
+            var model = await _context.Files.FindAsync(id);
             model.IsDeleted = true;
             _context.Attach(model);
             var entity = _context.Entry(model);
@@ -120,7 +120,7 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="listentity"></param>
         /// <returns></returns>
-        public async Task<bool> AddRangeEntityAsync(List<Photo> listentity)
+        public async Task<bool> AddRangeEntityAsync(List<Files> listentity)
         {
             _context.AttachRange(listentity);
             await _context.AddRangeAsync(listentity);

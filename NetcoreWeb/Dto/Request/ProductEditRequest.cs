@@ -61,6 +61,9 @@ namespace ShoppingApi.Dto.Request
         /// <summary>
         /// 图片
         /// </summary>
-        public List<string> Files { get; set; }
+        public List<FileRequest> Files { get; set; }
     }
+
+
+   
 }
