@@ -86,8 +86,10 @@ namespace ShoppingApi.Controllers
         public async Task<ResponseMessage<bool>> ProductEdit([FromBody]ProductEditRequest request)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            if (!(request.Files.Count(y => y.IsIcon) >= 0)) {
-                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid,"请设置一张封面图");
+
+            if (!(request.Files.Count(y => y.IsIcon) >= 0))
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid, "请设置一张封面图");
             }
             try
             {

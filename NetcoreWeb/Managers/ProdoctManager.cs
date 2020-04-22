@@ -130,8 +130,9 @@ namespace ShoppingApi.Managers
             {
                 try
                 {
-                    var Product = _mapper.Map<Product>(editRequest);
-                    Product.Icon = editRequest.Files.Where(item => item.IsIcon).SingleOrDefault().Url;
+                    var product = _mapper.Map<Product>(editRequest);
+                    product.Id = Guid.NewGuid().ToString();
+                    product.Icon = editRequest.Files.Where(item => item.IsIcon).SingleOrDefault().Url;
                     //新增图片
                     var images = new List<Files> { };
                     editRequest.Files.ForEach(img =>
@@ -141,11 +142,12 @@ namespace ShoppingApi.Managers
                             IsDeleted = false,
                             Id = Guid.NewGuid().ToString(),
                             Url = img.Url,
-                            ProductId = editRequest.Id
+                            IsIcon = img.IsIcon,
+                            ProductId = product.Id
                         });
                     });
                     await _filesStore.AddRangeEntityAsync(images);
-                    response.Extension = await _ProductStore.AddEntityAsync(Product);
+                    response.Extension = await _ProductStore.AddEntityAsync(product);
                 }
                 catch (Exception e)
                 {

@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ShoppingApi.Common;
+using ShoppingApi.Common.Filter;
 using ShoppingApi.Models;
 using System;
 using System.IO;
+using System.Linq;
 using ZapiCore;
 
 namespace ShoppingApi
@@ -26,6 +30,8 @@ namespace ShoppingApi
         public void ConfigureServices(IServiceCollection services)
         {
 
+          
+        
             #region AutoMapper
             services.AddAutoMapper(typeof(ServiceProfile));  //ServiceProfile为你Mapper的类
             #endregion      
@@ -108,7 +114,7 @@ namespace ShoppingApi
             #endregion
 
             #region 认证
-      
+
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
@@ -125,7 +131,30 @@ namespace ShoppingApi
             #endregion
             //服务注册
             ServiceRegistration.Start(services);
-            services.AddControllers();
+
+            #region 模型验证过滤器            
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+                //这总方式不生效？？
+                //options.InvalidModelStateResponseFactory = (context) =>
+                //{
+                //    var error = context.ModelState.GetValidationSummary();
+                //    var result = new ResponseMessage()
+                //    {
+                //        Code = ResponseCodeDefines.ModelStateInvalid,
+                //        Message = error
+                //    };
+                //    return new JsonResult(result);
+                //};
+            });
+            services.AddControllers(option =>
+            {
+                option.Filters.Add<ApiActionFilter>();
+            }).AddXmlSerializerFormatters();
+       
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
