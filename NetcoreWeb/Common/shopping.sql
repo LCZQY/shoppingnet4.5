@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 17/04/2020 17:56:44
+ Date: 22/04/2020 18:03:15
 */
 
 SET NAMES utf8mb4;
@@ -65,17 +65,30 @@ CREATE TABLE `category`  (
 -- ----------------------------
 -- Records of category
 -- ----------------------------
+INSERT INTO `category` VALUES ('072518f7-e963-4d5d-b68e-854d4f3df142', '12羞羞14545', '0', b'1');
 INSERT INTO `category` VALUES ('0b3f9642-36fb-4674-8284-361ab74b2381', '鞋子', '男装', b'0');
 INSERT INTO `category` VALUES ('121212', '男装', '0', b'0');
 INSERT INTO `category` VALUES ('121213', '女装', '0', b'0');
 INSERT INTO `category` VALUES ('121218', '夏季', '0', b'0');
-INSERT INTO `category` VALUES ('2ef485e3-46be-4bbe-8ee6-57c790cdca07', '2323', '121218', b'0');
-INSERT INTO `category` VALUES ('50e8edc8-23e7-4012-8488-3e1c34a4fcaf', '12312', 'cd6a7357-8093-46cb-871e-b10d3b90ab2a', b'0');
+INSERT INTO `category` VALUES ('1931365d-21a5-4937-8df9-67624ce2805f', '修', '0', b'1');
+INSERT INTO `category` VALUES ('2ef485e3-46be-4bbe-8ee6-57c790cdca07', '2323修改', '121218', b'0');
+INSERT INTO `category` VALUES ('3cd443a6-7b81-4b64-a68c-19e0018e330d', '修改', '0', b'0');
+INSERT INTO `category` VALUES ('430d995f-a416-45c4-be0e-d5851d8d6a1f', '母婴用品', '0', b'0');
+INSERT INTO `category` VALUES ('48174564-47ef-4cf7-a225-e6f0a0e08f7f', '生鲜水果', '0', b'0');
+INSERT INTO `category` VALUES ('50e8edc8-23e7-4012-8488-3e1c34a4fcaf', '12312修', '0', b'0');
 INSERT INTO `category` VALUES ('631cbada-d36f-45f0-937f-0b898df79a10', '休闲娱乐', '121212', b'0');
 INSERT INTO `category` VALUES ('7201e8d8-6014-493b-ac46-50e55634a323', '性感', '121218', b'0');
 INSERT INTO `category` VALUES ('720954fe-45ee-4963-ac2a-428c2bc5bbeb', '23', '121218', b'0');
+INSERT INTO `category` VALUES ('73041a0d-82f9-411c-8d2f-b5b742e7517a', '大家电', '0', b'0');
 INSERT INTO `category` VALUES ('8f16ceb2-c162-4a69-8b60-5a84a154cb8f', '先日风情', '121212', b'0');
-INSERT INTO `category` VALUES ('cd6a7357-8093-46cb-871e-b10d3b90ab2a', '121', '0', b'0');
+INSERT INTO `category` VALUES ('918a5b90-378b-432e-8ee5-5a8a39d64672', '修改类型', '0', b'0');
+INSERT INTO `category` VALUES ('b32b1aff-53b9-4e92-808c-c6dd837ceb8e', '122323', '0', b'0');
+INSERT INTO `category` VALUES ('b695697d-5273-415c-8bfd-faa118ee89a4', '新增类型', '121212', b'0');
+INSERT INTO `category` VALUES ('b933c0ff-e41a-486b-8eaf-55c21e8eee98', '122323', '0', b'0');
+INSERT INTO `category` VALUES ('bfacc454-a30b-47e2-8a7a-54a6de32a1df', '12五2323', '0', b'0');
+INSERT INTO `category` VALUES ('c5eb400d-2f13-43ee-b2ba-93eaa043acc2', '12修改', '0', b'0');
+INSERT INTO `category` VALUES ('cd6a7357-8093-46cb-871e-b10d3b90ab2a', '医疗保健', '0', b'0');
+INSERT INTO `category` VALUES ('e52ba914-544e-4026-9ae1-bbf9135a0d21', '修订及', '0', b'0');
 INSERT INTO `category` VALUES ('e8d29cb9-5855-4737-bc04-571921a63814', '疯狂一下', '121212', b'0');
 INSERT INTO `category` VALUES ('f27d597f-a468-4369-ba85-659b5583bb4d', '优雅', '121213', b'0');
 
@@ -153,6 +166,26 @@ CREATE TABLE `favorite`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for files
+-- ----------------------------
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE `files`  (
+  `Id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `ProductId` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `Url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `IsDeleted` bit(1) NULL DEFAULT NULL,
+  `IsIcon` bit(1) NULL DEFAULT NULL COMMENT '是否封面',
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of files
+-- ----------------------------
+INSERT INTO `files` VALUES ('50d75b89-c435-4759-b15d-ab514af3191c', '8c1aa1a2-f572-4749-ba41-b4f4dd41ea00', '../../img/2019-08-05/4f8dfe17-4db3-4e51-bc70-38a8b16c1c8b.jpg', b'0', b'0');
+INSERT INTO `files` VALUES ('8e668401-8022-4099-a76c-60c7009947bc', 'ea076d91-a091-409f-a2af-f4347bd9f4e0', '../../img/2019-08-02/39bdd744-e5ff-4cb7-979a-2e6b11bb139a.jpg', b'0', b'0');
+INSERT INTO `files` VALUES ('fb12973a-fcff-4991-be26-d5536fabd946', 'b3e93f8e-adb9-4505-922c-b34f485e14d9', '../../img/2019-08-02/39bdd744-e5ff-4cb7-979a-2e6b11bb139a.jpg', b'0', b'0');
+
+-- ----------------------------
 -- Table structure for news
 -- ----------------------------
 DROP TABLE IF EXISTS `news`;
@@ -191,26 +224,6 @@ CREATE TABLE `orders`  (
   `IsDeleted` bit(1) NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for photo
--- ----------------------------
-DROP TABLE IF EXISTS `photo`;
-CREATE TABLE `photo`  (
-  `Id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `ProductId` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `PhotoUrl` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `IsDeleted` bit(1) NULL DEFAULT NULL,
-  `IsIcon` bit(1) NULL DEFAULT NULL COMMENT '是否封面',
-  PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of photo
--- ----------------------------
-INSERT INTO `photo` VALUES ('50d75b89-c435-4759-b15d-ab514af3191c', '8c1aa1a2-f572-4749-ba41-b4f4dd41ea00', '../../img/2019-08-05/4f8dfe17-4db3-4e51-bc70-38a8b16c1c8b.jpg', b'0', b'0');
-INSERT INTO `photo` VALUES ('8e668401-8022-4099-a76c-60c7009947bc', 'ea076d91-a091-409f-a2af-f4347bd9f4e0', '../../img/2019-08-02/39bdd744-e5ff-4cb7-979a-2e6b11bb139a.jpg', b'0', b'0');
-INSERT INTO `photo` VALUES ('fb12973a-fcff-4991-be26-d5536fabd946', 'b3e93f8e-adb9-4505-922c-b34f485e14d9', '../../img/2019-08-02/39bdd744-e5ff-4cb7-979a-2e6b11bb139a.jpg', b'0', b'0');
 
 -- ----------------------------
 -- Table structure for product
