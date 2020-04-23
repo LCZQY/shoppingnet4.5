@@ -128,37 +128,36 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     //监听提交
     form.on('submit(demo1)', function (data) {
         if (iconIndex === -1) {
-            layer.msg("必须设置一张封面图");
+            layer.msg("请检查是否上传图片或者设置封面图");
             return false;
         }
-        console.log(fileArry, "文件列表是");
-        console.log(fileArry[iconIndex], "封面是", iconIndex);        
         var fileReqesut = [];
         $.each(fileArry, function (i, val) {
             var object = new Object();
             fileArry[iconIndex] === val ? object.isIcon = true : object.isIcon = false;
-            object.path = val;
+            object.url = val;
             fileReqesut.push(object);
         });
-        var json_file = JSON.stringify(fileReqesut);       
-        data.field.cateId = cateId;
-        data.field.icon = fileArry[iconIndex];
-        data.field.files = [];
-        data.field.files.push(json_file);
+        var request = data.field;
+        request.cateId = cateId;      
+        request.icon = fileArry[iconIndex];
+        request.files =fileReqesut;
+        request.marketPrice = parseFloat(request.marketPrice);
+        request.price = parseFloat(request.price);
+        request.stock = parseInt(request.stock);               
         console.log(data.field, "add");
-
         ajax_request({
             url: WEBURL + "/api/product/edit",
-            data: data.field,
+            data: request,
             callback: function (e) {
                // e = JSON.parse(e);
                 if (e.code === '0') {
                     layer.msg("上传成功啦");
-                    setTimeout(function () {
-                        window.parent.location.reload();
-                    }, 2000);
+                    //setTimeout(function () {
+                    //    window.parent.location.reload();
+                    //}, 2000);
                 } else {
-                    layer.msg(e.msg);
+                    layer.msg("商品上架失败，请重试");
                 }
             }
         });

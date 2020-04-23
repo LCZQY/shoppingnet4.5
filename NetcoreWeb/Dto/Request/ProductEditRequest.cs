@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShoppingApi.Dto.Request
 {
@@ -10,11 +9,13 @@ namespace ShoppingApi.Dto.Request
     /// </summary>
     public class ProductEditRequest
     {
+
+
         /// <summary>
         /// 主键
         /// </summary>
-        public string Id { get; set; }
 
+        public string Id { get; set; }
 
         /// <summary>
         /// 商品名
@@ -29,11 +30,13 @@ namespace ShoppingApi.Dto.Request
         /// <summary>
         /// 标记价格（市场价格）
         /// </summary>
+        [DataType(DataType.Currency, ErrorMessage = "价格数据类型错误")]
         public decimal MarketPrice { get; set; }
 
         /// <summary>
         /// 本地价格（本站价格）
         /// </summary>
+        [DataType(DataType.Currency, ErrorMessage = "价格数据类型错误")]
         public decimal Price { get; set; }
 
         /// <summary>
@@ -44,11 +47,13 @@ namespace ShoppingApi.Dto.Request
         /// <summary>
         /// 上架时间
         /// </summary>
+        [DataType(DataType.DateTime, ErrorMessage = "时间数据类型错误")]
         public DateTime PostTime { get; set; }
 
         /// <summary>
         /// 库存数量
         /// </summary>
+        [DataType(DataType.Currency, ErrorMessage = "库存数量类型错误")]
         public int Stock { get; set; }
 
 
@@ -65,5 +70,5 @@ namespace ShoppingApi.Dto.Request
     }
 
 
-   
+
 }
