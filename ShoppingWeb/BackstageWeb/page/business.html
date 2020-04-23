@@ -3,6 +3,9 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
     <title>商城后台管理系统-业务中心</title>
     <link href="../sources/css/shopping/font.css" rel="stylesheet" />
     <link href="../sources/layui/css/layui.css" rel="stylesheet" />
@@ -39,11 +42,17 @@
     </div>
     <div class="left-nav">
         <div id="side-nav">
-            <ul class="nav" id="nav">               
+            <ul class="nav" id="nav">
                 <li id="menu5" class="">
                     <a _href=""><i class="iconfont"></i><cite>商品管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none;">
                         <li id="menu4"><a _href="business/grounding.html"><i class="iconfont"></i><cite>商品上架</cite></a></li>
                         <li id="menu3"><a _href="business/type.html"><i class="iconfont"></i><cite>商品类型</cite></a></li>
+                        <li id="menu5"><a _href="business/myprodoct.html"><i class="iconfont"></i><cite>我的商品</cite></a></li>
+                    </ul>
+                </li>
+                <li id="menu11" class="">
+                    <a _href=""><i class="iconfont"></i><cite>订单管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none; height: 45px; padding-top: 0px; margin-top: 0px; padding-bottom: 0px; margin-bottom: 0px;">
+                        <li id="menu12"><a _href="business/order.html"><i class="iconfont"></i><cite>订单列表</cite></a></li>
                     </ul>
                 </li>
                 <li id="menu8" class="open">
@@ -51,11 +60,7 @@
                         <li id="menu9"><a _href="business/news.html"><i class="iconfont"></i><cite>促销咨询列表</cite></a></li>
                     </ul>
                 </li>
-                <li id="menu11" class="">
-                    <a _href=""><i class="iconfont"></i><cite>订单管理</cite><i class="iconfont nav_right"></i></a><ul class="sub-menu" style="display: none; height: 45px; padding-top: 0px; margin-top: 0px; padding-bottom: 0px; margin-bottom: 0px;">
-                        <li id="menu12"><a _href="business/order.html"><i class="iconfont"></i><cite>订单列表</cite></a></li>
-                    </ul>
-                </li>               
+
             </ul>
         </div>
     </div>
@@ -119,8 +124,6 @@
         <li data-type="current">关闭当前</li>
         <li data-type="other">关闭其它</li>
         <li data-type="all">关闭所有</li>
-    </ul>
-
-
+   </ul>
 </body>
 </html>

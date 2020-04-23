@@ -10,7 +10,7 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 下单时间
         /// </summary>
-        public DateTime Orderdate { get; set; }
+        public DateTime? Orderdate { get; set; } 
 
         /// <summary>
         /// 用户id
@@ -35,7 +35,7 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 订单状态[0:未付款，1：已付款， 2：已发货，3：已收货，4：已评价]
         /// </summary>
-        public int? States { get; set; }
+        public StatesEnum States { get; set; }
 
         /// <summary>
         /// 备注

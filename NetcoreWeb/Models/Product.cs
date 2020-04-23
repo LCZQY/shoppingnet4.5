@@ -8,6 +8,10 @@ namespace ShoppingApi.Models
     public class Product : BaseField
     {
 
+        /// <summary>
+        /// 商品类型名称
+        /// </summary>
+        public string CateName { get; set; }
 
         /// <summary>
         /// 商品名
@@ -43,7 +47,7 @@ namespace ShoppingApi.Models
         /// 库存数量
         /// </summary>
         public int Stock { get; set; }
-
+        
 
         /// <summary>
         /// 封面【商品有个多个图片，本字段记录封面图】

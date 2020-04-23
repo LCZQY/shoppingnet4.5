@@ -28,6 +28,11 @@ namespace ShoppingApi.Dto.Request
         public string CateId { get; set; }
 
         /// <summary>
+        /// 商品类型名称
+        /// </summary>
+        public string CateName { get; set; }
+
+        /// <summary>
         /// 标记价格（市场价格）
         /// </summary>
         [DataType(DataType.Currency, ErrorMessage = "价格数据类型错误")]

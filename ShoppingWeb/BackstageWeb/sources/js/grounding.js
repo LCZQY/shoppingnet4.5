@@ -12,39 +12,14 @@ var uploadfile = function () {
     layui.use(['upload', 'jquery'], function () {
         var upload = layui.upload;
         var $ = layui.$;
-
-        ////执行实例
-        //var uploadInst = upload.render({
-        //    elem: '#files'                //绑定元素
-        //    , url: 'groundinghandler.ashx?action=upload'      //上传接口
-        //    //*********************传输限制
-        //    , size: 100                   //传输大小100k
-        //    , exts: 'jpg|png|gif|'        //可传输文件的后缀
-        //    , accept: 'file'              //video audio images
-        //    //****************传输操作相关设置
-        //    , data: { Parm1: "hello", Parm2: "world" }    //额外传输的参数
-        //    , headers: { token: 'sasasasa' }                   //额外添加的请求头
-        //    , auto: true                                 //自动上传,默认是打开的
-        //    , bindAction: '#btnUpload'                    //auto为false时，点击触发上传
-        //    , multiple: false                             //多文件上传
-        //    //, number: 100                               //multiple:true时有效
-        //    , done: function (res) {                      //传输完成的回调
-        //        $('#myPic').attr("src", "../.." + res.src);
-        //        //复值到后端
-        //        $("#Photo").val("../.." + res.src);
-        //    }
-        //    , error: function () {                         //传输失败的回调
-        //        //请求异常回调
-        //    }
-        //});
-
-
         //多文件列表示例 https://www.layui.com/doc/modules/upload.html
         var demoListView = $('#demoList')
             , uploadListIns = upload.render({
                 elem: '#testList'               
                 , url: WEBURL + '/api/file/upload'
                 , accept: 'file'
+                , exts: 'jpg|png|gif|' 
+                //, headers: { token: 'sasasasa' }                   //额外添加的请求头
                 , multiple: true
                 , auto: false
                 , bindAction: '#testListAction'
@@ -144,18 +119,19 @@ layui.use(['form', 'layedit', 'laydate'], function () {
         request.files =fileReqesut;
         request.marketPrice = parseFloat(request.marketPrice);
         request.price = parseFloat(request.price);
-        request.stock = parseInt(request.stock);               
+        request.stock = parseInt(request.stock);
+        request.cateName = request.type;
         console.log(data.field, "add");
         ajax_request({
             url: WEBURL + "/api/product/edit",
             data: request,
-            callback: function (e) {
-               // e = JSON.parse(e);
+            callback: function (e) {               
                 if (e.code === '0') {
-                    layer.msg("上传成功啦");
-                    //setTimeout(function () {
-                    //    window.parent.location.reload();
-                    //}, 2000);
+                    layer.msg("恭喜上架成功");
+                    setTimeout(function () {
+                        window.location.href = 'myprodoct.html';
+                    }, 1000);
+                    
                 } else {
                     layer.msg("商品上架失败，请重试");
                 }

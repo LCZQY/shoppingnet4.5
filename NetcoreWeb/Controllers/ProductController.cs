@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingApi.Common;
@@ -33,6 +34,9 @@ namespace ShoppingApi.Controllers
         }
 
 
+
+
+
         /// <summary>
         /// 兼容Layui表格数据结构得商品列表
         /// </summary>
@@ -54,6 +58,27 @@ namespace ShoppingApi.Controllers
             return response;
         }
 
+
+        /// <summary>
+        /// 商品详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("detail")]
+        public async Task<ResponseMessage<ProductListResponse>> ProductDetails(string id)
+        {
+            var response = new ResponseMessage<ProductListResponse>() { Extension = new ProductListResponse { } };
+            try
+            {
+                response = await _prodoctManager.ProductDetailsAsync(id, HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "商品详情查询失败，请重试";
+                _logger.LogInformation($"商品详情查询失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+        }
 
         /// <summary>
         /// 商品列表
@@ -95,11 +120,11 @@ namespace ShoppingApi.Controllers
             {
                 if (await _prodoctManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
                 {
-                    response = await _prodoctManager.ProductAddAsync(request);
+                    response = await _prodoctManager.ProductAddAsync(request, HttpContext.RequestAborted);
                 }
                 else
                 {
-                    response = await _prodoctManager.ProductUpdateAsync(request);
+                    response = await _prodoctManager.ProductUpdateAsync(request, HttpContext.RequestAborted);
                 }
             }
             catch (Exception e)

@@ -29,8 +29,10 @@ namespace ShoppingApi
 
             services.AddScoped<TypeManager>();
             services.AddScoped<ITypeStore, TypeStore>();
-        
-            
+
+         //   services.AddScoped<OrdersManager>();
+            services.AddScoped<IOrdersStore, OrdersStore>();
+
         }
 
 

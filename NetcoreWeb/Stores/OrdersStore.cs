@@ -1,19 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingApi.Models;
-using ShoppingApi.Stores.Interface;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-namespace ShoppingApi.Stores
+
+namespace ShoppingApi.Stores.Interface
 {
+
     /// <summary>
-    ///文件数据
+    /// 订单数据
     /// </summary>
-    public class FilesStore : IFilesStore
+    public class OrdersStore : IOrdersStore
     {
         private readonly ShoppingDbContext _context;
 
-        public FilesStore(ShoppingDbContext context)
+        public OrdersStore(ShoppingDbContext context)
         {
             _context = context;
         }
@@ -23,10 +24,10 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> AddEntityAsync(Files entity)
+        public async Task<bool> AddEntityAsync(Orders entity)
         {
-            _context.Attach(entity);
-            _context.Files.Add(entity);
+            _context.Orders.Attach(entity);
+            _context.Orders.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -39,7 +40,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.Files.AsNoTracking().Any(e => e.Id == id);
+            return _context.Orders.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -47,24 +48,24 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Files> GetAsync(string id)
+        public async Task<Orders> GetAsync(string id)
         {
-            var Files = await _context.Files.FindAsync(id);
+            var Orders = await _context.Orders.FindAsync(id);
 
-            if (Files == null)
+            if (Orders == null)
             {
                 return null;
             }
-            return Files;
+            return Orders;
         }
 
         /// <summary>
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Files>> EnumerableListAsync()
+        public async Task<IEnumerable<Orders>> EnumerableListAsync()
         {
-            return await _context.Files.AsNoTracking().ToListAsync();
+            return await _context.Orders.AsNoTracking().ToListAsync();
 
         }
 
@@ -72,9 +73,9 @@ namespace ShoppingApi.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Files> IQueryableListAsync()
+        public IQueryable<Orders> IQueryableListAsync()
         {
-            return _context.Files.AsNoTracking();
+            return _context.Orders.AsNoTracking();
 
         }
 
@@ -84,7 +85,7 @@ namespace ShoppingApi.Stores
         /// <param name="id"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> PutEntityAsync(string id, Files entity)
+        public async Task<bool> PutEntityAsync(string id, Orders entity)
         {
             if (!IsExists(id))
             {
@@ -107,7 +108,7 @@ namespace ShoppingApi.Stores
             {
                 return false;
             }
-            var model = await _context.Files.FindAsync(id);
+            var model = await _context.Orders.FindAsync(id);
             model.IsDeleted = true;
             _context.Attach(model);
             var entity = _context.Entry(model);
@@ -120,10 +121,10 @@ namespace ShoppingApi.Stores
         /// </summary>
         /// <param name="listentity"></param>
         /// <returns></returns>
-        public async Task<bool> AddRangeEntityAsync(List<Files> listentity)
+        public async Task<bool> AddRangeEntityAsync(List<Orders> listentity)
         {
-            _context.Files.AttachRange(listentity);
-            await _context.Files.AddRangeAsync(listentity);
+            _context.AttachRange(listentity);
+            await _context.AddRangeAsync(listentity);
             return await _context.SaveChangesAsync() > 0;
         }
     }

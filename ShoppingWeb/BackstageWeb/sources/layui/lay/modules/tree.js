@@ -288,6 +288,11 @@ layui.define("form",
                                 shade: false //不显示遮罩
                             }, function () {
                                 layer.close(index);
+                                //console.log(e.children().length, "执行中........");
+                                if (e.children().length > 1) {
+                                    layer.msg("该节点下存在子节点不允许删除");
+                                    return false;
+                                }
                                 if (r.operate && r.operate(x), x.status = "remove", !e.prev("." + s)[0] && !e.next("." + s)[0] && !e.parent("." + y)[0]) return e.remove(), void n.elem.append(n.elemNone);
                                 if (e.siblings("." + s).children("." + u)[0]) {
                                     if (r.showCheckbox) {
@@ -323,7 +328,7 @@ layui.define("form",
                                 e.remove()
                             }, function () {
                                 layer.close(index);
-                            })                           
+                            })
                         }
                     })
             },

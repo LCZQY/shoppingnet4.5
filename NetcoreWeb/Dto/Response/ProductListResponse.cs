@@ -24,6 +24,11 @@ namespace ShoppingApi.Dto.Response
         public string CateId { get; set; }
 
         /// <summary>
+        /// 商品类型名称
+        /// </summary>
+        public string CateName { get; set; }
+
+        /// <summary>
         /// 标记价格（市场价格）
         /// </summary>
         public decimal MarketPrice { get; set; }

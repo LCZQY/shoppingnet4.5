@@ -62,7 +62,7 @@ namespace ShoppingApi.Managers
         public async Task<List<LayerTreeJson>> CreateTypeTreeResponseListAsync(CancellationToken cancellationToken,string parentId = "0")
         {
             var jsontree = new List<LayerTreeJson>();
-            var data = await _typeStore.IQueryableListAsync().Where(y => y.ParentId == parentId && !y.IsDeleted ).ToListAsync(cancellationToken);
+            var data = await _typeStore.IQueryableListAsync().OrderByDescending(y=>y.CreateTime).Where(y => y.ParentId == parentId && !y.IsDeleted ).ToListAsync(cancellationToken);
             foreach (var item in data)
             {
                 jsontree.Add(new LayerTreeJson

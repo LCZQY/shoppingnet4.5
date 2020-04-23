@@ -37,7 +37,7 @@ namespace ShoppingApi.Managers
 
 
         /// <summary>
-        /// 列表数据
+        /// 兼容Layui表格数据结构得商品列表
         /// </summary>
         /// <param name="search"></param>
         /// <param name="cancellationToken"></param>
@@ -54,6 +54,7 @@ namespace ShoppingApi.Managers
             {
                 entity = entity.Where(y => y.CateId == search.CateId);
             }
+            response.Count =await entity.CountAsync(cancellationToken);
             var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<ProductListResponse>>(list);
             var img = await _filesStore.IQueryableListAsync().Where(y => data.Select(pro => pro.Id).Contains(y.ProductId) && !y.IsDeleted).ToListAsync(cancellationToken);
@@ -68,7 +69,7 @@ namespace ShoppingApi.Managers
                     item.Files = new List<string>() { };
                 }
             });
-            response.Count = data.Count();
+      
             response.Data = data;
             return response;
         }
@@ -95,18 +96,18 @@ namespace ShoppingApi.Managers
             }
             var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
             var data = _mapper.Map<List<ProductListResponse>>(list);
-            var img = await _filesStore.IQueryableListAsync().Where(y => data.Select(pro => pro.Id).Contains(y.ProductId) && !y.IsDeleted).ToListAsync(cancellationToken); //>>>> 不能在循环里找到数据库
-            data.ForEach(item =>
-            {
-                if (img.Where(y => y.ProductId == item.Id).Any())
-                {
-                    item.Files = img.Select(y => y.Url).ToList();
-                }
-                else
-                {
-                    item.Files = new List<string>() { };
-                }
-            });
+            //var img = await _filesStore.IQueryableListAsync().Where(y => data.Select(pro => pro.Id).Contains(y.ProductId) && !y.IsDeleted).ToListAsync(cancellationToken); //>>>> 不能在循环里找到数据库
+            //data.ForEach(item =>
+            //{
+            //    if (img.Where(y => y.ProductId == item.Id).Any())
+            //    {
+            //        item.Files = img.Select(y => y.Url).ToList();
+            //    }
+            //    else
+            //    {
+            //        item.Files = new List<string>() { };
+            //    }
+            //});
             response.PageIndex = search.PageIndex;
             response.PageSize = search.PageSize;
             response.Extension = data;
@@ -115,11 +116,27 @@ namespace ShoppingApi.Managers
 
 
         /// <summary>
+        /// 详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponseMessage<ProductListResponse>> ProductDetailsAsync(string id, CancellationToken cancellationToken)
+        {
+            var response = new ResponseMessage<ProductListResponse>() { Extension = new ProductListResponse { } };
+            var entity =await _ProductStore.GetAsync(id);                       
+            var data = _mapper.Map<ProductListResponse>(entity);
+            data.Files = await _filesStore.IQueryableListAsync().Where(y => id == y.ProductId && !y.IsDeleted).Select(y => y.Url).ToListAsync(cancellationToken);                                  
+            response.Extension = data;
+            return response;
+        }
+
+        /// <summary>
         /// 新增
         /// </summary>
         /// <param name="editRequest"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> ProductAddAsync(ProductEditRequest editRequest)
+        public async Task<ResponseMessage<bool>> ProductAddAsync(ProductEditRequest editRequest, CancellationToken cancellationToken)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (editRequest == null)
@@ -148,10 +165,11 @@ namespace ShoppingApi.Managers
                     });
                     await _filesStore.AddRangeEntityAsync(images);
                     response.Extension = await _ProductStore.AddEntityAsync(product);
+                   await transaction.CommitAsync(cancellationToken);
                 }
                 catch (Exception e)
                 {
-                    await transaction.RollbackAsync();
+                    await transaction.RollbackAsync(cancellationToken);
                     throw e;
                 }
             }
@@ -177,12 +195,13 @@ namespace ShoppingApi.Managers
         /// </summary>
         /// <param name="editRequest"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> ProductUpdateAsync(ProductEditRequest editRequest)
+        public async Task<ResponseMessage<bool>> ProductUpdateAsync(ProductEditRequest editRequest, CancellationToken cancellationToken)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             var Product = _mapper.Map<Product>(editRequest);
             using (var transaction = await _transaction.BeginTransaction())
             {
+                
                 try
                 {
                     //存在修改图片 先判断原来是否有图片  存在判断是否有修改 对比异常 删除原理和新增现有数据？               
@@ -209,10 +228,11 @@ namespace ShoppingApi.Managers
                     {
                         response.Extension = true;
                     }
+                    await transaction.CommitAsync(cancellationToken);
                 }
                 catch (Exception e)
                 {
-                    await transaction.RollbackAsync();
+                    await transaction.RollbackAsync(cancellationToken);
                     throw e;
                 }
             }

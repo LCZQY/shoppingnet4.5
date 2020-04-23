@@ -25,7 +25,7 @@ namespace ShoppingApi.Stores
         /// <returns></returns>
         public async Task<bool> AddEntityAsync(Product entity)
         {
-            _context.Attach(entity);
+            _context.Product.Attach(entity);
             _context.Product.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
