@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-namespace IdentityServer4.Controllers
+using ZapiCore;
+namespace Authentication.Controllers
 {
     [ApiController]
     [Route("[controller]")]

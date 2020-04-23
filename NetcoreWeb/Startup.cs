@@ -11,6 +11,7 @@ using ShoppingApi.Common;
 using ShoppingApi.Common.Filter;
 using ShoppingApi.Models;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using ZapiCore;
@@ -121,12 +122,26 @@ namespace ShoppingApi
                 options.Authority = "https://localhost:5001"; //认证中心地址
                 options.RequireHttpsMetadata = false;
                 options.Audience = "api1"; //保护资源标识      
-                options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(5); //5分钟检查一下TOken的有效性
-                options.TokenValidationParameters.RequireExpirationTime = true; //接收到的Token 必须是带有超时时间的
+                //options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(5); //5分钟检查一下TOken的有效性
+               //options.TokenValidationParameters.RequireExpirationTime = true; //接收到的Token 必须是带有超时时间的
             });
             #endregion
             #region 授权 
-
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = "Cookies";
+            //    options.DefaultChallengeScheme = "oidc";
+            //})
+            //    .AddCookie("Cookies")
+            //    .AddOpenIdConnect("oidc", options =>
+            //    {
+            //        options.SignInScheme = "Cookies";
+            //        options.Authority = "http://localhost:5000";
+            //        options.RequireHttpsMetadata = false;
+            //        options.ClientId = "mvc";
+            //        options.SaveTokens = true;
+            //    });
 
             #endregion
             //服务注册

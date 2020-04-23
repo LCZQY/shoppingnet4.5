@@ -1,6 +1,6 @@
 using System;
 
-namespace ShoppingIdentityServer
+namespace Authentication
 {
     public class WeatherForecast
     {

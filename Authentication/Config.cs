@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyIdentityServer4
+namespace Authentication
 {
     public class Config
     {
         public static IEnumerable<ApiResource> Apis =>
       new List<ApiResource>
-    
+
            {
                new ApiResource("api1", "my api"),
                new ApiResource("inventoryapi", "this is inventory api"),
@@ -24,7 +24,7 @@ namespace MyIdentityServer4
         {
             new Client
             {
-                ClientId = "client",          
+                ClientId = "client",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets =
                 {

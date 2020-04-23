@@ -1,5 +1,4 @@
-﻿
-/*
+﻿/*
  * @Author: zqy
  * @Author: zqy
  * @Date:   2020-04-23
@@ -57,25 +56,24 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         ,
         //表格操作
         toolbar: function () {
-
             //头工具栏事件
             table.on('toolbar(test)', function (obj) {
                 switch (obj.event) {
-                    //case 'add':
-                    //    layer.open({
-                    //        title: '',
-                    //        /*如果是外部的html，type2，内部，type1*/
-                    //        type: 1,
-                    //        btnAlign: 'c',
-                    //        area: '50%',
-                    //        content: $("#add-main").html()
-                    //        //未做的是去监听表单提交，给后台发送ajax请求
-                    //    });
-                    //    break;
-                    //case 'batchDel':
-                    //    layer.msg("开发中...");
-                    //    /*发送ajax请求到后台执行批量删除*/
-                    //    break;
+                    case 'add':
+                        layer.open({
+                            title: '',
+                            /*如果是外部的html，type2，内部，type1*/
+                            type: 1,
+                            btnAlign: 'c',
+                            area: '50%',
+                            content: $("#add-main").html()
+                            //未做的是去监听表单提交，给后台发送ajax请求
+                        });
+                        break;
+                    case 'batchDel':
+                        layer.msg("开发中...");
+                        /*发送ajax请求到后台执行批量删除*/
+                        break;
                     case 'flush':
                         console.log(0);
                         table.reload('test', {
@@ -99,6 +97,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         break;
                 };
             });
+
         }
         ,
         //树形结构
@@ -138,7 +137,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                                 if (!(obj.data.id === undefined)) {
                                     type.loadtable(obj.data.id, obj.data.title);
                                     //表单操作
-                                    table_show();
+                                    type.toolbar();
                                 } else {
                                     layer.msg("请编辑商品类型名称");
                                     return false;
