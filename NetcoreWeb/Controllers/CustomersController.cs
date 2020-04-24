@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ShoppingApi.Common;
 using ShoppingApi.Dto.Request;
 using ShoppingApi.Managers;
 using ShoppingApi.Models;
@@ -28,10 +29,22 @@ namespace ShoppingApi.Controllers
             _customerManager = customerManager;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "superadmin")]
+        [HttpGet("check")]
+        [CheckPermission]
+        public string Check(AdminUser user) {
+
+
+            return user.UserName = "测试基于角色的权限管理 superadmin";
+        }
+        /// <summary>
         /// 需要身份认证的方式请求接口
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpGet("admin")]
         public IActionResult Token()
         {

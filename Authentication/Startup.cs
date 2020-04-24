@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.Services;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,11 +30,24 @@ namespace Authentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-            var builder = services.AddIdentityServer()
-            .AddInMemoryApiResources(Config.Apis)
-            .AddInMemoryClients(Config.Clients);
-            builder.AddDeveloperSigningCredential();
+
+
+            //// ÅäÖÃIdentitryServer
+            services.AddIdentityServer()
+                .AddInMemoryPersistedGrants()
+                .AddInMemoryApiResources(Config.Apis)
+                //.AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryClients(Config.Clients)
+                .AddTestUsers(Config.Users)
+                .AddDeveloperSigningCredential();
+
 
             #region Swagger
             services.AddSwaggerGen(c =>
@@ -79,6 +95,10 @@ namespace Authentication
                 });
             });
             #endregion
+
+            // demo versions
+            services.AddTransient<IRedirectUriValidator, DemoRedirectValidator>();
+            services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();
             services.AddControllers();
         }
 
@@ -89,20 +109,21 @@ namespace Authentication
             {
                 app.UseDeveloperExceptionPage();
             }
-            #region Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
-            });
-            #endregion
+         
             app.UseIdentityServer();
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCookiePolicy();
 
             app.UseAuthorization();
-
+            #region Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
+            #endregion
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

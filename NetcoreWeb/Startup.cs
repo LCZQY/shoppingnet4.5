@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.Rest.Serialization;
+using Newtonsoft.Json;
 using ShoppingApi.Common;
 using ShoppingApi.Common.Filter;
 using ShoppingApi.Models;
@@ -14,6 +16,8 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using ZapiCore;
 
 namespace ShoppingApi
@@ -163,11 +167,12 @@ namespace ShoppingApi
                 //    return new JsonResult(result);
                 //};
             });
+          
             services.AddControllers(option =>
             {
                 option.Filters.Add<ApiActionFilter>();
             }).AddXmlSerializerFormatters();
-       
+
             #endregion
 
         }
