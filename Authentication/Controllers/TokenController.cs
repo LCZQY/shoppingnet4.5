@@ -1,5 +1,6 @@
 ﻿using IdentityModel;
 using IdentityModel.Client;
+using IdentityServer4.Test;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,15 +24,61 @@ namespace Authentication.Controllers
     [ApiController]
     public class TokenController : Controller
     {
+
+        //private readonly TestUserStore _userStore;
+        //TokenController()//TestUserStore userStore)
+        //{
+        //    //_userStore = userStore;
+        
+        
+        //}
+
+
+
+
+
+
         /// <summary>
-        /// 获取token
+        /// 客户端模式获取token
         /// </summary>
         /// <returns></returns>
-        [HttpGet("get")]
-        public async Task<ContentResult> GetTokenResponseAsync()
+        [HttpGet("client")]
+        public async Task<ContentResult> ClientTokenResponseAsync()
         {
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            if (disco.IsError)
+            {
+                Console.WriteLine(disco.Error);
+                return null;
+            }
+        
+            var clientrequest = new ClientCredentialsTokenRequest
+            {
+                Address = disco.TokenEndpoint,
+                ClientId = "client",
+                ClientSecret = "secret", //客户端凭据
+                Scope = "api1" //可访问资源
+            };
+            var tokenResponse = await client.RequestClientCredentialsTokenAsync(clientrequest);
+            if (tokenResponse.IsError)
+            {
+                Console.WriteLine(disco.Error);
+                return null;
+            }
+            return Content(JsonHelper.ToJson(tokenResponse.Json));
+        }
+
+
+        /// <summary>
+        /// 密码模式获取token
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("password")]
+        public async Task<ContentResult> PasswordTokenResponseAsync(string name,string pwd)
+        {
+            var client = new HttpClient();
+            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
@@ -39,30 +86,22 @@ namespace Authentication.Controllers
             }
             var psswordRequst = new PasswordTokenRequest
             {
-                UserName = "alice",
-                Password = "password",
+                UserName = name,
+                Password = pwd,
                 Address = disco.TokenEndpoint,
-                ClientId = "client",
-                ClientSecret = "7fede4cc-a653-4827-acf1-9a1a91ced535", //客户端凭据
+                ClientId = "password_client",
+                ClientSecret = "secret", //客户端凭据
                 Scope = "api1" //可访问资源
-            };
-            //var clientrequest = new ClientCredentialsTokenRequest
-            //{
-            //    Address = disco.TokenEndpoint,
-            //    ClientId = "client",
-            //    ClientSecret = "7fede4cc-a653-4827-acf1-9a1a91ced535", //客户端凭据
-            //    Scope = "api1" //可访问资源
-            //};
+            };         
             var tokenResponse = await client.RequestPasswordTokenAsync(psswordRequst);
             if (tokenResponse.IsError)
             {
                 Console.WriteLine(disco.Error);
                 return null;
             }
-            return Content(JsonHelper.ToJson(tokenResponse));
+            return Content(JsonHelper.ToJson(tokenResponse.Json));
         }
 
-        private const string Secret = "7fede4cc-a653-4827-acf1-9a1a91ced535";
 
         ///// <summary>
         ///// 获取Token
@@ -72,7 +111,7 @@ namespace Authentication.Controllers
         //[HttpGet("authenticate")]
         //public async Task<ContentResult> Authenticate()
         //{
-            
+
         //    var user = FindUser("alice", "alice");
         //    if (user == null) return Content("用户名或者密码错误!");
         //    var tokenHandler = new JwtSecurityTokenHandler();
@@ -112,10 +151,10 @@ namespace Authentication.Controllers
         //}
 
 
-        public User FindUser(string userName, string password)
-        {
-            return UserStore._users.FirstOrDefault(_ => _.Name == userName && _.Password == password);
-        }
+        //public User FindUser(string userName, string password)
+        //{
+        //    return UserStore._users.FirstOrDefault(_ => _.Name == userName && _.Password == password);
+        //}
     }
     public class UserDto
     {

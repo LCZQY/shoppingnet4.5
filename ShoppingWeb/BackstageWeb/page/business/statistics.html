@@ -3,9 +3,28 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>数据统计</title>
+    <link href="../../sources/layui/css/layui.css" rel="stylesheet" />
 </head>
 <body>
     首页统计 记录下本周或者这个月的销售量已经文章的阅读量
+    <button>获取token</button>
+    <script src="../../sources/js/shopping/jquery-3.4.1.min.js"></script>
+    <script src="../../sources/layui/layui.js"></script>
+    <script src="../../sources/js/common.js"></script>
+    <script>
+            
+        ajax_request({
+            url: "http://localhost:5000connect/token",
+            data: {
+                grant_type:"client_credentials",
+                client_Id:"clientId",
+                client_secret:"clientsecret"
+            },
+            callback: function (e) {
+                console.log(e, "是否成功");
+            }
+        });
+    </script>
 </body>
 </html>

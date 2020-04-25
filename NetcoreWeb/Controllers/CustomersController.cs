@@ -44,7 +44,7 @@ namespace ShoppingApi.Controllers
         /// 需要身份认证的方式请求接口
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpGet("admin")]
         public IActionResult Token()
         {

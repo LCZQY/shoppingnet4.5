@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Authentication
 {
@@ -30,24 +32,23 @@ namespace Authentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => false;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.None;
+            //});
 
-
-
-            //// 配置IdentitryServer
+            #region 同时兼容 Client_Credentials 和 Resource_Owner_Password 模式（测试通过 - OK）
             services.AddIdentityServer()
-                .AddInMemoryPersistedGrants()
-                .AddInMemoryApiResources(Config.Apis)
-                //.AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryClients(Config.Clients)
-                .AddTestUsers(Config.Users)
-                .AddDeveloperSigningCredential();
-
+                    .AddDeveloperSigningCredential()
+                    .AddInMemoryApiResources(Config.GetResources())
+                    .AddInMemoryClients(Config.Clients)
+                    .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
+                    .AddTestUsers(Config.TestUsers);
+                //.AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                //.AddProfileService<ProfileService>();
+            #endregion
 
             #region Swagger
             services.AddSwaggerGen(c =>
@@ -95,11 +96,21 @@ namespace Authentication
                 });
             });
             #endregion
+            services.AddCors(options =>
+            {
+                options.AddPolicy("_myAllowSpecificOrigins", corsbuilder =>
+                {
+                    corsbuilder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .WithMethods("GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS");
 
-            // demo versions
-            services.AddTransient<IRedirectUriValidator, DemoRedirectValidator>();
-            services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();
-            services.AddControllers();
+                });
+            });
+            //// demo versions
+            //services.AddTransient<IRedirectUriValidator, DemoRedirectValidator>();
+            //services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();
+            services.AddControllers();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,9 +124,12 @@ namespace Authentication
             app.UseIdentityServer();
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-            app.UseCookiePolicy();
+            /// app.UseStaticFiles();
 
+          
+            app.UseRouting();
+            /// app.UseCookiePolicy();
+            app.UseCors("_myAllowSpecificOrigins"); //此项必须在app.UseRouting()和app.UseAuthorization()之间，否则会报错。
             app.UseAuthorization();
             #region Swagger
             app.UseSwagger();

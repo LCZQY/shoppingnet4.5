@@ -20,6 +20,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using ZapiCore;
 
+
 namespace ShoppingApi
 {
     public class Startup
@@ -123,7 +124,7 @@ namespace ShoppingApi
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "https://localhost:5001"; //认证中心地址
+                options.Authority = "http://localhost:5000"; //认证中心地址
                 options.RequireHttpsMetadata = false;
                 options.Audience = "api1"; //保护资源标识      
                 //options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(5); //5分钟检查一下TOken的有效性
@@ -155,24 +156,12 @@ namespace ShoppingApi
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
-                //这总方式不生效？？
-                //options.InvalidModelStateResponseFactory = (context) =>
-                //{
-                //    var error = context.ModelState.GetValidationSummary();
-                //    var result = new ResponseMessage()
-                //    {
-                //        Code = ResponseCodeDefines.ModelStateInvalid,
-                //        Message = error
-                //    };
-                //    return new JsonResult(result);
-                //};
-            });
-          
+            });           
             services.AddControllers(option =>
             {
                 option.Filters.Add<ApiActionFilter>();
-            }).AddXmlSerializerFormatters();
-
+            });
+        
             #endregion
 
         }
