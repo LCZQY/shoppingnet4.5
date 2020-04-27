@@ -124,7 +124,7 @@ namespace ShoppingApi
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "http://localhost:5000"; //认证中心地址
+                options.Authority = "https://localhost:5000"; //认证中心地址
                 options.RequireHttpsMetadata = false;
                 options.Audience = "api1"; //保护资源标识      
                 //options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(5); //5分钟检查一下TOken的有效性

@@ -22,7 +22,7 @@ namespace Authentication
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                       .UseUrls("http://*:5000");
+                       .UseUrls("https://*:5000");
                 });
     }
 }

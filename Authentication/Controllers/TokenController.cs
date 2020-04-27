@@ -14,9 +14,7 @@ using System.Threading.Tasks;
 using ZapiCore;
 namespace Authentication.Controllers
 {
-    //https://www.cnblogs.com/RainingNight/p/authorization-in-asp-net-core.html
-    // 明日计划： 完成认证和授权的建立
-
+   
     /// <summary>
     /// 获取Token
     /// </summary>
@@ -25,34 +23,24 @@ namespace Authentication.Controllers
     public class TokenController : Controller
     {
 
-        //private readonly TestUserStore _userStore;
-        //TokenController()//TestUserStore userStore)
-        //{
-        //    //_userStore = userStore;
-        
-        
-        //}
-
-
-
-
-
 
         /// <summary>
         /// 客户端模式获取token
         /// </summary>
         /// <returns></returns>
         [HttpGet("client")]
-        public async Task<ContentResult> ClientTokenResponseAsync()
+        public async Task<ResponseMessage<TokenReponse>> ClientTokenResponseAsync()
         {
+            var response = new ResponseMessage<TokenReponse>() { Extension = new TokenReponse { } };
+
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
             if (disco.IsError)
             {
-                Console.WriteLine(disco.Error);
-                return null;
-            }
-        
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "访问认证中心失败";
+                return response;
+            }        
             var clientrequest = new ClientCredentialsTokenRequest
             {
                 Address = disco.TokenEndpoint,
@@ -63,10 +51,12 @@ namespace Authentication.Controllers
             var tokenResponse = await client.RequestClientCredentialsTokenAsync(clientrequest);
             if (tokenResponse.IsError)
             {
-                Console.WriteLine(disco.Error);
-                return null;
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "获取Token失败";
+                return response;
             }
-            return Content(JsonHelper.ToJson(tokenResponse.Json));
+            response.Extension = tokenResponse.Json.ToObject<TokenReponse>();
+            return response;
         }
 
 
@@ -75,14 +65,16 @@ namespace Authentication.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("password")]
-        public async Task<ContentResult> PasswordTokenResponseAsync(string name,string pwd)
+        public async Task<ResponseMessage<TokenReponse>> PasswordTokenResponseAsync(string name,string pwd)
         {
+            var response = new ResponseMessage<TokenReponse>() { Extension =  new TokenReponse { } };
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
             if (disco.IsError)
             {
-                Console.WriteLine(disco.Error);
-                return null;
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "访问认证中心失败";
+                return response;
             }
             var psswordRequst = new PasswordTokenRequest
             {
@@ -92,14 +84,16 @@ namespace Authentication.Controllers
                 ClientId = "password_client",
                 ClientSecret = "secret", //客户端凭据
                 Scope = "api1" //可访问资源
-            };         
+            };
             var tokenResponse = await client.RequestPasswordTokenAsync(psswordRequst);
             if (tokenResponse.IsError)
             {
-                Console.WriteLine(disco.Error);
-                return null;
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "获取Token失败";
+                return response;
             }
-            return Content(JsonHelper.ToJson(tokenResponse.Json));
+            response.Extension = tokenResponse.Json.ToObject<TokenReponse>();
+            return response;
         }
 
 
@@ -111,7 +105,6 @@ namespace Authentication.Controllers
         //[HttpGet("authenticate")]
         //public async Task<ContentResult> Authenticate()
         //{
-
         //    var user = FindUser("alice", "alice");
         //    if (user == null) return Content("用户名或者密码错误!");
         //    var tokenHandler = new JwtSecurityTokenHandler();
