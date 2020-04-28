@@ -37,16 +37,16 @@ namespace ShoppingApi.Controllers
         [HttpGet("check")]     
         public string Check() {
 
-
             return  "测试基于角色的权限管理 superadmin";
         }
+
         /// <summary>
         /// 需要身份认证的方式请求接口
         /// </summary>
         /// <returns></returns>
         [TestAuthorize("User_Edit")]
-        [HttpGet("admin")]
-        public IActionResult Token()
+        [HttpPost("admin")]
+        public IActionResult Token(AdminUser user)
         {
             var info = User;
             return new JsonResult(

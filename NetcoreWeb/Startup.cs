@@ -88,6 +88,7 @@ namespace ShoppingApi
                         Url = new Uri("http://www.topimage.design/")
                     }
                 });
+                c.OperationFilter
                 var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 var xmlPath = Path.Combine(basePath, "ShoppingApi.xml");
                 //显示对控制器的注释   
@@ -116,6 +117,7 @@ namespace ShoppingApi
                     In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
                     Type = SecuritySchemeType.ApiKey
                 });
+               
             });
             #endregion
 

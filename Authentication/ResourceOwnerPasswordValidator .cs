@@ -40,15 +40,17 @@ namespace Authentication
         {
             return new Claim[]
             {
-            new Claim("UserId", Guid.NewGuid().ToString()),
-            new Claim(JwtClaimTypes.Name,"wjk"),
-            new Claim(JwtClaimTypes.GivenName, "jaycewu"),
-            new Claim(JwtClaimTypes.FamilyName, "yyy"),
-            new Claim(JwtClaimTypes.Email, "977865769@qq.com"),
-            new Claim(JwtClaimTypes.Role,"admin")
+                    new Claim(JwtClaimTypes.Id, Guid.NewGuid().ToString()),
+                    new Claim(JwtClaimTypes.Name,"郑强勇"),
+                    new Claim(JwtClaimTypes.PhoneNumber,"13167874692"),
+                    new Claim(JwtClaimTypes.GivenName, "aaa"),
+                    new Claim(JwtClaimTypes.FamilyName, "yyy"),
+                    new Claim(JwtClaimTypes.Email, "977865769@qq.com"),
+                    new Claim(JwtClaimTypes.Role,"admin")
             };
         }
     }
 
 
 }
+
