@@ -9,6 +9,11 @@ namespace Authentication
 {
     public class Config
     {
+
+        /// <summary>
+        /// 定义用户信息？
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<IdentityResource> GetIdentityResourceResources()
         {
             return new List<IdentityResource>
@@ -26,7 +31,7 @@ namespace Authentication
 
 
         /// <summary>
-        /// 
+        /// 定义受保护资源
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<ApiResource> GetResources()
@@ -39,6 +44,9 @@ namespace Authentication
             };
         }
 
+        /// <summary>
+        /// 定义用户认证模式
+        /// </summary>
         public static IEnumerable<Client> Clients => new List<Client>
         {
             //客户端模式
@@ -74,6 +82,9 @@ namespace Authentication
         };
 
 
+        /// <summary>
+        /// 定义测试用户
+        /// </summary>
         public static List<TestUser> TestUsers =>
 
             new List<TestUser>

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZapiCore;
+using static ShoppingApi.Common.TestAuthorizationFilter;
 
 namespace ShoppingApi.Controllers
 {
@@ -29,27 +30,27 @@ namespace ShoppingApi.Controllers
             _customerManager = customerManager;
         }
         /// <summary>
-        /// 
+        /// admin权限
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = "superadmin")]
-        [HttpGet("check")]
-        [CheckPermission]
-        public string Check(AdminUser user) {
+        [TestAuthorize("admin")]
+        [HttpGet("check")]     
+        public string Check() {
 
 
-            return user.UserName = "测试基于角色的权限管理 superadmin";
+            return  "测试基于角色的权限管理 superadmin";
         }
         /// <summary>
         /// 需要身份认证的方式请求接口
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        [TestAuthorize("User_Edit")]
         [HttpGet("admin")]
         public IActionResult Token()
         {
+            var info = User;
             return new JsonResult(
-                from c in User.Claims select new { c.Type , c.Value,c.Issuer,c.OriginalIssuer}
+                  from c in User.Claims select new { c.Type ,c.Value}
                 ) ;
         }
 

@@ -1,15 +1,17 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
-using IdentityServer4.Validation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Authentication
 {
+    /// <summary>
+    /// 要返回更多的信息，需要实现IProfileService接口
+    /// </summary>
     public class ProfileService : IProfileService
     {
+
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             try
@@ -32,5 +34,5 @@ namespace Authentication
         }
     }
 
-        
+
 }

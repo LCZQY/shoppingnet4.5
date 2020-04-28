@@ -160,6 +160,7 @@ namespace ShoppingApi
             services.AddControllers(option =>
             {
                 option.Filters.Add<ApiActionFilter>();
+                option.Filters.Add<TestAuthorizationFilter>();
             });
         
             #endregion

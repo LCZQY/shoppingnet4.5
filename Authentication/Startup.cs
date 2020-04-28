@@ -45,9 +45,9 @@ namespace Authentication
                     .AddInMemoryApiResources(Config.GetResources())
                     .AddInMemoryClients(Config.Clients)
                     .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
-                    .AddTestUsers(Config.TestUsers);
-                //.AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
-                //.AddProfileService<ProfileService>();
+                    //.AddTestUsers(Config.TestUsers)
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                .AddProfileService<ProfileService>();
             #endregion
 
             #region Swagger
