@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Authentication.Model;
+using Authentication.Models;
 using Authentication.Stores;
 using System.Linq;
 

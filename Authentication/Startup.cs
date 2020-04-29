@@ -1,4 +1,5 @@
-using Authentication.Model;
+using Authentication.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
-using Authentication.Stores;
 using System.IO;
 
 namespace Authentication
@@ -31,6 +31,10 @@ namespace Authentication
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
 
+            #region AutoMapper
+
+            services.AddAutoMapper(typeof(ServiceProfile));  //ServiceProfile为你Mapper的类
+            #endregion      
             #region Mysql                    
             services.AddDbContext<AuthenticationDbContext>(options =>
      options.UseMySql(Configuration.GetConnectionString("MysqlConnection")));
@@ -104,8 +108,8 @@ namespace Authentication
 
                 });
             });
-            services.AddScoped<ResourceOwnerPasswordValidator>();
-            services.AddScoped<IUserStore, UserStore>();
+            //服务注册
+            ServiceRegistration.Start(services);
             //// demo versions
             //services.AddTransient<IRedirectUriValidator, DemoRedirectValidator>();
             //services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();

@@ -1,5 +1,5 @@
 ﻿using ZapiCore.Model;
-namespace Authentication
+namespace Authentication.Models
 {
     /// <summary>
     ///  管理员表

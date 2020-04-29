@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZapiCore.Model;
 
-namespace Authentication.Model
+namespace Authentication.Models
 {
     /// <summary>
     /// 权限扩展表

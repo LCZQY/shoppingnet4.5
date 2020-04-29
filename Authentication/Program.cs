@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace Authentication
 {
@@ -23,6 +24,10 @@ namespace Authentication
                 {
                     webBuilder.UseStartup<Startup>()
                        .UseUrls("https://*:5000");
-                });
+                }).ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Information);
+                }).UseNLog();
     }
 }

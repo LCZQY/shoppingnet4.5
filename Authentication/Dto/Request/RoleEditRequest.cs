@@ -1,11 +1,12 @@
-﻿using ZapiCore.Model;
-namespace Authentication
+﻿namespace Authentication.Dto.Request
 {
-    /// <summary>
-    ///  管理员表
-    /// </summary>
-    public class Role : BaseField
+    public class RoleEditRequest
     {
+
+        /// <summary>
+        /// KEY
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         /// 角色名称
@@ -16,6 +17,5 @@ namespace Authentication
         /// 备注
         /// </summary>
         public string Remark { get; set; }
-
     }
 }

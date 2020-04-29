@@ -2,6 +2,7 @@
 using IdentityModel.Client;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ZapiCore;
+using Authentication.Managers;
+using Authentication.Dto.Request;
+using Authentication.Dto.Response;
+
 namespace Authentication.Controllers
 {
 
@@ -22,7 +27,110 @@ namespace Authentication.Controllers
     [ApiController]
     public class UserController : Controller
     {
+        private readonly ILogger<UserController> _logger;
+        private readonly UserManager _userManager;
+        public UserController(ILogger<UserController> logger, UserManager userManager)
+        {
+            _logger = logger;
+            _userManager = userManager;
+        }
 
-        
-    }   
+        /// <summary>
+        /// 用户详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("detail")]
+        public async Task<ResponseMessage<UserListResponse>> UserDetails(string id)
+        {
+            var response = new ResponseMessage<UserListResponse>() { Extension = new UserListResponse { } };
+            try
+            {
+                response = await _userManager.UserDetailsAsync(id, HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "用户详情查询失败，请重试";
+                _logger.LogInformation($"用户详情查询失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("list")]
+        public async Task<ResponseMessage<dynamic>> UserList([FromBody]SearchUserRequest search)
+        {
+            var response = new ResponseMessage<dynamic>() { };
+            try
+            {
+                response = await _userManager.UserListAsync(search, HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "用户列表查询失败，请重试";
+                _logger.LogInformation($"用户列表查询失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+        }
+
+
+
+        /// <summary>
+        /// 增加/修改用户(传入Id如果不存在直接新增否则直接修改)        
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("edit")]
+        public async Task<ResponseMessage<bool>> UserEdit([FromBody]UserEditRequest request)
+        {
+            var response = new ResponseMessage<bool>() { Extension = false };
+            try
+            {
+                if (await _userManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
+                {
+                    response = await _userManager.UserAddAsync(request);
+                }
+                else
+                {
+                    response = await _userManager.UserUpdateAsync(request);
+                }
+            }
+            catch (Exception e)
+            {
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "编辑用户失败，请重试";
+                _logger.LogInformation($"编辑用户失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+        }
+
+
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete("delete")]
+        public async Task<ResponseMessage<bool>> UserDelete(string id)
+        {
+            var response = new ResponseMessage<bool> { Extension = false };
+            try
+            {
+                response = await _userManager.UserDeleteAsync(id);
+            }
+            catch (Exception e)
+            {
+                response.Code = ResponseCodeDefines.ServiceError;
+                response.Message = "删除用户失败，请重试";
+                _logger.LogInformation($"删除用户失败异常:{JsonHelper.ToJson(e)}");
+            }
+            return response;
+        }
+
+
+
+
+    }
 }

@@ -1,10 +1,11 @@
-﻿using ZapiCore.Model;
-namespace Authentication.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Authentication.Dto.Response
 {
-    /// <summary>
-    ///  管理员表
-    /// </summary>
-    public class User : BaseField
+    public class UserListResponse
     {
         /// <summary>
         /// 用户名
@@ -25,5 +26,10 @@ namespace Authentication.Model
         /// 密码：默认123456
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// 角色名称
+        /// </summary>
+        public string RoleName { get; set; }
     }
 }

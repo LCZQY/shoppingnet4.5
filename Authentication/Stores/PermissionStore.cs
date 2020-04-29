@@ -1,17 +1,16 @@
 ﻿using Authentication.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Authentication.Stores
 {
-    public class UserStore : IUserStore
+    public class PermissionitemStore : IPermissionStore
     {
         private readonly AuthenticationDbContext _context;
 
-        public UserStore(AuthenticationDbContext context)
+        public PermissionitemStore(AuthenticationDbContext context)
         {
             _context = context;
         }
@@ -21,10 +20,10 @@ namespace Authentication.Stores
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> AddEntityAsync(User entity)
+        public async Task<bool> AddEntityAsync(Permissionitem entity)
         {
             _context.Attach(entity);
-            _context.User.Add(entity);
+            _context.Permissionitem.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -37,7 +36,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.User.AsNoTracking().Any(e => e.Id == id);
+            return _context.Permissionitem.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -45,24 +44,24 @@ namespace Authentication.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<User> GetAsync(string id)
+        public async Task<Permissionitem> GetAsync(string id)
         {
-            var User = await _context.User.FindAsync(id);
+            var Permissionitem = await _context.Permissionitem.FindAsync(id);
 
-            if (User == null)
+            if (Permissionitem == null)
             {
                 return null;
             }
-            return User;
+            return Permissionitem;
         }
 
         /// <summary>
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<User>> EnumerableListAsync()
+        public async Task<IEnumerable<Permissionitem>> EnumerableListAsync()
         {
-            return await _context.User.AsNoTracking().ToListAsync();
+            return await _context.Permissionitem.AsNoTracking().ToListAsync();
 
         }
 
@@ -70,10 +69,9 @@ namespace Authentication.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public IQueryable<User> IQueryableListAsync()
+        public IQueryable<Permissionitem> IQueryableListAsync()
         {
-            return _context.User.AsNoTracking();
-
+            return _context.Permissionitem;
         }
 
         /// <summary>
@@ -82,7 +80,7 @@ namespace Authentication.Stores
         /// <param name="id"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> PutEntityAsync(string id, User entity)
+        public async Task<bool> PutEntityAsync(string id, Permissionitem entity)
         {
             if (!IsExists(id))
             {
@@ -105,11 +103,9 @@ namespace Authentication.Stores
             {
                 return false;
             }
-            var model = await _context.User.FindAsync(id);
-            model.IsDeleted = true;
+            var model = await _context.Permissionitem.FindAsync(id);          
             _context.Attach(model);
-            var entity = _context.Entry(model);
-            entity.Property(y => y.IsDeleted).IsModified = true;
+            _context.Remove(model);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -118,7 +114,7 @@ namespace Authentication.Stores
         /// </summary>
         /// <param name="listentity"></param>
         /// <returns></returns>
-        public async Task<bool> AddRangeEntityAsync(List<User> listentity)
+        public async Task<bool> AddRangeEntityAsync(List<Permissionitem> listentity)
         {
             _context.AttachRange(listentity);
             await _context.AddRangeAsync(listentity);
@@ -131,8 +127,8 @@ namespace Authentication.Stores
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<bool> DeleteRangeAsync(List<string> id)
-        {
-            var list = await IQueryableListAsync().Where(item => id.Contains(item.Id)).ToListAsync();
+        {         
+            var list =await IQueryableListAsync().Where(item => id.Contains(item.Id)).ToListAsync();
             _context.AttachRange(list);
             _context.RemoveRange(list);
             return await _context.SaveChangesAsync() > 0;

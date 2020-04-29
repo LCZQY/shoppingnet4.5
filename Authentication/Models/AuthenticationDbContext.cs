@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Authentication.Model
+namespace Authentication.Models
 {
     public class AuthenticationDbContext : DbContext
     {
