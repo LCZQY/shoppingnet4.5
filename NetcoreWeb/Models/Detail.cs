@@ -1,4 +1,5 @@
-﻿namespace ShoppingApi.Models
+﻿using ZapiCore.Model;
+namespace ShoppingApi.Models
 {
 
     /// <summary>

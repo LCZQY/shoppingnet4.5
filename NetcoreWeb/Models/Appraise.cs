@@ -1,5 +1,5 @@
 ﻿using System;
-
+using ZapiCore.Model;
 /// <summary>
 /// 数据模型层
 /// </summary>

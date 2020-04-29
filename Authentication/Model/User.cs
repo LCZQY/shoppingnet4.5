@@ -1,19 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-/// <summary>
-/// 数据模型层
-/// </summary>
-namespace ShoppingApi.Models
+﻿using ZapiCore.Model;
+namespace Authentication.Model
 {
     /// <summary>
-    /// 管理员表
+    ///  管理员表
     /// </summary>
-    public class AdminUser : BaseField
+    public class User : BaseField
     {
         /// <summary>
-        /// 管理员账号
+        /// 用户名
         /// </summary>
         public string UserName { get; set; }
-
 
         /// <summary>
         /// 真实姓名
@@ -23,19 +19,11 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 电话号码
         /// </summary>
-        public  string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// 密码：默认123456
         /// </summary>
         public string Password { get; set; }
-
-        /// <summary>
-        /// token
-        /// </summary>
-        [NotMapped]
-        public string Token { get; set; }
     }
-
-
 }

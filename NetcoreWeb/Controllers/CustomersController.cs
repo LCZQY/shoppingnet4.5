@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingApi.Common;
@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZapiCore;
 using static ShoppingApi.Common.TestAuthorizationFilter;
+using ShoppingApi.Common.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingApi.Controllers
 {
@@ -19,8 +21,9 @@ namespace ShoppingApi.Controllers
     /// 客户API
     /// </summary>
     [Route("api/customers")]
+    [Authorize]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class CustomersController : BaseController
     {
         private readonly ILogger<CustomersController> _logger;
         private readonly CustomerManager _customerManager;
@@ -32,8 +35,7 @@ namespace ShoppingApi.Controllers
         /// <summary>
         /// admin权限
         /// </summary>
-        /// <returns></returns>
-        [TestAuthorize("admin")]
+        /// <returns></returns> 
         [HttpGet("check")]     
         public string Check() {
 
@@ -43,15 +45,11 @@ namespace ShoppingApi.Controllers
         /// <summary>
         /// 需要身份认证的方式请求接口
         /// </summary>
-        /// <returns></returns>
-        [TestAuthorize("User_Edit")]
+        /// <returns></returns>       
         [HttpPost("admin")]
-        public IActionResult Token(AdminUser user)
+        public IActionResult Token()
         {
-            var info = User;
-            return new JsonResult(
-                  from c in User.Claims select new { c.Type ,c.Value}
-                ) ;
+            return new JsonResult(User);
         }
 
 

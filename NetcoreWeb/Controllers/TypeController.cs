@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingApi.Common;
 using ShoppingApi.Dto.Request;
@@ -17,6 +18,7 @@ namespace ShoppingApi.Controllers
     /// </summary>
     [Route("api/type")]
     [ApiController]
+    [Authorize]
     public class TypeController : ControllerBase
     {
 

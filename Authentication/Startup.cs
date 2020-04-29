@@ -1,22 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.Services;
-using IdentityServer4.Validation;
+using Authentication.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System;
+using Authentication.Stores;
+using System.IO;
 
 namespace Authentication
 {
@@ -39,13 +31,18 @@ namespace Authentication
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
 
+            #region Mysql                    
+            services.AddDbContext<AuthenticationDbContext>(options =>
+     options.UseMySql(Configuration.GetConnectionString("MysqlConnection")));
+            #endregion
+
             #region 同时兼容 Client_Credentials 和 Resource_Owner_Password 模式（测试通过 - OK）
             services.AddIdentityServer()
                     .AddDeveloperSigningCredential()
                     .AddInMemoryApiResources(Config.GetResources())
                     .AddInMemoryClients(Config.Clients)
                     .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
-                    //.AddTestUsers(Config.TestUsers)
+                //.AddTestUsers(Config.TestUsers)
                 .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
                 .AddProfileService<ProfileService>();
             #endregion
@@ -107,10 +104,12 @@ namespace Authentication
 
                 });
             });
+            services.AddScoped<ResourceOwnerPasswordValidator>();
+            services.AddScoped<IUserStore, UserStore>();
             //// demo versions
             //services.AddTransient<IRedirectUriValidator, DemoRedirectValidator>();
             //services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();
-            services.AddControllers().AddXmlSerializerFormatters();  
+            services.AddControllers().AddXmlSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,13 +119,13 @@ namespace Authentication
             {
                 app.UseDeveloperExceptionPage();
             }
-         
+
             app.UseIdentityServer();
             app.UseHttpsRedirection();
 
             /// app.UseStaticFiles();
 
-          
+
             app.UseRouting();
             /// app.UseCookiePolicy();
             app.UseCors("_myAllowSpecificOrigins"); //此项必须在app.UseRouting()和app.UseAuthorization()之间，否则会报错。

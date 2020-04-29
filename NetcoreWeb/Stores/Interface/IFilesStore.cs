@@ -1,5 +1,5 @@
-﻿using ShoppingApi.Common.Interface;
-using ShoppingApi.Models;
+﻿using ShoppingApi.Models;
+using ZapiCore.Interface;
 
 namespace ShoppingApi.Stores.Interface
 {

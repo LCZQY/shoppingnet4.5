@@ -1,15 +1,6 @@
-﻿using IdentityModel;
-using IdentityModel.Client;
-using IdentityServer4.Test;
+﻿using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using ZapiCore;
 namespace Authentication.Controllers
@@ -31,7 +22,7 @@ namespace Authentication.Controllers
         [HttpGet("client")]
         public async Task<ResponseMessage<TokenReponse>> ClientTokenResponseAsync()
         {
-            var response = new ResponseMessage<TokenReponse>() { Extension = new TokenReponse (){ } };
+            var response = new ResponseMessage<TokenReponse>() { Extension = new TokenReponse() { } };
 
             var client = new HttpClient();
             var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
@@ -89,26 +80,11 @@ namespace Authentication.Controllers
             if (tokenResponse.IsError)
             {
                 response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = tokenResponse.ErrorDescription == "user_password_error" ? "密码或者用户名错误" : "获取Token失败";                
+                response.Message = tokenResponse.ErrorDescription == "user_password_error" ? "密码或者用户名错误" : "获取Token失败";
                 return response;
             }
             response.Extension = tokenResponse.Json.ToObject<TokenReponse>();
             return response;
         }
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public string Password { get; set; }
-
-        public DateTime Birthday { get; set; }
     }
 }

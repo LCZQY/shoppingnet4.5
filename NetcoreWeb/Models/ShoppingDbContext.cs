@@ -33,10 +33,10 @@ namespace ShoppingApi.Models
 
         }
 
-        /// <summary>
-        /// 权限管理【考虑新建一个服务，独立出去】
-        /// </summary>
-        public DbSet<AdminUser> AdminUser { get; set; }
+        ///// <summary>
+        ///// 权限管理【考虑新建一个服务，独立出去】
+        ///// </summary>
+        //public DbSet<Models.use>  Users { get; set; }
 
         /// <summary>
         /// 商品评价

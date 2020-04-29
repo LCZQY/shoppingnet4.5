@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,6 +18,7 @@ namespace ShoppingApi.Controllers
     /// 文件 API
     /// </summary>
     [Route("api/file")]
+    [Authorize]
     [ApiController]
     public class FilesController : ControllerBase
     {

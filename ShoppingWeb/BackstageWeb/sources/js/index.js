@@ -37,17 +37,16 @@ layui.use(['form', 'layer'], function () {
 
 
 
-//获取Token
-ajax_request({
-    url: "",
-    data: {
-        grant_type: "client_credentials",
-        client_Id: "clientId",
-        client_secret: "clientsecret"
-    },
-    callback: function (e) {
-        console.log(e, "是否成功");
-    }
-}, "POST");
-
+////获取Token
+//ajax_request({
+//    url: "",
+//    data: {
+//        grant_type: "client_credentials",
+//        client_Id: "clientId",
+//        client_secret: "clientsecret"
+//    },
+//    callback: function (e) {
+//        console.log(e, "是否成功");
+//    }
+//}, "POST");
 
