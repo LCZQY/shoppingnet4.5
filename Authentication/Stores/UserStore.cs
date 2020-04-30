@@ -137,5 +137,7 @@ namespace Authentication.Stores
             _context.RemoveRange(list);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        
     }
 }

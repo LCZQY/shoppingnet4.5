@@ -21,13 +21,71 @@ namespace Authentication.Managers
     {
         private readonly IMapper _mapper;
         private readonly IRoleStore _roleStore;
+        private readonly IRolePermissionStore  _rolePermissionStore;
+        private readonly ITransaction<AuthenticationDbContext> _transaction;
         private readonly ILogger<RoleManager> _logger;
-        public RoleManager(IRoleStore roleStore, ILogger<RoleManager> logger, IMapper mapper)
+        public RoleManager(IRoleStore roleStore, ILogger<RoleManager> logger, IMapper mapper, IRolePermissionStore rolePermissionStore, ITransaction<AuthenticationDbContext> transaction)
         {
             _roleStore = roleStore;
+            _rolePermissionStore = rolePermissionStore;
+            _transaction = transaction;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// 角色权限绑定与移除
+        /// </summary>
+        /// <param name="condtion"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponseMessage<bool>> BindPermissionAsync(RoleAndPermissionRequest condtion, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = new ResponseMessage<bool>() { Extension = false };
+            if (condtion is null)
+            {
+                response.Extension = false;
+            }
+            using (var transaction = await _transaction.BeginTransaction())
+            {
+                try
+                {
+                    var roleperssion = new List<Role_Permissionitem>() { };
+                    //原来的角色所有权限
+                    var oldRole_Permission = _rolePermissionStore.IQueryableListAsync().Where(y => y.RoleId == condtion.RoleId);
+                    if (await oldRole_Permission.AnyAsync(cancellationToken))
+                    {
+                        //直接清空该角色在权限数据 ， 再新增提交保存权限
+                        //var oldPermission = await oldRole_Permission.Select(y => y.PermissionId).Distinct().ToListAsync(); // 1 2 3 
+                        //var newPermission = condtion.ListPermissionId; // 1                
+                        var rolePermisid = await oldRole_Permission.Select(y => y.Id).ToListAsync(cancellationToken);
+                        await _rolePermissionStore.DeleteRangeAsync(rolePermisid);                      
+                    }
+                    foreach (var pid in condtion.ListPermissionId)
+                    {
+                        roleperssion.Add(new Role_Permissionitem
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            PermissionId = pid,
+                            CreateTime = DateTime.Now,
+                            RoleId = condtion.RoleId,
+                        });
+                    }
+                    response.Extension = await _rolePermissionStore.AddRangeEntityAsync(roleperssion);
+                    await transaction.CommitAsync(cancellationToken);
+                }catch(Exception e)
+                {
+                    await transaction.RollbackAsync(cancellationToken);
+                    response.Code = ResponseCodeDefines.ServiceError;
+                    response.Message = "绑定角色权限失败，请重试";
+
+                }
+            }
+            return response;
+        }
+
+
+
 
         /// <summary>
         /// 列表数据

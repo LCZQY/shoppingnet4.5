@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Authentication.Stores
 {
     /// <summary>
-    /// 权限数据处理
+    /// 角色权限数据处理
     /// </summary>
-    public class PermissionitemStore : IPermissionStore
+    public class RolePermissionStore : IRolePermissionStore
     {
         private readonly AuthenticationDbContext _context;
 
-        public PermissionitemStore(AuthenticationDbContext context)
+        public RolePermissionStore(AuthenticationDbContext context)
         {
             _context = context;
         }
@@ -23,10 +23,10 @@ namespace Authentication.Stores
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> AddEntityAsync(Permissionitem entity)
+        public async Task<bool> AddEntityAsync(Role_Permissionitem entity)
         {
             _context.Attach(entity);
-            _context.Permissionitem.Add(entity);
+            _context.Role_Permissionitem.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -39,7 +39,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.Permissionitem.AsNoTracking().Any(e => e.Id == id);
+            return _context.Role_Permissionitem.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -47,24 +47,24 @@ namespace Authentication.Stores
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Permissionitem> GetAsync(string id)
+        public async Task<Role_Permissionitem> GetAsync(string id)
         {
-            var Permissionitem = await _context.Permissionitem.FindAsync(id);
+            var Role_Permissionitem = await _context.Role_Permissionitem.FindAsync(id);
 
-            if (Permissionitem == null)
+            if (Role_Permissionitem == null)
             {
                 return null;
             }
-            return Permissionitem;
+            return Role_Permissionitem;
         }
 
         /// <summary>
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Permissionitem>> EnumerableListAsync()
+        public async Task<IEnumerable<Role_Permissionitem>> EnumerableListAsync()
         {
-            return await _context.Permissionitem.AsNoTracking().ToListAsync();
+            return await _context.Role_Permissionitem.AsNoTracking().ToListAsync();
 
         }
 
@@ -72,9 +72,9 @@ namespace Authentication.Stores
         /// 列表数据 
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Permissionitem> IQueryableListAsync()
+        public IQueryable<Role_Permissionitem> IQueryableListAsync()
         {
-            return _context.Permissionitem;
+            return _context.Role_Permissionitem;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Authentication.Stores
         /// <param name="id"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> PutEntityAsync(string id, Permissionitem entity)
+        public async Task<bool> PutEntityAsync(string id, Role_Permissionitem entity)
         {
             if (!IsExists(id))
             {
@@ -106,7 +106,7 @@ namespace Authentication.Stores
             {
                 return false;
             }
-            var model = await _context.Permissionitem.FindAsync(id);          
+            var model = await _context.Role_Permissionitem.FindAsync(id);          
             _context.Attach(model);
             _context.Remove(model);
             return await _context.SaveChangesAsync() > 0;
@@ -117,7 +117,7 @@ namespace Authentication.Stores
         /// </summary>
         /// <param name="listentity"></param>
         /// <returns></returns>
-        public async Task<bool> AddRangeEntityAsync(List<Permissionitem> listentity)
+        public async Task<bool> AddRangeEntityAsync(List<Role_Permissionitem> listentity)
         {
             _context.AttachRange(listentity);
             await _context.AddRangeAsync(listentity);
@@ -141,11 +141,21 @@ namespace Authentication.Stores
         /// 权限扩展表
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Permissionitem_expansion> Permissionitem_Expansions()
+        public IQueryable<Role_Permissionitem> Role_Permissionitem_Expansions()
         {
-            return _context.Permissionitem_Expansion;
+            return _context.Role_Permissionitem;
         }
 
-    
+        /// <summary>
+        /// 批量新增角色权限表
+        /// </summary>
+        /// <param name="role_Role_Permissionitems"></param>
+        /// <returns></returns>
+        public async Task<bool> AddRangeRolePermission(List<Role_Permissionitem> role_Role_Permissionitems)
+        {
+            _context.AttachRange(role_Role_Permissionitems);
+            await _context.AddRangeAsync(role_Role_Permissionitems);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

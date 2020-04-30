@@ -133,5 +133,26 @@ namespace Authentication.Stores
             _context.RemoveRange(list);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        /// <summary>
+        /// 批量新增角色权限表
+        /// </summary>
+        /// <param name="role_Permissionitems"></param>
+        /// <returns></returns>
+        public async Task<bool> AddRangeRolePermission(List<Role_Permissionitem> role_Permissionitems)
+        {
+            _context.AttachRange(role_Permissionitems);
+            await _context.AddRangeAsync(role_Permissionitems);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        /// <summary>
+        /// 角色权限表
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<Role_Permissionitem> GetRolePermission()
+        {
+            return _context.Role_Permissionitem;
+        }
     }
 }

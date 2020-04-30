@@ -27,13 +27,25 @@ namespace Authentication.Controllers
         }
 
         /// <summary>
+        /// 检查用户是否有权限
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <param name="permissionid">权限id</param>
+        /// <returns></returns>
+        [HttpGet("check")]
+        public async Task<ResponseMessage<bool>> CheckPermission(string userid, string permissionid)
+        {         
+            return  await _permissionManager.CheckPermissionAsync(userid,permissionid, HttpContext.RequestAborted);             
+        }
+
+        /// <summary>
         /// 权限列表
         /// </summary>
         /// <returns></returns>
         [HttpPost("list")]
         public async Task<ResponseMessage<dynamic>> PermissionList([FromBody]SearchPermissionRequest search)
         {
-            var response = new ResponseMessage<dynamic>() {  };
+            var response = new ResponseMessage<dynamic>() { };
             try
             {
                 response = await _permissionManager.PermissionitemListAsync(search, HttpContext.RequestAborted);

@@ -22,12 +22,35 @@ namespace Authentication.Managers
 
         private readonly IMapper _mapper;
         private readonly IPermissionStore _permissionStore;
+
+        private readonly IUserStore _userStore;
         private readonly ILogger<PermissionManager> _logger;
-        public PermissionManager(IPermissionStore permissionStore, ILogger<PermissionManager> logger, IMapper mapper)
+        public PermissionManager(IPermissionStore permissionStore, IUserStore userStore, ILogger<PermissionManager> logger, IMapper mapper)
         {
             _permissionStore = permissionStore;
+            _userStore = userStore;
             _logger = logger;
             _mapper = mapper;
+        }
+
+
+        /// <summary>
+        ///  检查用户是否有权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="permissionCore"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponseMessage<bool>> CheckPermissionAsync(string userId, string permissionCore, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = new ResponseMessage<bool>() { Extension = false };
+            var user = await _userStore.GetAsync(userId);
+            if (user is null) response.Extension = false;
+            var permission = await _permissionStore.IQueryableListAsync().Where(y => y.Code == permissionCore).FirstOrDefaultAsync(cancellationToken);
+            if (permission is null) response.Extension = false;
+            var have = _permissionStore.Permissionitem_Expansions().Where(item => item.UserId == userId && permissionCore == item.PermissionCode);
+            if (have.Any()) response.Extension = true;
+            return response;
         }
 
 

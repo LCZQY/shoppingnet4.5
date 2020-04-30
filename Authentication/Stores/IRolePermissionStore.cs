@@ -6,8 +6,17 @@ using ZapiCore.Interface;
 using Authentication.Models;
 namespace Authentication.Stores
 {
-    public interface IUserStore : Baseinterface<User>
-    { 
+    public interface IRolePermissionStore : Baseinterface<Role_Permissionitem>
+    {
+    
+
+        /// <summary>
+        /// 批量删除权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Task<bool> DeleteRangeAsync(List<string> id);
+
+
     }
 }

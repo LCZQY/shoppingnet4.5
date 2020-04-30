@@ -24,9 +24,12 @@ namespace Authentication
 
             services.AddScoped<RoleManager>();
             services.AddScoped<IRoleStore, RoleStore>();
+            services.AddScoped<IRolePermissionStore, RolePermissionStore>();
+
 
             services.AddScoped<PermissionManager>();
             services.AddScoped<IPermissionStore, PermissionitemStore>();
+       
         }
 
 

@@ -28,6 +28,18 @@ namespace Authentication.Controllers
 
 
         /// <summary>
+        /// 角色绑定权限
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("permission/add")]
+        public async Task<ResponseMessage<bool>> BindPermission([FromBody]RoleAndPermissionRequest request)
+        {
+            return await _roleManager.BindPermissionAsync(request, HttpContext.RequestAborted);            
+        }
+
+
+
+        /// <summary>
         /// 角色列表
         /// </summary>
         /// <returns></returns>
