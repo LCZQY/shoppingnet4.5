@@ -21,15 +21,17 @@ namespace Authentication
 
             services.AddScoped<UserManager>();
             services.AddScoped<IUserStore, UserStore>();
+            services.AddTransient<IUserRoleStore, UserRoleStore>();
+            services.AddScoped<User_Role>();
 
-            services.AddScoped<RoleManager>();
+           
             services.AddScoped<IRoleStore, RoleStore>();
             services.AddScoped<IRolePermissionStore, RolePermissionStore>();
 
 
             services.AddScoped<PermissionManager>();
             services.AddScoped<IPermissionStore, PermissionitemStore>();
-       
+
         }
 
 

@@ -1,4 +1,7 @@
+/**业务中心域名 */
 const WEBURL = "https://localhost:3001";
+/**权限中心域名 */
+const AuthentictionURL = "https://localhost:5000";
 
 /*!
  * master.js

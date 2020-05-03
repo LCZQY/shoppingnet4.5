@@ -1,4 +1,5 @@
 using Authentication.Models;
+using Authentication.Stores;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using ZapiCore;
 
 namespace Authentication
 {
@@ -108,6 +110,7 @@ namespace Authentication
 
                 });
             });
+            
             //服务注册
             ServiceRegistration.Start(services);
             //// demo versions
@@ -129,6 +132,8 @@ namespace Authentication
 
             /// app.UseStaticFiles();
 
+            // 加入中间件异常处理
+            app.UseMiddleware(typeof(ExceptionHandlerMiddleWare));
 
             app.UseRouting();
             /// app.UseCookiePolicy();

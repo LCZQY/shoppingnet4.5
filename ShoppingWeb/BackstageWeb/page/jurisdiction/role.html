@@ -3,9 +3,55 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>角色管理</title>
 </head>
 <body>
-   角色管理
+    <blockquote class="layui-elem-quote">
+        角色管理
+    </blockquote>
+    <div class="layui-btn-container">
+        <div class="layui-fluid">
+            <div id="layui_table">
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
+        </div>
+    </div>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <!--<button class="layui-btn layui-btn-sm layui-icon" lay-event="add">&#xe654;</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="batchDel">&#xe640;</button>-->
+            <div class="layui-btn layui-btn-sm">
+                <span>商品名称</span> <input type="text" name="search">
+            </div>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="search">&#xe615;</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="flush">&#xe669;</button>
+        </div>
+    </script>
+    <script type="text/html" id="takeaction">
+        <a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" lay-event="details">查看详情</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs layui-icon" lay-event="del">编辑权限</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs layui-icon" lay-event="del">删除</a>
+    </script>
+    <script type="text/html" id="imgtmp">
+        <img src="{{d.icon}}" style="width:20px;height:100px;" />
+    </script>
+
+    <script src="../../sources/js/shopping/jquery-3.4.1.min.js"></script>
+    <script src="../../sources/layui/layui.js"></script>
+    <script src="../../sources/js/common.js"></script>
+
+    <script>
+        layui.config({
+            base: '../../sources/js/'
+            , version: 'v1.0'
+        }).extend({ //设定模块别名
+            role: 'role'
+        });
+        layui.use(['role'], function () {
+            var role = layui.role;
+            role.loadtable();//加载表格
+            role.table_show();//加载表格操作
+        });
+    </script>
 </body>
 </html>

@@ -26,6 +26,25 @@ namespace Authentication.Controllers
         }
 
 
+        /// <summary>
+        /// 角色详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("detail")]
+        public async Task<ResponseMessage<dynamic>> RoleDetails([FromBody]string  roleid)
+        {
+            try
+            {
+                return await _roleManager.RoleDetailsAsync(roleid, HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation($"角色详情查询失败,错误信息： {JsonHelper.ToJson(e)}");
+                throw new ZCustomizeException(ResponseCodeEnum.ServiceError, "角色详情查询失败，请重试");                
+            }
+        }
+
+
 
         /// <summary>
         /// 角色绑定权限
@@ -34,7 +53,16 @@ namespace Authentication.Controllers
         [HttpPost("permission/add")]
         public async Task<ResponseMessage<bool>> BindPermission([FromBody]RoleAndPermissionRequest request)
         {
-            return await _roleManager.BindPermissionAsync(request, HttpContext.RequestAborted);            
+            try
+            {
+                return await _roleManager.BindPermissionAsync(request, HttpContext.RequestAborted);
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation($"角色绑定权限失败,错误信息： {JsonHelper.ToJson(e)}");
+
+                throw new ZCustomizeException(ResponseCodeEnum.ServiceError, "角色绑定权限失败，请重试");
+            }
         }
 
 

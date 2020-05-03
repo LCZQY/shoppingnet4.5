@@ -11,23 +11,28 @@
         .layui-tree-entry:hover {
             background: rgba(128,128,128,.2);
         }
+
         .layui-tree-set {
             margin-left: 20px;
         }
+
         #layui_tree {
             width: 20%;
             float: left;
         }
+
         #layui_table {
             width: 78%;
             position: relative;
             float: left;
         }
+
         .layui-table-view .layui-table {
             width: 100%;
         }
+
         form {
-            width:90%;
+            width: 90%;
         }
     </style>
 </head>
@@ -47,13 +52,13 @@
         </div>
         <!--右侧对应商品类型的商品管理区-->
         <div id="layui_table">
-            <blockquote class="layui-elem-quote" >
+            <blockquote class="layui-elem-quote">
                 商品列表
             </blockquote>
-            <table class="layui-hide " id="test" ></table>
+            <table class="layui-hide " id="test"></table>
         </div>
         <!--添加商品类型模态框-->
-        <form class="layui-form" id="from"  action="" hidden>
+        <form class="layui-form" id="from" action="" hidden>
             <div class="layui-form-item">
                 <label class="layui-form-label">类型层级：</label>
                 <div class="layui-input-block " id="IsPurchased">
@@ -130,7 +135,7 @@
             type.loadtree();
             type.inserttype();
         });
-	
+
     </script>
 </body>
 </html>

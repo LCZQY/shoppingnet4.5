@@ -21,11 +21,13 @@ namespace Authentication.Managers
     {
         private readonly IMapper _mapper;
         private readonly IRoleStore _roleStore;
+        private readonly IPermissionStore _permissionStore;
         private readonly IRolePermissionStore  _rolePermissionStore;
         private readonly ITransaction<AuthenticationDbContext> _transaction;
         private readonly ILogger<RoleManager> _logger;
-        public RoleManager(IRoleStore roleStore, ILogger<RoleManager> logger, IMapper mapper, IRolePermissionStore rolePermissionStore, ITransaction<AuthenticationDbContext> transaction)
+        public RoleManager(IRoleStore roleStore, ILogger<RoleManager> logger, IMapper mapper, IRolePermissionStore rolePermissionStore, ITransaction<AuthenticationDbContext> transaction, IPermissionStore permissionStore)
         {
+            _permissionStore = permissionStore;
             _roleStore = roleStore;
             _rolePermissionStore = rolePermissionStore;
             _transaction = transaction;
@@ -34,12 +36,41 @@ namespace Authentication.Managers
         }
 
         /// <summary>
-        /// 角色权限绑定与移除
+        /// 角色详情（查询所有拥有的权限）
         /// </summary>
-        /// <param name="condtion"></param>
+        /// <param name="roleid"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> BindPermissionAsync(RoleAndPermissionRequest condtion, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResponseMessage<dynamic>> RoleDetailsAsync(string roleid, CancellationToken cancellationToken = default(CancellationToken))
+
+        {
+            var response = new ResponseMessage<dynamic>();
+            var details = from per in _permissionStore.IQueryableListAsync()
+                    join  role_permission in _rolePermissionStore.IQueryableListAsync()
+                    on per.Id  equals role_permission.PermissionId into s
+                    from s1 in s.DefaultIfEmpty()
+                    join role in _roleStore.IQueryableListAsync()
+                    on s1.RoleId equals role.Id into t 
+                    from t1 in t.DefaultIfEmpty()
+                    where t1.Id == roleid
+                    select new
+                    {
+                        roleid = t1.Id,
+                        rolename = t1.Name,
+                        permissionid = per.Id,
+                        permissionname = per.Name
+                    };          
+            response.Extension =await details.FirstOrDefaultAsync(cancellationToken);
+            return response;
+        }
+
+            /// <summary>
+            /// 角色权限绑定与移除
+            /// </summary>
+            /// <param name="condtion"></param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
+            public async Task<ResponseMessage<bool>> BindPermissionAsync(RoleAndPermissionRequest condtion, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (condtion is null)

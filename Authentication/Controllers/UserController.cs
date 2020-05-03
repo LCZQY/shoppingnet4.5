@@ -16,6 +16,7 @@ using ZapiCore;
 using Authentication.Managers;
 using Authentication.Dto.Request;
 using Authentication.Dto.Response;
+using ZapiCore.Layui;
 
 namespace Authentication.Controllers
 {
@@ -34,6 +35,35 @@ namespace Authentication.Controllers
             _logger = logger;
             _userManager = userManager;
         }
+
+
+        /// <summary>
+        /// 查询该用户拥有哪些角色
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        [HttpGet("get/role")]
+        public async Task<ResponseMessage<List<RoleListResponse>>> BindUserRole(string userid)
+        {
+
+            return await _userManager.SelectUserRoleAsync(userid);
+
+
+        }
+
+
+        /// <summary>
+        /// 绑定用户角色关系
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>                
+        [HttpPost("role/add")]
+        public async Task<ResponseMessage<bool>> BindUserRole([FromBody] UserAndroleRequest request)
+        {
+            return await _userManager.BindUserRoleAsync(request);
+        }
+
+
 
         /// <summary>
         /// 用户详情
@@ -56,26 +86,33 @@ namespace Authentication.Controllers
             return response;
         }
 
+
+
+
         /// <summary>
         /// 用户列表
         /// </summary>
         /// <returns></returns>
-        [HttpPost("list")]
-        public async Task<ResponseMessage<dynamic>> UserList([FromBody]SearchUserRequest search)
+        [HttpPost("layui/table/list")]
+        public async Task<LayerTableJson> LayuiTableList([FromBody]SearchUserRequest search)
         {
-            var response = new ResponseMessage<dynamic>() { };
+            var response = new LayerTableJson();
             try
             {
-                response = await _userManager.UserListAsync(search, HttpContext.RequestAborted);
+                response = await _userManager.LayuiTableListAsync(search, HttpContext.RequestAborted);
             }
             catch (Exception e)
             {
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "用户列表查询失败，请重试";
+                response.Code = 500;
+                response.Msg = "用户列表查询失败，请重试";
                 _logger.LogInformation($"用户列表查询失败异常:{JsonHelper.ToJson(e)}");
             }
             return response;
         }
+
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingApi.Common;
@@ -7,12 +8,8 @@ using ShoppingApi.Managers;
 using ShoppingApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ZapiCore;
-using static ShoppingApi.Common.TestAuthorizationFilter;
-using ShoppingApi.Common.Utils;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingApi.Controllers
 {
@@ -36,10 +33,11 @@ namespace ShoppingApi.Controllers
         /// admin权限
         /// </summary>
         /// <returns></returns> 
-        [HttpGet("check")]     
-        public string Check() {
+        [HttpGet("check")]
+        public string Check()
+        {
 
-            return  "测试基于角色的权限管理 superadmin";
+            return "测试基于角色的权限管理 superadmin";
         }
 
         /// <summary>

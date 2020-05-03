@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ShoppingApi.Common;
 using ShoppingApi.Dto.Request;
 using ShoppingApi.Dto.Response;
 using ShoppingApi.Managers;
@@ -12,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZapiCore;
+using ZapiCore.Layui;
 
 namespace ShoppingApi.Controllers
 {

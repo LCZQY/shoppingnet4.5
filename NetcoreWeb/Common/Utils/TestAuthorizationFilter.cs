@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using ShoppingApi.Common.Utils;
-using ShoppingApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +14,7 @@ using ZapiCore.Model;
 
 namespace ShoppingApi.Common
 {
-    public class TestAuthorizationFilter : IAuthorizationFilter , IAsyncActionFilter
+    public class TestAuthorizationFilter : IAuthorizationFilter, IAsyncActionFilter
     {
         /// <summary>
         /// 在动作之前执行，给用户实体进行动态的赋值
@@ -29,7 +27,7 @@ namespace ShoppingApi.Common
             ClaimsPrincipal user2 = context.HttpContext.User;
             string token = context.HttpContext.Request.Headers["authorization"].ToString().Replace("Bearer ", "");
             // string text = user2.FindFirst("http://schemas.microsoft.com/claims/authnmethodsreferences")?.Value;
-            var user = new UserInfo 
+            var user = new UserInfo
             {
                 Id = user2.FindFirst(JwtClaimTypes.Id)?.Value,
                 UserName = user2.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value,
@@ -109,13 +107,13 @@ namespace ShoppingApi.Common
             /// 权限项名称
             /// </summary>
             public string Permission { get; set; }
-            
+
             /// <summary>
             /// 是否检查权限
             /// </summary>
             public bool IsCheck { get; set; }
 
-            public AuthorizationLocalAttribute(string permission,bool IsCheck = false)
+            public AuthorizationLocalAttribute(string permission, bool IsCheck = false)
             {
                 Permission = permission;
             }

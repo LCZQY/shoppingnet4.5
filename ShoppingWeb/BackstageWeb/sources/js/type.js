@@ -271,4 +271,3 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
     //输出接口
     exports('type', type);
 });
-

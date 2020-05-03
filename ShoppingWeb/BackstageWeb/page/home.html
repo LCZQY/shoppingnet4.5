@@ -5,9 +5,122 @@
 <head>
     <meta charset="utf-8" />
     <title>商城后台管理系统-首页</title>
+    <link href="../sources/css/shopping/font.css" rel="stylesheet" />
+    <link href="../sources/layui/css/layui.css" rel="stylesheet" />
+    <link href="../sources/css/shopping/weadmin.css" rel="stylesheet" />
+    <style>
+        .site-doc-icon li .layui-anim {
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            /*margin: 0 auto 10px;*/
+            text-align: center;
+            background-color: #009688;
+            cursor: pointer;
+            color: #fff;
+            border-radius: 50%;
+        }
+
+        li {
+            float: left;
+            margin: 1%;
+        }
+
+
+        .page-content {
+            left: 0;
+        }
+
+    </style>
 </head>
 <body>
-    <a href="##">权限中心</a>
-    <a href="business.html" target="_top">业务中心</a>
+    <div class="container">
+        <div class="logo">
+            <a href="./index.html">Change 商城后台管理</a>
+        </div>
+
+        <ul class="layui-nav right" lay-filter="">
+            <li class="layui-nav-item">
+                <a id="userName" href="javascript:;">欢迎：Admin</a>
+                <dl class="layui-nav-child">
+                    <!-- 二级菜单 -->
+                    <dd>
+                        <a onclick="WeAdminShow('个人信息','http://www.baidu.com')">个人信息</a>
+                    </dd>
+                    <dd>
+                        <a onclick="WeAdminShow('切换帐号','./login.html')">切换帐号</a>
+                    </dd>
+                    <dd>
+                        <a class="loginout" href="./login.html">退出</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item to-index">
+                <a runat="server" href="~" target="_blank">前台首页</a>
+            </li>
+        </ul>
+        <div class="page-content">
+            <div class="layui-tab-content">
+
+                <div class="layui-tab-item layui-show">
+                    <ul class="site-doc-icon site-doc-anim">
+
+                        <li>
+                            <a href="Jurisdiction.html" target="_top">
+                                <div class="layui-anim" data-anim="layui-anim-scale"> 权限中心</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="business.html" target="_top">
+                                <div class="layui-anim" data-anim="layui-anim-scale">
+                                    业务中心
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="copyright">Copyright ©2019 Change 商城后台管理V1.0 </div>
+    </div>
+
+    <script src="../sources/js/shopping/jquery-3.4.1.min.js"></script>
+    <script src="../sources/layui/layui.js"></script>
+
+    <script>
+        layui.use([], function () {
+            var $ = layui.jquery;
+            //演示动画开始
+            $('.site-doc-icon .layui-anim').on('click', function () {
+                var othis = $(this), anim = othis.data('anim');
+
+                //停止循环
+                if (othis.hasClass('layui-anim-loop')) {
+                    return othis.removeClass(anim);
+                }
+                othis.removeClass(anim);
+                setTimeout(function () {
+                    othis.addClass(anim);
+                });
+                //恢复渐隐
+                if (anim === 'layui-anim-fadeout') {
+                    setTimeout(function () {
+                        othis.removeClass(anim);
+                    }, 1300);
+                }
+            });
+            //演示动画结束
+        })
+    </script>
+    <!--Tab菜单右键弹出菜单-->
+    <ul class="rightMenu" id="rightMenu">
+        <li data-type="fresh">刷新</li>
+        <li data-type="current">关闭当前</li>
+        <li data-type="other">关闭其它</li>
+        <li data-type="all">关闭所有</li>
+    </ul>
 </body>
 </html>

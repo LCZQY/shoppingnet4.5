@@ -1,8 +1,10 @@
 ﻿using ZapiCore;
 namespace Authentication.Dto.Request
 {
-
-    public class SearchUserRequest : PageCondition
+    /// <summary>
+    /// 兼容 Layui的表格数据请求体
+    /// </summary>
+    public class SearchUserRequest : LayuiTableRequest
     {
 
         /// <summary>
