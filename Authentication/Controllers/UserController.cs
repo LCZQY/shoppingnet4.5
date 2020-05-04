@@ -97,6 +97,10 @@ namespace Authentication.Controllers
         public async Task<LayerTableJson> LayuiTableList([FromBody]SearchUserRequest search)
         {
             var response = new LayerTableJson();
+            if (search.Page == 0)
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid,"本接口仅支持页数从1开始");
+            }
             try
             {
                 response = await _userManager.LayuiTableListAsync(search, HttpContext.RequestAborted);

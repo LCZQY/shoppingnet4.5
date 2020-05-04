@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using ZapiCore;
+using ZapiCore.Layui;
 
 namespace Authentication.Controllers
 {
@@ -67,26 +68,34 @@ namespace Authentication.Controllers
 
 
 
+
+
         /// <summary>
         /// 角色列表
         /// </summary>
         /// <returns></returns>
-        [HttpPost("list")]
-        public async Task<ResponseMessage<dynamic>> RoleList([FromBody]SearchRoleRequest search)
+        [HttpPost("layui/table/list")]
+        public async Task<LayerTableJson> LayuiTableList([FromBody]SearchRoleRequest search)
         {
-            var response = new ResponseMessage<dynamic>() { };
+            var response = new LayerTableJson();
+            if (search.Page == 0)
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid, "本接口仅支持页数从1开始");
+            }
             try
             {
-                response = await _roleManager.RoleListAsync(search, HttpContext.RequestAborted);
+                response = await _roleManager.LayuiTableListAsync(search, HttpContext.RequestAborted);
             }
             catch (Exception e)
             {
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "角色列表查询失败，请重试";
-                _logger.LogInformation($"角色列表查询失败异常:{JsonHelper.ToJson(e)}");
+                response.Code = 500;
+                response.Msg = "用户列表查询失败，请重试";
+                _logger.LogInformation($"用户列表查询失败异常:{JsonHelper.ToJson(e)}");
             }
             return response;
         }
+
+
 
 
 

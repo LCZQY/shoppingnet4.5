@@ -26,7 +26,7 @@ namespace Authentication.Stores
         public async Task<bool> AddEntityAsync(Role_Permissionitem entity)
         {
             _context.Attach(entity);
-            _context.Role_Permissionitem.Add(entity);
+            _context.Role_Permissions.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -39,7 +39,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public bool IsExists(string id)
         {
-            return _context.Role_Permissionitem.AsNoTracking().Any(e => e.Id == id);
+            return _context.Role_Permissions.AsNoTracking().Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public async Task<Role_Permissionitem> GetAsync(string id)
         {
-            var Role_Permissionitem = await _context.Role_Permissionitem.FindAsync(id);
+            var Role_Permissionitem = await _context.Role_Permissions.FindAsync(id);
 
             if (Role_Permissionitem == null)
             {
@@ -64,7 +64,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public async Task<IEnumerable<Role_Permissionitem>> EnumerableListAsync()
         {
-            return await _context.Role_Permissionitem.AsNoTracking().ToListAsync();
+            return await _context.Role_Permissions.AsNoTracking().ToListAsync();
 
         }
 
@@ -74,7 +74,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public IQueryable<Role_Permissionitem> IQueryableListAsync()
         {
-            return _context.Role_Permissionitem;
+            return _context.Role_Permissions;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Authentication.Stores
             {
                 return false;
             }
-            var model = await _context.Role_Permissionitem.FindAsync(id);          
+            var model = await _context.Role_Permissions.FindAsync(id);          
             _context.Attach(model);
             _context.Remove(model);
             return await _context.SaveChangesAsync() > 0;
@@ -143,7 +143,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public IQueryable<Role_Permissionitem> Role_Permissionitem_Expansions()
         {
-            return _context.Role_Permissionitem;
+            return _context.Role_Permissions;
         }
 
         /// <summary>

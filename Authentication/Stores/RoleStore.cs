@@ -152,7 +152,7 @@ namespace Authentication.Stores
         /// <returns></returns>
         public IQueryable<Role_Permissionitem> GetRolePermission()
         {
-            return _context.Role_Permissionitem;
+            return _context.Role_Permissions;
         }
     }
 }

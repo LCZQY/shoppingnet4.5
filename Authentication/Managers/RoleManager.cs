@@ -1,4 +1,5 @@
 ﻿using Authentication.Dto.Request;
+using Authentication.Dto.Response;
 using Authentication.Models;
 using Authentication.Stores;
 using AutoMapper;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ZapiCore;
+using ZapiCore.Layui;
 
 namespace Authentication.Managers
 {
@@ -124,17 +126,38 @@ namespace Authentication.Managers
         /// <param name="search"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<dynamic>> RoleListAsync(SearchRoleRequest search, CancellationToken cancellationToken)
+        public async Task<LayerTableJson> LayuiTableListAsync(SearchRoleRequest search, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var response = new ResponseMessage<dynamic>() { };
+            var response = new LayerTableJson() { };
             var entity = _roleStore.IQueryableListAsync();
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
                 entity = entity.Where(y => y.Name == search.Name);
             }
-            var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
-            response.Extension = new { list, search.PageIndex, search.PageSize };
+            response.Count =await entity.CountAsync(cancellationToken);
+            var list = await entity.Skip(((search.Page??0)-1) * search.Limit??0).Take(search.Limit??0).ToListAsync(cancellationToken);
+            var  info = _mapper.Map<List<RoleListResponse>>(list);
+            info.ForEach(item =>
+            {
+                item.AuthorizeName = GetAuthorizeName(item.Id);
+            });
+            response.Data = info;
             return response;
+        }
+
+
+        /// <summary>
+        /// 获取该角色的所属权限
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public string GetAuthorizeName(string roleid)
+        {
+
+            var rolePer = _rolePermissionStore.IQueryableListAsync().Where(y => y.RoleId == roleid).Select(u => u.PermissionId).ToList();
+            var permissions = _permissionStore.IQueryableListAsync().Where(y => rolePer.Contains(y.Id)).Select(u => u.Name).ToList();
+
+            return string.Join(",",permissions);
         }
 
 
@@ -143,14 +166,20 @@ namespace Authentication.Managers
         /// </summary>
         /// <param name="editRequest"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> RoleAddAsync(RoleEditRequest editRequest)
+        public async Task<ResponseMessage<bool>> RoleAddAsync(RoleEditRequest editRequest,CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (editRequest == null)
             {
                 throw new ArgumentNullException();
             }
+            var isexist =await _roleStore.IQueryableListAsync().Where(item => item.Name == editRequest.Name).FirstOrDefaultAsync(cancellationToken);
+            if (isexist != null) {
+                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists,"该角色名称已存在");           
+            }
             var role = _mapper.Map<Role>(editRequest);
+            role.CreateTime = DateTime.Now;
+            role.Id = Guid.NewGuid().ToString();
             response.Extension = await _roleStore.AddEntityAsync(role);
             return response;
         }
@@ -180,6 +209,7 @@ namespace Authentication.Managers
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             var Role = _mapper.Map<Role>(editRequest);
+            Role.UpdateTime = DateTime.Now;
             if (await _roleStore.PutEntityAsync(Role.Id, Role))
             {
                 response.Extension = true;

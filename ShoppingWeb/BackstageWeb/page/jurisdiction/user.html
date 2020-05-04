@@ -48,6 +48,26 @@
             </div>
         </div>
     </form>
+    <!--新增用户模态框-->
+    <form class="layui-form" id="adduser_from" action="" hidden>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" placeholder="备注" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="demo1">确认</button>
+            </div>
+        </div>
+    </form>
     <script type="text/html" id="takeaction">
         <a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" lay-event="details">查看详情</a>
         <a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" data-method="offset" data-type="auto" id="layerDemo" lay-demo="getChecked" lay-event="addrole">编辑角色</a>

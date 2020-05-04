@@ -1,8 +1,8 @@
 ﻿/*
  * @Author: zqy
  * @Author: zqy
- * @Date:   2020-05-02
- * @lastModify 2020-05-02
+ * @Date:   2020-05-04
+ * @lastModify 2020-05-04
  * ----------------------------------------------------------------------
  * | Zqy [ 商城后台管理模板 ]
  * | 基于Layui http://www.layui.com/
@@ -15,7 +15,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         table = layui.table,
         form = layui.form;
     var _userid = "";
-    var user = {
+    var role = {
 
         /**
          * 绑定数据表格
@@ -23,7 +23,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         loadtable: function (typeid, typename) {
             console.log(table, "tables")
             table.render({
-                url: AuthentictionURL + "/api/user/layui/table/list"
+                url: AuthentictionURL + "/api/role/layui/table/list"
                 , method: "POST"
                 , startByZero: 0
                 //, where: { cateId: typeid }
@@ -36,14 +36,13 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , cols: [
                     [
                         { type: 'checkbox', fixed: 'left' }
-                        , { field: 'userName', title: '用户名', align: "center", width: 200 }
-                        , { field: 'trueName', title: '姓名', width: 200, align: "center" }
-                        , { field: 'phoneNumber', title: '手机号码', width: 200, align: "center", sort: true, }
+                        , { field: 'name', title: '角色名称', align: "center", width: 200 }
+                        , { field: 'remark', title: '备注', width: 200, align: "center", sort: true, }
                         , {
-                            field: 'roleName', title: '所属角色', width: 200, align: "center", templet: function (d) {
+                            field: 'authorizeName', title: '所属权限', width: 200, align: "center", templet: function (d) {
 
-                                if (d.roleName === null || d.roleName === '') { return "----"; }
-                                return d.roleName;
+                                if (d.authorizeName === null || d.authorizeName === '') { return "----"; }
+                                return d.authorizeName;
                             }
                         }
                         , {
@@ -69,12 +68,12 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 switch (obj.event) {
                     case 'add':
                         layer.open({
-                            title: '',
+                            title: '新增角色',
                             /*如果是外部的html，type2，内部，type1*/
                             type: 1,
                             btnAlign: 'c',
                             area: '50%',
-                            content: $("#add-main").html()
+                            content: $("#addrole_from")
                             //未做的是去监听表单提交，给后台发送ajax请求
                         });
                         break;
@@ -208,22 +207,21 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
          */
         submit_add_role: function () {
             //表单的提交
-            form.on('submit(demo1)', function (data) {
+            form.on('submit(addrole_submit)', function (data) {
 
-                //获取多选框的值
-                var arr = [];
-                $("input:checkbox[name='role']:checked").each(function (i) {
-                    arr[i] = $(this).attr("roleid");
-                });
-                console.log(arr, "arr");
+                ////获取多选框的值
+                //var arr = [];
+                //$("input:checkbox[name='role']:checked").each(function (i) {
+                //    arr[i] = $(this).attr("roleid");
+                //});                
                 ajax_request({
-                    url: AuthentictionURL + "/api/user/role/add",
-                    data: { userId: _userid, roleId: arr },
+                    url: AuthentictionURL + "/api/role/edit",
+                    data: data.field,
                     callback: function (data) {
                         if (data.code === '0') {
-                            layer.msg("角色编辑成功");
+                            layer.msg("角色新增成功");
                             layer.closeAll("page");
-                            user.loadtable();
+                            role.loadtable();
                         } else {
                             layer.msg(data.message, {
                                 time: 800,
@@ -233,10 +231,9 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 });
                 return false;
             });
-
         }
     }
     //输出接口 
-    exports('user', user);
+    exports('role', role);
 });
 

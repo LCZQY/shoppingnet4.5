@@ -133,37 +133,8 @@ namespace Authentication.Managers
         public async Task<LayerTableJson> LayuiTableListAsync(SearchUserRequest search, CancellationToken cancellationToken)
         {
             var response = new LayerTableJson();
-           // var entity =  _userStore.IQueryableListAsync();
-            var entity = from user in _userStore.IQueryableListAsync()
-                         join user_role in _userRoleStore.IQueryableListAsync()
-                         on user.Id equals user_role.UserId 
-                         // from s1 in s.DefaultIfEmpty()
-                         join role in _roleStore.IQueryableListAsync()
-                         on user_role.RoleId equals role.Id 
-                         //from t1 in t.DefaultIfEmpty()
-                         select new
-                         {
-                             UserId = user.Id,
-                             user.TrueName,
-                             user.UserName,
-
-                             //RoleName = !(t.Select(y => y.Name).Any()) ? null : string.Join(',',t.Select(y=>y.Name).ToList()??null),
-                             user.PhoneNumber,
-                           
-                             RoleName = role.Name
-                         };
-            entity = entity.GroupBy(y => y.UserId).Select(item => new
-            {
-                UserId = item.Key,
-                item.FirstOrDefault().TrueName,
-                item.FirstOrDefault().UserName,
-
-                item.FirstOrDefault().PhoneNumber,
-                //   RoleId = role.Id,
-                RoleName = string.Join(",", item.Select(y => y.RoleName).ToArray())
-            });
-
-            //  _logger.LogInformation($"用户信息：{JsonHelper.ToJson(entity)}");
+            var entity = _userStore.IQueryableListAsync();
+        
             if (!string.IsNullOrWhiteSpace(search.UserName))
             {
                 entity = entity.Where(y => y.UserName.Contains(search.UserName));
@@ -187,11 +158,27 @@ namespace Authentication.Managers
             response.Count = await entity.CountAsync(cancellationToken);
             var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
             var result = _mapper.Map<List<UserListResponse>>(list);
-          
+           
+            result.ForEach( y  =>
+            {
+                // 改成同步方法才不会报错
+                y.RoleName =  GetRoleName(y.Id);
+            });
             response.Data = result;
             return response;
         }
 
+        /// <summary>
+        /// 获取用户的所有角色使用逗号隔开
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public string  GetRoleName(string userid)
+        {
+            var user_role =  _userRoleStore.IQueryableListAsync().Where(y => y.UserId == userid).Select(y => y.RoleId).ToList();
+            var roleinfo = _roleStore.IQueryableListAsync().Where(y => user_role.Contains(y.Id)).Select(y => y.Name).ToList();
+            return string.Join(",", roleinfo);
+        }
 
         /// <summary>
         /// 新增

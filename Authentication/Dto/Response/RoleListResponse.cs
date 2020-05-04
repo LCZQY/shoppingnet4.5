@@ -26,5 +26,10 @@ namespace Authentication.Dto.Response
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 用逗号隔开，权限名称
+        /// </summary>
+        public string AuthorizeName { get; set; }
     }
 }

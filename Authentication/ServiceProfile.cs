@@ -30,6 +30,8 @@ namespace Authentication
             CreateMap<User, UserListResponse>();
 
 
+            CreateMap<RoleListResponse, Role>();
+            CreateMap<Role, RoleListResponse>();
             #endregion
         }
     }

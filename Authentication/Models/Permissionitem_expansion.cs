@@ -16,6 +16,11 @@ namespace Authentication.Models
         /// </summary>
         public string UserId { get; set; }
 
+        ///// <summary>
+        ///// 权限id
+        ///// </summary>
+        //public string PermissionId { get; set; }
+
         /// <summary>
         /// 权限code
         /// </summary>

@@ -16,7 +16,7 @@ namespace Authentication.Models
         /// <summary>
         /// 角色-权限表
         /// </summary>
-        public DbSet<Role_Permissionitem> Role_Permissionitem { get; set; }
+        public DbSet<Role_Permissionitem> Role_Permissions { get; set; }
 
         /// <summary>
         /// 用户表
