@@ -209,7 +209,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         submit_add_role: function () {
             //表单的提交
             form.on('submit(addrole_submit)', function (data) {
-
+                console.log(data,"datas");
                 ////获取多选框的值
                 //var arr = [];
                 //$("input:checkbox[name='role']:checked").each(function (i) {

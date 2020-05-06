@@ -14,8 +14,9 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         layer = layui.layer,
         table = layui.table,
         form = layui.form;
-    var _userid = "";
-    var user = {
+
+
+    var permission = {
 
         /**
          * 绑定数据表格
@@ -23,7 +24,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         loadtable: function (typeid, typename) {
             console.log(table, "tables")
             table.render({
-                url: AuthentictionURL + "/api/user/layui/table/list"
+                url: AuthentictionURL + "/api/permission/layui/table/list"
                 , method: "POST"
                 , startByZero: 0
                 //, where: { cateId: typeid }
@@ -32,21 +33,14 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , elem: '#test'
                 , toolbar: '#toolbarDemo'
-                , title: '用户列表'
+                , title: '权限列表'
                 , location: true
                 , cols: [
                     [
                         { type: 'checkbox', fixed: 'left' }
-                        , { field: 'userName', title: '用户名', align: "center"}
-                        , { field: 'trueName', title: '姓名',  align: "center" }
-                        , { field: 'phoneNumber', title: '手机号码', align: "center", sort: true, }
-                        , {
-                            field: 'roleName', title: '所属角色', align: "center", templet: function (d) {
-
-                                if (d.roleName === null || d.roleName === '') { return "----"; }
-                                return d.roleName;
-                            }
-                        }
+                        , { field: 'code', title: '权限Code', align: "center"}
+                        , { field: 'name', title: '权限名称',  align: "center" }
+                        , { field: 'url', title: 'Url', align: "center", sort: true, }                      
                         , {
                             field: 'createTime', title: '创建时间', sort: true, align: "center", templet: function (d) {
                                 return layui.util.toDateString(d.createTime);
@@ -59,8 +53,6 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
 
             });
         },
-
-
         /**
          *表格操作 
          */
@@ -70,14 +62,20 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 switch (obj.event) {
                     case 'add':
                         layer.open({
-                            title: '',
+                            title: '新增权限',
                             /*如果是外部的html，type2，内部，type1*/
                             type: 1,
                             btnAlign: 'c',
                             area: '50%',
-                            content: $("#add-main").html()
-                            //未做的是去监听表单提交，给后台发送ajax请求
-                        });
+                            resize: false,
+                            skin: 'layui-layer-dir',
+                            shade: false,
+                            anim: 0,
+                            move: false,
+                            content: $("#add_from") // 不可以直接用html 不然from 提交会失效
+                      
+                        });   
+
                         break;
                     case 'batchDel':
                         layer.msg("开发中...");
@@ -86,7 +84,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                     case 'flush':
                         console.log("刷新中");
                         table.reload('test', {
-                            url: AuthentictionURL + "/api/user/layui/table/list"
+                            url: AuthentictionURL + "/api/permission/layui/table/list"
                             , method: "POST"
                             , contentType: 'application/json'
                             //  , where: { name: null }
@@ -98,7 +96,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             layer.msg("请输入商品名称");
                         } else {
                             table.reload('test', {
-                                url: AuthentictionURL + "/api/user/layui/table/list"
+                                url: AuthentictionURL + "/api/permission/layui/table/list"
                                 //, method: "POST"
                                 , where: { name: name }
                                 , page: { curr: 1 }
@@ -168,63 +166,25 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             }
                         }
                         var othis = $(this), method = othis.data('method');
-                        active[method] ? active[method].call(this, othis) : '';
-
-                        //获取角色列表
-                        user.roleList(data.id);
-                        //注：在动态加载多选框的时候，一定要重新渲染下，才可以显示
-                        form.render('checkbox');
-
-                        break;
+                        active[method] ? active[method].call(this, othis) : '';                                    
                 }
             });
-        },
+        },     
         /**
-         * 用户所属角色
-         * @param {any} userid 用户id
+         * 新增权限      
          */
-        roleList: function (userid) {
-            _userid = userid;
-            ajax_request({
-                url: AuthentictionURL + "/api/user/get/role?userid=" + userid,
-                callback: function (e) {
-
-                    if (e.code === "0") {
-                        var str = "";
-                        $.each(e.extension, function (i, value) {
-                            var checked = value.isAuthorize ? 'checked = ""' : '';
-                            str += '<input roleid = "' + value.id + '" type = "checkbox" lay-skin="primary" name = "role" title = "' + value.name + '" ' + checked + '>';
-                        });
-                        $("#checkboxs").html(str);
-
-                    } else {
-                        layer.msg(e.message);
-                    }
-                }
-            }, "GET");
-        },
-
-        /**
-         * 保存用户角色信息        
-         */
-        submit_add_role: function () {
-            //表单的提交
-            form.on('submit(demo1)', function (data) {
-
-                //获取多选框的值
-                var arr = [];
-                $("input:checkbox[name='role']:checked").each(function (i) {
-                    arr[i] = $(this).attr("roleid");
-                });
-                console.log(arr, "arr");
+        submit_add_permission: function () {                   
+            ////表单的提交
+            form.on('submit(addsubmit)', function (data) {
+                console.log(data,"data--------");        
                 ajax_request({
-                    url: AuthentictionURL + "/api/user/role/add",
-                    data: { userId: _userid, roleId: arr },
+                    url: AuthentictionURL + "/api/permission/edit",
+                    data: data.field,
                     callback: function (data) {
                         if (data.code === '0') {
-                            layer.msg("角色编辑成功");
+                            layer.msg("新增权限成功");
                             layer.closeAll("page");
-                            user.loadtable();
+                            permission.loadtable();
                         } else {
                             layer.msg(data.message, {
                                 time: 800,
@@ -233,11 +193,10 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                     }
                 });
                 return false;
-            });
-
-        }
+            });                         
+       }
     }
     //输出接口 
-    exports('user', user);
+    exports('permission', permission);
 });
 

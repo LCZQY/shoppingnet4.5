@@ -5,11 +5,14 @@
     <meta charset="utf-8" />
     <title>权限管理</title>
     <link href="../../sources/layui/css/layui.css" rel="stylesheet" />
+    <!--<link href="../../sources/css/common.css" rel="stylesheet" />-->
     <style>
-        .layui-input-block {
-            margin-left: 2.5%;
+        .layui-layer-content {
+            width: 90%;
+            position: relative;
         }
     </style>
+
 </head>
 <body>
     <blockquote class="layui-elem-quote">
@@ -21,40 +24,41 @@
                 <table class="layui-hide" id="test" lay-filter="test"></table>
             </div>
         </div>
+        
     </div>
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
-            <!--<button class="layui-btn layui-btn-sm layui-icon" lay-event="add">&#xe654;</button>
-            <button class="layui-btn layui-btn-sm layui-icon" lay-event="batchDel">&#xe640;</button>-->
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="add">&#xe654;</button>
+
             <div class="layui-btn layui-btn-sm">
-                <span>用户名</span> <input type="text" name="search">
-                <span>姓名</span> <input type="text" name="search">
-                <span>手机号码</span> <input type="text" name="search">
-                <span>角色</span> <input type="text" name="search">
+                <span>权限名称</span> <input type="text" name="search">
+                <span>权限Code</span> <input type="text" name="search">
             </div>
             <button class="layui-btn layui-btn-sm layui-icon" lay-event="search">&#xe615;</button>
             <button class="layui-btn layui-btn-sm layui-icon" lay-event="flush">&#xe669;</button>
         </div>
     </script>
-    <!--添加商品类型模态框-->
-    <form class="layui-form" id="from" action="" hidden>
-        <div class="layui-form-item">
-            <div class="layui-input-block" id="checkboxs">
 
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="demo1">确认</button>
-            </div>
-        </div>
-    </form>
+  
+    
     <!--新增权限模态框-->
-    <form class="layui-form" id="addrole_from" action="" hidden>
+    <form class="layui-form" id="add_from" action="" hidden>
         <div class="layui-form-item">
-            <label class="layui-form-label">角色名称</label>
+            <label class="layui-form-label">权限编码</label>
             <div class="layui-input-block">
-                <input type="text" name="name" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input">
+                <input type="text" name="code" lay-verify="required" placeholder="权限编码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="required" placeholder="权限名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">URL地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="url" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -65,13 +69,13 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="demo1">确认</button>
+                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="addsubmit">确认</button>
             </div>
         </div>
     </form>
     <script type="text/html" id="takeaction">
         <a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" lay-event="details">查看详情</a>
-        <a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" data-method="offset" data-type="auto" id="layerDemo" lay-demo="getChecked" lay-event="addrole">编辑角色</a>
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" data-method="offset" data-type="auto" id="layerDemo" lay-demo="getChecked" lay-event="addrole">编辑角色</a>-->
         <a class="layui-btn layui-btn-primary layui-btn-xs layui-icon" lay-event="del">删除</a>
     </script>
 
@@ -84,15 +88,14 @@
             base: '../../sources/js/'
             , version: 'v1.0'
         }).extend({ //设定模块别名
-            user: 'user'
+            permission: 'permission'
         });
-        layui.use(['user'], function () {
-            var user = layui.user;
-            user.loadtable();//加载表格
-            user.table_show();//加载表格操作
-            user.submit_add_role(); //保存用户角色
+        layui.use(['permission'], function () {
+            var permission = layui.permission;
+            permission.loadtable();//加载表格
+            permission.table_show();//加载表格操作
+            permission.submit_add_permission(); //保存用户角色
         });
-
 
     </script>
 </body>
