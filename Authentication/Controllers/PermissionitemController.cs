@@ -1,10 +1,8 @@
 ﻿using Authentication.Dto.Request;
-using Authentication.Dto.Response;
 using Authentication.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZapiCore;
 
@@ -34,8 +32,8 @@ namespace Authentication.Controllers
         /// <returns></returns>
         [HttpGet("check")]
         public async Task<ResponseMessage<bool>> CheckPermission(string userid, string permissionid)
-        {         
-            return  await _permissionManager.CheckPermissionAsync(userid,permissionid, HttpContext.RequestAborted);             
+        {
+            return await _permissionManager.CheckPermissionAsync(userid, permissionid, HttpContext.RequestAborted);
         }
 
         /// <summary>

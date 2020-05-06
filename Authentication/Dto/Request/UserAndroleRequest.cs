@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Authentication.Dto.Request
 {
@@ -11,6 +12,7 @@ namespace Authentication.Dto.Request
         /// <summary>
         /// 用户id
         /// </summary>
+        [Required(ErrorMessage ="必填项不能为空")]
         public string UserId { get; set; }
 
         
@@ -18,6 +20,7 @@ namespace Authentication.Dto.Request
         /// <summary>
         /// 角色id
         /// </summary>
+        [Required(ErrorMessage ="必填项不能为空")]
         public List<string> RoleId { get; set; }
     }
 }

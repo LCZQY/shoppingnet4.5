@@ -94,8 +94,10 @@ namespace Authentication.Managers
             {
                 throw new ArgumentNullException();
             }
-            var Permissionitem = _mapper.Map<Permissionitem>(editRequest);
-            response.Extension = await _permissionStore.AddEntityAsync(Permissionitem);
+            var permissionitem = _mapper.Map<Permissionitem>(editRequest);
+            permissionitem.Id = Guid.NewGuid().ToString();
+            permissionitem.CreateTime = DateTime.Now;
+            response.Extension = await _permissionStore.AddEntityAsync(permissionitem);
             return response;
         }
 
@@ -123,8 +125,9 @@ namespace Authentication.Managers
         public async Task<ResponseMessage<bool>> PermissionitemUpdateAsync(PermissionEditRequest editRequest)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            var Permissionitem = _mapper.Map<Permissionitem>(editRequest);
-            if (await _permissionStore.PutEntityAsync(Permissionitem.Id, Permissionitem))
+            var permissionitem = _mapper.Map<Permissionitem>(editRequest);
+            permissionitem.UpdateTime = DateTime.Now;
+            if (await _permissionStore.PutEntityAsync(permissionitem.Id, permissionitem))
             {
                 response.Extension = true;
             }

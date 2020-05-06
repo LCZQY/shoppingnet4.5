@@ -25,28 +25,29 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 //, where: { page: 0, limit: 10 }
                 , elem: '#test'
                 , toolbar: '#toolbarDemo'
+                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , title: '用户数据表'
                 , location: true
                 , cols: [
                     [
                         { type: 'radio', fixed: 'left' }
-                        , { field: 'OrdersId', title: '订单编号', width: 120 }
-                        , { field: 'Title', title: '商品名称', width: 120, }
-                        , { field: 'Total', title: '总价', width: 120, sort: true, }
-                        , { field: 'Nick', title: '卖家昵称', width: 120, }
-                        , { field: 'Orderdate', title: '下单时间', width: 120, sort: true }
+                        , { field: 'OrdersId', title: '订单编号' }
+                        , { field: 'Title', title: '商品名称', }
+                        , { field: 'Total', title: '总价',sort: true, }
+                        , { field: 'Nick', title: '卖家昵称', }
+                        , { field: 'Orderdate', title: '下单时间', sort: true }
                         , {
-                            field: 'DeliveryDate', title: '收货时间', width: 120, sort: true, templet: function (d) {
+                            field: 'DeliveryDate', title: '收货时间', sort: true, templet: function (d) {
                                 return layui.util.toDateString(d.DeliveryDate);
                             }, edit: ''
                         }
-                        , { field: 'Remark', title: '订单备注', width: 120, edit: '' }
-                        , { field: 'Consignee', title: '收货人姓名', width: 120, }
-                        , { field: 'Phone', title: '电话号码', width: 120, }
-                        , { field: 'Complete', title: '收货地址', width: 120, edit: '' }
-                        , { field: 'States', title: '订单状态', width: 120, templet: '#table-States' }
-                        , { field: 'DetailStates', title: '订单跟踪状态', width: 120, templet: '#table-DetailStates' }
-                        , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 140 }
+                        , { field: 'Remark', title: '订单备注', edit: '' }
+                        , { field: 'Consignee', title: '收货人姓名', }
+                        , { field: 'Phone', title: '电话号码' }
+                        , { field: 'Complete', title: '收货地址', edit: '' }
+                        , { field: 'States', title: '订单状态',  templet: '#table-States' }
+                        , { field: 'DetailStates', title: '订单跟踪状态', templet: '#table-DetailStates' }
+                        , { fixed: 'right', title: '操作', toolbar: '#barDemo' }
                     ]
                 ]
                 , page: true

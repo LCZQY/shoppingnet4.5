@@ -185,15 +185,22 @@ namespace Authentication.Managers
         /// </summary>
         /// <param name="editRequest"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> UserAddAsync(UserEditRequest editRequest)
+        public async Task<ResponseMessage<bool>> UserAddAsync(UserEditRequest editRequest , CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (editRequest == null)
             {
                 throw new ArgumentNullException();
             }
-            var User = _mapper.Map<User>(editRequest);
-            response.Extension = await _userStore.AddEntityAsync(User);
+            if (await _userStore.IQueryableListAsync().Where(y => y.UserName == editRequest.UserName).AnyAsync(cancellationToken))
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists,"该用户名已存在请重试");
+            }
+            var user = _mapper.Map<User>(editRequest);
+            user.CreateTime = DateTime.Now;
+            user.Id = Guid.NewGuid().ToString();
+            user.Password = "123456";
+            response.Extension = await _userStore.AddEntityAsync(user);
             return response;
         }
 

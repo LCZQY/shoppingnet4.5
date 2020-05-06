@@ -29,6 +29,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 //, where: { cateId: typeid }
                 //,headers: {""} 携带token
                 , contentType: 'application/json'
+                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , elem: '#test'
                 , toolbar: '#toolbarDemo'
                 , title: '用户列表'
@@ -36,22 +37,22 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , cols: [
                     [
                         { type: 'checkbox', fixed: 'left' }
-                        , { field: 'userName', title: '用户名', align: "center", width: 200 }
-                        , { field: 'trueName', title: '姓名', width: 200, align: "center" }
-                        , { field: 'phoneNumber', title: '手机号码', width: 200, align: "center", sort: true, }
+                        , { field: 'userName', title: '用户名', align: "center"}
+                        , { field: 'trueName', title: '姓名',  align: "center" }
+                        , { field: 'phoneNumber', title: '手机号码', align: "center", sort: true, }
                         , {
-                            field: 'roleName', title: '所属角色', width: 200, align: "center", templet: function (d) {
+                            field: 'roleName', title: '所属角色', align: "center", templet: function (d) {
 
                                 if (d.roleName === null || d.roleName === '') { return "----"; }
                                 return d.roleName;
                             }
                         }
                         , {
-                            field: 'createTime', title: '创建时间', width: 200, sort: true, align: "center", templet: function (d) {
+                            field: 'createTime', title: '创建时间', sort: true, align: "center", templet: function (d) {
                                 return layui.util.toDateString(d.createTime);
                             }
                         }
-                        , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction', width: 400 }
+                        , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction' }
                     ]
                 ]
                 , page: { limit: 10 }

@@ -1,21 +1,12 @@
-﻿using IdentityModel;
-using IdentityModel.Client;
-using IdentityServer4.Test;
+﻿using Authentication.Dto.Request;
+using Authentication.Dto.Response;
+using Authentication.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using ZapiCore;
-using Authentication.Managers;
-using Authentication.Dto.Request;
-using Authentication.Dto.Response;
 using ZapiCore.Layui;
 
 namespace Authentication.Controllers
@@ -99,7 +90,7 @@ namespace Authentication.Controllers
             var response = new LayerTableJson();
             if (search.Page == 0)
             {
-                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid,"本接口仅支持页数从1开始");
+                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid, "本接口仅支持页数从1开始");
             }
             try
             {
@@ -131,7 +122,7 @@ namespace Authentication.Controllers
             try
             {
                 if (await _userManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
-                {
+                {                    
                     response = await _userManager.UserAddAsync(request);
                 }
                 else

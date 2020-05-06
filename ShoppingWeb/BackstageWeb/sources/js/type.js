@@ -26,6 +26,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , startByZero: 0
                 , where: { cateId: typeid }
                 //,headers: {""} 携带token
+                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , contentType: 'application/json'
                 , elem: '#test'
                 , toolbar: '#toolbarDemo'
@@ -34,19 +35,19 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , cols: [
                     [
                         { type: 'checkbox', fixed: 'left' }
-                        , { field: 'title', title: '商品名称', align: "center", width: 120 }
+                        , { field: 'title', title: '商品名称', align: "center"}
                         , { field: 'icon', title: '封面', width: 100, align: "center", templet: "#imgtmp" }
-                        , { field: 'cateName', title: '商品类型', width: 120, align: "center" }
-                        , { field: 'marketPrice', title: '市场价格(元)', width: 120, align: "center", sort: true }
-                        , { field: 'price', title: '本站价格(元)', width: 120, sort: true, align: "center" }
+                        , { field: 'cateName', title: '商品类型',align: "center" }
+                        , { field: 'marketPrice', title: '市场价格(元)', align: "center", sort: true }
+                        , { field: 'price', title: '本站价格(元)',sort: true, align: "center" }
                         , {
-                            field: 'postTime', title: '上架时间', width: 120, sort: true, align: "center", templet: function (d) {
+                            field: 'postTime', title: '上架时间', sort: true, align: "center", templet: function (d) {
                                 return layui.util.toDateString(d.DeliveryDate);
                             }, edit: ''
                         }
-                        , { field: 'stock', title: '库存数量(件)', width: 120, sort: true, align: "center" }
-                        , { field: 'content', title: '商品描述', width: 120, align: "center" }
-                        , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction', width: 140 }
+                        , { field: 'stock', title: '库存数量(件)', sort: true, align: "center" }
+                        , { field: 'content', title: '商品描述', align: "center" }
+                        , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction' }
                     ]
                 ]
                 , page: { limit: 10 }
