@@ -20,7 +20,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         /**
          * 绑定数据表格
          */
-        loadtable: function (typeid, typename) {
+        loadtable: function () {
             console.log(table, "tables")
             table.render({
                 url: AuthentictionURL + "/api/user/layui/table/list"
@@ -39,9 +39,9 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         { type: 'checkbox', fixed: 'left' }
                         , { field: 'userName', title: '用户名', align: "center", }
                         , { field: 'trueName', title: '姓名', align: "center" }
-                        , { field: 'phoneNumber', title: '手机号码',  align: "center", sort: true, }
+                        , { field: 'phoneNumber', title: '手机号码', align: "center", sort: true, }
                         , {
-                            field: 'roleName', title: '所属角色',  align: "center", templet: function (d) {
+                            field: 'roleName', title: '所属角色', align: "center", templet: function (d) {
 
                                 if (d.roleName === null || d.roleName === '') { return "----"; }
                                 return d.roleName;
@@ -179,6 +179,36 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 }
             });
         },
+
+        /**
+         * 保存用户角色信息        
+         */
+        add_user_role: function () {
+            //表单的提交
+            form.on('submit(demo1)', function (data) {
+                //获取多选框的值
+                var arr = [];
+                $("input:checkbox[name='role']:checked").each(function (i) {
+                    arr[i] = $(this).attr("roleid");
+                });
+                ajax_request({
+                    url: AuthentictionURL + "/api/user/role/add",
+                    data: { userId: _userid, roleId: arr },
+                    callback: function (data) {
+                        if (data.code === '0') {
+                            layer.msg("用户角色编辑成功");
+                            layer.closeAll("page");
+                            user.loadtable();
+                        } else {
+                            layer.msg(data.message, {
+                                time: 800,
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+        },
         /**
          * 用户所属角色
          * @param {any} userid 用户id
@@ -205,13 +235,10 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         },
 
         /**
-         * 保存用户角色信息        
+         * 保存用户信息        
          */
-        submit_add_user: function () {
-            //表单的提交
-            form.on('submit(demo1)', function (data) {
-
-           
+        add_user: function () {            
+            form.on('submit(adduser)', function (data) {
                 ajax_request({
                     url: AuthentictionURL + "/api/user/edit",
                     data: data.field,

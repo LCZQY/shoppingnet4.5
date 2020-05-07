@@ -37,6 +37,33 @@ namespace Authentication.Managers
             _mapper = mapper;
         }
 
+
+
+        /// <summary>
+        /// 查询该角色拥有哪些权限
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponseMessage<List<RoleListResponse>>> SelectRolePermissionAsync(string roleid, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = new ResponseMessage<List<RoleListResponse>>() { Extension = new List<RoleListResponse> { } };
+            if (await _roleStore.GetAsync(roleid) == null)
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.NotAllow, "没有找到该角色，请重试");
+            }
+            var rolePer = await _rolePermissionStore.IQueryableListAsync().Where(t => t.RoleId == roleid).Select(y => y.PermissionId).ToListAsync(cancellationToken);
+            var result = await _permissionStore.IQueryableListAsync().Select(per => new RoleListResponse
+            {
+                Id = per.Id,
+                Name = per.Name,
+                IsAuthorize = rolePer.Contains(per.Id) ? true : false
+            }).ToListAsync();
+            response.Extension = result;
+            return response;
+        }
+
+
         /// <summary>
         /// 角色详情（查询所有拥有的权限）
         /// </summary>
@@ -88,11 +115,9 @@ namespace Authentication.Managers
                     var oldRole_Permission = _rolePermissionStore.IQueryableListAsync().Where(y => y.RoleId == condtion.RoleId);
                     if (await oldRole_Permission.AnyAsync(cancellationToken))
                     {
-                        //直接清空该角色在权限数据 ， 再新增提交保存权限
-                        //var oldPermission = await oldRole_Permission.Select(y => y.PermissionId).Distinct().ToListAsync(); // 1 2 3 
-                        //var newPermission = condtion.ListPermissionId; // 1                
-                        var rolePermisid = await oldRole_Permission.Select(y => y.Id).ToListAsync(cancellationToken);
-                        await _rolePermissionStore.DeleteRangeAsync(rolePermisid);                      
+                        //直接清空该角色在权限数据 ， 再新增提交保存权限                 
+                        var list = await oldRole_Permission.ToListAsync(cancellationToken);
+                        await _rolePermissionStore.DeleteRangeAsync(list);                      
                     }
                     foreach (var pid in condtion.ListPermissionId)
                     {

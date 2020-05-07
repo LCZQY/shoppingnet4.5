@@ -42,20 +42,20 @@
         </div>
     </script>
     <!--添加权限项目模态框-->
-    <form class="layui-form" id="from" action="" hidden>
+    <form  class="layui-form"  id="from" hidden>
         <div class="layui-form-item">
             <div class="layui-input-block" id="checkboxs">
-
+                
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="demo1">确认</button>
+                <button class="layui-btn layui-btn layui-btn-sm" id="demo1">确认</button>
             </div>
         </div>
     </form>
     <!--新增角色模态框-->
-    <form class="layui-form" id="addrole_from" action="" hidden>
+     <form class="layui-form" id="addrole_from" action="" hidden>
         <div class="layui-form-item">
             <label class="layui-form-label">角色名称</label>
             <div class="layui-input-block">
@@ -95,7 +95,8 @@
             var role = layui.role;
             role.loadtable();//加载表格
             role.table_show();//加载表格操作
-            role.submit_add_role(); //保存用户角色
+            role.add_role_permission(); //保存用户角色
+            role.add_role(); //新增用户
         });
 
 

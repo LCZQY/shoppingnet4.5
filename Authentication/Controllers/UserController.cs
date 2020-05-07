@@ -38,8 +38,6 @@ namespace Authentication.Controllers
         {
 
             return await _userManager.SelectUserRoleAsync(userid);
-
-
         }
 
 
