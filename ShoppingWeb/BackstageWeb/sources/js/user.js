@@ -30,6 +30,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 //, where: { cateId: typeid }
                 //,headers: {""} 携带token
                 , contentType: 'application/json'
+                //, height: 'full-500'
                 , elem: '#test'
                 , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , toolbar: '#toolbarDemo'
@@ -78,7 +79,9 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             area: '50%',
                             content: $("#adduser_from")
                             //未做的是去监听表单提交，给后台发送ajax请求
-                        });
+                        });                                           
+                        $("#adduser_from")[0].reset(); //清空表单数据
+                        $("#myrole").hide();
                         break;
                     case 'batchDel':
                         layer.msg("开发中...");
@@ -89,22 +92,21 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         table.reload('test', {
                             url: AuthentictionURL + "/api/user/layui/table/list"
                             , method: "POST"
-                            , contentType: 'application/json'
-                            //  , where: { name: null }
+                            , contentType: 'application/json'                  
                         });
                         break;
                     case 'search':
                         var name = $('input[name="search"]').val();
-                        if (name === '') {
-                            layer.msg("请输入商品名称");
-                        } else {
+                        //if (name === '') {
+                        //    layer.msg("请输入商品名称");
+                        //} else {
                             table.reload('test', {
                                 url: AuthentictionURL + "/api/user/layui/table/list"
                                 //, method: "POST"
-                                , where: { name: name }
+                                , where: { username: name }
                                 , page: { curr: 1 }
                             });
-                        }
+                        //}
                         break;
                 };
             });
@@ -152,8 +154,10 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             , "password": data.password
                             , "phoneNumber": data.phoneNumber
                             , "roleName": data.roleName
-                            , "trueName": data.trueName                                                      
+                            , "trueName": data.trueName
+                            , "myrole": data.roleName
                         });
+                        $("#myrole").show();
                         editData = data;
                         break;
                     case 'del'://删除
@@ -259,6 +263,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
          */
         add_user: function () {            
             form.on('submit(adduser)', function (data) {
+
                 ajax_request({
                     url: AuthentictionURL + "/api/user/edit",
                     data: data.field,

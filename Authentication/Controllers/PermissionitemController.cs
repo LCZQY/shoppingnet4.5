@@ -74,22 +74,14 @@ namespace Authentication.Controllers
         public async Task<ResponseMessage<bool>> PermissionEdit([FromBody]PermissionEditRequest request)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            try
+
+            if (await _permissionManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
             {
-                if (await _permissionManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
-                {
-                    response = await _permissionManager.PermissionitemAddAsync(request);
-                }
-                else
-                {
-                    response = await _permissionManager.PermissionitemUpdateAsync(request);
-                }
+                response = await _permissionManager.PermissionitemAddAsync(request);
             }
-            catch (Exception e)
+            else
             {
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "编辑权限失败，请重试";
-                _logger.LogInformation($"编辑权限失败异常:{JsonHelper.ToJson(e)}");
+                response = await _permissionManager.PermissionitemUpdateAsync(request);
             }
             return response;
         }

@@ -68,7 +68,13 @@
             <div class="layui-input-block">
                 <input type="text" name="phoneNumber" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input">
             </div>
-        </div>   
+        </div>
+        <div class="layui-form-item" style="display:none" id="myrole">
+            <label class="layui-form-label">所属角色</label>
+            <div class="layui-input-block">
+                <input disabled type="text" name="myrole"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="adduser">确认</button>

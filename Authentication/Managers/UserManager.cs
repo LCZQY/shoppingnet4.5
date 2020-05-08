@@ -25,11 +25,18 @@ namespace Authentication.Managers
         private readonly IUserStore _userStore;
         private readonly ILogger<UserManager> _logger;
         private readonly IUserRoleStore _userRoleStore;
+        private readonly IRolePermissionStore _rolePermissionStore;
+        private readonly IPermissionStore _permissionStore;
         private readonly IRoleStore _roleStore;
-        public UserManager(IUserStore userStore, ILogger<UserManager> logger, IMapper mapper, ITransaction<AuthenticationDbContext> transaction, IRoleStore roleStore, IUserRoleStore userRoleStore)
+
+
+
+        public UserManager(IUserStore userStore, ILogger<UserManager> logger, IMapper mapper, ITransaction<AuthenticationDbContext> transaction, IRoleStore roleStore, IUserRoleStore userRoleStore, IRolePermissionStore rolePermissionStore, IPermissionStore permissionStore)
 
 
         {
+            _rolePermissionStore = rolePermissionStore;
+            _permissionStore = permissionStore;
             _transaction = transaction;
             _roleStore = roleStore;
             _userRoleStore = userRoleStore;
@@ -53,8 +60,9 @@ namespace Authentication.Managers
         public async Task<ResponseMessage<List<RoleListResponse>>> SelectUserRoleAsync(string userid, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<List<RoleListResponse>>() { Extension = new List<RoleListResponse> { } };
-            if (await _userStore.GetAsync(userid) == null) {
-                throw new ZCustomizeException(ResponseCodeEnum.NotAllow,"没有找到该用户，请重试");
+            if (await _userStore.GetAsync(userid) == null)
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.NotAllow, "没有找到该用户，请重试");
             }
             var roleid = await _userRoleStore.IQueryableListAsync().Where(t => t.UserId == userid).Select(y => y.RoleId).ToListAsync(cancellationToken);
             _logger.LogInformation($"roleid:{JsonHelper.ToJson(roleid)}");
@@ -82,12 +90,15 @@ namespace Authentication.Managers
                 try
                 {
                     var oldUserRole = _userRoleStore.IQueryableListAsync().Where(item => item.UserId == request.UserId);
-                    //新增用户角色和原来的不一致时，就直接删除，在重新添加
-                    if (request.RoleId.Count != await oldUserRole.CountAsync())
-                    {
-                        var oldid = await oldUserRole.Select(y => y.Id).ToListAsync();
-                        await _userRoleStore.DeleteRangeAsync(oldid);
 
+                    //新增用户角色和原来的不一致时，就直接删除，在重新添加
+                    if (request.RoleId.Count != await oldUserRole.CountAsync(cancellationToken))
+                    {
+                        var oldid = await oldUserRole.Select(y => y.Id).ToListAsync(cancellationToken);
+                        await _userRoleStore.DeleteRangeAsync(oldid);
+                        var permissionExpansions = await _permissionStore.Permissionitem_Expansions().Where(u => u.UserId == request.UserId).ToListAsync(cancellationToken);
+                        if (permissionExpansions.Any())
+                            await _permissionStore.DeleteRangeAsync(permissionExpansions); //删除权限扩展表数据
                     }
                     else
                     {
@@ -96,19 +107,33 @@ namespace Authentication.Managers
                         response.Message = "该用户还是原来的角色";
                         return response;
                     }
-                    var userAndrole = new List<User_Role>() { };
-                    foreach (var item in request.RoleId)
+                    if (request.RoleId.Any())
                     {
-                        userAndrole.Add(new User_Role
+                        var userAndrole = new List<User_Role>() { };
+                        foreach (var item in request.RoleId)
                         {
-                            CreateTime = DateTime.Now,
-                            Id = Guid.NewGuid().ToString(),
-                            RoleId = item,
-                            UserId = request.UserId,
-
-                        });
+                            userAndrole.Add(new User_Role
+                            {
+                                CreateTime = DateTime.Now,
+                                Id = Guid.NewGuid().ToString(),
+                                RoleId = item,
+                                UserId = request.UserId,
+                            });
+                        }
+                        var info = await _rolePermissionStore.IQueryableListAsync().Where(c => request.RoleId.Contains(c.RoleId)).Select(u => u.PermissionId).ToListAsync();
+                        if (info.Any())
+                        {
+                            var perExpansions = await _permissionStore.IQueryableListAsync().Where(j => info.Contains(j.Id)).Select(b => new Permissionitem_expansion
+                            {
+                                UserId = request.UserId,
+                                CreateTime = DateTime.Now,
+                                Id = Guid.NewGuid().ToString(),
+                                PermissionCode = b.Code,
+                            }).ToListAsync();
+                            await _permissionStore.AddRangeAsync(perExpansions); // 新增权限扩展表数据            
+                        }
+                        await _userRoleStore.AddRangeEntityAsync(userAndrole);
                     }
-                    await _userRoleStore.AddRangeEntityAsync(userAndrole);
                     await transaction.CommitAsync();
                     response.Extension = true;
                 }
@@ -123,7 +148,6 @@ namespace Authentication.Managers
         }
 
 
-
         /// <summary>
         /// 列表数据
         /// </summary>
@@ -134,14 +158,9 @@ namespace Authentication.Managers
         {
             var response = new LayerTableJson();
             var entity = _userStore.IQueryableListAsync();
-        
-            if (!string.IsNullOrWhiteSpace(search.UserName))
-            {
-                entity = entity.Where(y => y.UserName.Contains(search.UserName));
-            }
             if (!string.IsNullOrWhiteSpace(search.RoleName))
             {
-               // entity = entity.Where(y=>y.listRole.Contains(search.RoleName));            
+                // entity = entity.Where(y=>y.listRole.Contains(search.RoleName));            
             }
             if (!string.IsNullOrWhiteSpace(search.PhoneNumber))
             {
@@ -158,12 +177,12 @@ namespace Authentication.Managers
             response.Count = await entity.CountAsync(cancellationToken);
             var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
             var result = _mapper.Map<List<UserListResponse>>(list);
-           
-            result.ForEach( y  =>
-            {
-                // 改成同步方法才不会报错
-                y.RoleName =  GetRoleName(y.Id);
-            });
+
+            result.ForEach(y =>
+           {
+               // 改成同步方法才不会报错
+               y.RoleName = GetRoleName(y.Id);
+           });
             response.Data = result;
             return response;
         }
@@ -173,9 +192,9 @@ namespace Authentication.Managers
         /// </summary>
         /// <param name="userid"></param>
         /// <returns></returns>
-        public string  GetRoleName(string userid)
+        public string GetRoleName(string userid)
         {
-            var user_role =  _userRoleStore.IQueryableListAsync().Where(y => y.UserId == userid).Select(y => y.RoleId).ToList();
+            var user_role = _userRoleStore.IQueryableListAsync().Where(y => y.UserId == userid).Select(y => y.RoleId).ToList();
             var roleinfo = _roleStore.IQueryableListAsync().Where(y => user_role.Contains(y.Id)).Select(y => y.Name).ToList();
             return string.Join(",", roleinfo);
         }
@@ -185,7 +204,7 @@ namespace Authentication.Managers
         /// </summary>
         /// <param name="editRequest"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> UserAddAsync(UserEditRequest editRequest , CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResponseMessage<bool>> UserAddAsync(UserEditRequest editRequest, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (editRequest == null)
@@ -194,7 +213,7 @@ namespace Authentication.Managers
             }
             if (await _userStore.IQueryableListAsync().Where(y => y.UserName == editRequest.UserName).AnyAsync(cancellationToken))
             {
-                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists,"该用户名已存在请重试");
+                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists, "该用户名已存在请重试");
             }
             var user = _mapper.Map<User>(editRequest);
             user.CreateTime = DateTime.Now;

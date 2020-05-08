@@ -6,16 +6,19 @@
     <title>角色管理</title>
     <link href="../../sources/layui/css/layui.css" rel="stylesheet" />
     <style>
-        /*.layui-input-block{
-            margin-left: 2.5%;
-        }*/
+
         form {
-            width:90%;
+            width: 90%;
         }
-        /*.layui-form-label {
-       
-             text-align:left;
-        }*/
+
+        .hr {
+            margin-top: 1%;
+        }
+
+        .layui-input-block {
+            margin-left: 2.5%;
+            min-height: 36px;
+        }
     </style>
 </head>
 <body>
@@ -42,10 +45,10 @@
         </div>
     </script>
     <!--添加权限项目模态框-->
-    <form  class="layui-form"  id="from" hidden>
+    <form class="layui-form" id="from" hidden>
         <div class="layui-form-item">
             <div class="layui-input-block" id="checkboxs">
-                
+
             </div>
         </div>
         <div class="layui-form-item">
@@ -55,7 +58,7 @@
         </div>
     </form>
     <!--新增角色模态框-->
-     <form class="layui-form" id="addrole_from" action="" hidden>
+    <form class="layui-form" id="addrole_from" action="" hidden>
         <div class="layui-form-item">
             <label class="layui-form-label">角色名称</label>
             <div class="layui-input-block">

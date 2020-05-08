@@ -31,5 +31,15 @@ namespace Authentication.Dto.Response
         /// 用逗号隔开，权限名称
         /// </summary>
         public string AuthorizeName { get; set; }
+
+        /// <summary>
+        /// 权限项分组名称
+        /// </summary>
+        public string Group { get; set; }
+
     }
+
+
+
+
 }

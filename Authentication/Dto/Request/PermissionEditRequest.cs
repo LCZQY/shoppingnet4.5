@@ -14,6 +14,11 @@ namespace Authentication.Dto.Request
         public string Id { get; set; }
 
         /// <summary>
+        /// 权限项分组
+        /// </summary>
+        public string Group { get; set; }
+
+        /// <summary>
         /// 权限编码
         /// </summary>
         public string Code { get; set; }

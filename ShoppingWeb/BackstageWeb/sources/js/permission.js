@@ -39,13 +39,16 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                     [
                         { type: 'checkbox', fixed: 'left' }
                         , { field: 'code', title: '权限Code', align: "center"}
-                        , { field: 'name', title: '权限名称',  align: "center" }
+                        , { field: 'name', title: '权限名称', align: "center" }
+                        , { field: 'group', title: '权限项分组', align: "center" }
                         , { field: 'url', title: 'Url', align: "center", sort: true, }                      
+
                         , {
                             field: 'createTime', title: '创建时间', sort: true, align: "center", templet: function (d) {
                                 return layui.util.toDateString(d.createTime);
                             }
                         }
+                        , { field: 'remark', title: '备注', align: "center", sort: true, }      
                         , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction' }
                     ]
                 ]

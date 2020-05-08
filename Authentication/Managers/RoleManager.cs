@@ -24,7 +24,7 @@ namespace Authentication.Managers
         private readonly IMapper _mapper;
         private readonly IRoleStore _roleStore;
         private readonly IPermissionStore _permissionStore;
-        private readonly IRolePermissionStore  _rolePermissionStore;
+        private readonly IRolePermissionStore _rolePermissionStore;
         private readonly ITransaction<AuthenticationDbContext> _transaction;
         private readonly ILogger<RoleManager> _logger;
         public RoleManager(IRoleStore roleStore, ILogger<RoleManager> logger, IMapper mapper, IRolePermissionStore rolePermissionStore, ITransaction<AuthenticationDbContext> transaction, IPermissionStore permissionStore)
@@ -45,21 +45,27 @@ namespace Authentication.Managers
         /// <param name="roleid"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<List<RoleListResponse>>> SelectRolePermissionAsync(string roleid, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResponseMessage<List<PermissionListResponse>>> SelectRolePermissionAsync(string roleid, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var response = new ResponseMessage<List<RoleListResponse>>() { Extension = new List<RoleListResponse> { } };
+            var response = new ResponseMessage<List<PermissionListResponse>>() { Extension = new List<PermissionListResponse> { } };
             if (await _roleStore.GetAsync(roleid) == null)
             {
                 throw new ZCustomizeException(ResponseCodeEnum.NotAllow, "没有找到该角色，请重试");
             }
             var rolePer = await _rolePermissionStore.IQueryableListAsync().Where(t => t.RoleId == roleid).Select(y => y.PermissionId).ToListAsync(cancellationToken);
-            var result = await _permissionStore.IQueryableListAsync().Select(per => new RoleListResponse
-            {
-                Id = per.Id,
-                Name = per.Name,
-                IsAuthorize = rolePer.Contains(per.Id) ? true : false
-            }).ToListAsync();
-            response.Extension = result;
+            var result = from c in await _permissionStore.EnumerableListAsync()
+                         group c by c.Group into per
+                         select new PermissionListResponse
+                         {
+                             Group = per.Key,
+                             PermissionList = per.Select(u => new PermissionListResponse.ListResponse
+                             {
+                                 Id = u.Id,
+                                 Name = u.Name,
+                                 IsAuthorize = rolePer.Contains(u.Id) ? true : false
+                             }).ToList()
+                         };
+            response.Extension = result.ToList();
             return response;
         }
 
@@ -75,31 +81,31 @@ namespace Authentication.Managers
         {
             var response = new ResponseMessage<dynamic>();
             var details = from per in _permissionStore.IQueryableListAsync()
-                    join  role_permission in _rolePermissionStore.IQueryableListAsync()
-                    on per.Id  equals role_permission.PermissionId into s
-                    from s1 in s.DefaultIfEmpty()
-                    join role in _roleStore.IQueryableListAsync()
-                    on s1.RoleId equals role.Id into t 
-                    from t1 in t.DefaultIfEmpty()
-                    where t1.Id == roleid
-                    select new
-                    {
-                        roleid = t1.Id,
-                        rolename = t1.Name,
-                        permissionid = per.Id,
-                        permissionname = per.Name
-                    };          
-            response.Extension =await details.FirstOrDefaultAsync(cancellationToken);
+                          join role_permission in _rolePermissionStore.IQueryableListAsync()
+                          on per.Id equals role_permission.PermissionId into s
+                          from s1 in s.DefaultIfEmpty()
+                          join role in _roleStore.IQueryableListAsync()
+                          on s1.RoleId equals role.Id into t
+                          from t1 in t.DefaultIfEmpty()
+                          where t1.Id == roleid
+                          select new
+                          {
+                              roleid = t1.Id,
+                              rolename = t1.Name,
+                              permissionid = per.Id,
+                              permissionname = per.Name
+                          };
+            response.Extension = await details.FirstOrDefaultAsync(cancellationToken);
             return response;
         }
 
-            /// <summary>
-            /// 角色权限绑定与移除
-            /// </summary>
-            /// <param name="condtion"></param>
-            /// <param name="cancellationToken"></param>
-            /// <returns></returns>
-            public async Task<ResponseMessage<bool>> BindPermissionAsync(RoleAndPermissionRequest condtion, CancellationToken cancellationToken = default(CancellationToken))
+        /// <summary>
+        /// 角色权限绑定与移除
+        /// </summary>
+        /// <param name="condtion"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponseMessage<bool>> BindPermissionAsync(RoleAndPermissionRequest condtion, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (condtion is null)
@@ -117,7 +123,7 @@ namespace Authentication.Managers
                     {
                         //直接清空该角色在权限数据 ， 再新增提交保存权限                 
                         var list = await oldRole_Permission.ToListAsync(cancellationToken);
-                        await _rolePermissionStore.DeleteRangeAsync(list);                      
+                        await _rolePermissionStore.DeleteRangeAsync(list);
                     }
                     foreach (var pid in condtion.ListPermissionId)
                     {
@@ -131,7 +137,8 @@ namespace Authentication.Managers
                     }
                     response.Extension = await _rolePermissionStore.AddRangeEntityAsync(roleperssion);
                     await transaction.CommitAsync(cancellationToken);
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     await transaction.RollbackAsync(cancellationToken);
                     response.Code = ResponseCodeDefines.ServiceError;
@@ -159,9 +166,9 @@ namespace Authentication.Managers
             {
                 entity = entity.Where(y => y.Name == search.Name);
             }
-            response.Count =await entity.CountAsync(cancellationToken);
-            var list = await entity.Skip(((search.Page??0)-1) * search.Limit??0).Take(search.Limit??0).ToListAsync(cancellationToken);
-            var  info = _mapper.Map<List<RoleListResponse>>(list);
+            response.Count = await entity.CountAsync(cancellationToken);
+            var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
+            var info = _mapper.Map<List<RoleListResponse>>(list);
             info.ForEach(item =>
             {
                 item.AuthorizeName = GetAuthorizeName(item.Id);
@@ -182,7 +189,7 @@ namespace Authentication.Managers
             var rolePer = _rolePermissionStore.IQueryableListAsync().Where(y => y.RoleId == roleid).Select(u => u.PermissionId).ToList();
             var permissions = _permissionStore.IQueryableListAsync().Where(y => rolePer.Contains(y.Id)).Select(u => u.Name).ToList();
 
-            return string.Join(",",permissions);
+            return string.Join(",", permissions);
         }
 
 
@@ -191,16 +198,17 @@ namespace Authentication.Managers
         /// </summary>
         /// <param name="editRequest"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<bool>> RoleAddAsync(RoleEditRequest editRequest,CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResponseMessage<bool>> RoleAddAsync(RoleEditRequest editRequest, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new ResponseMessage<bool>() { Extension = false };
             if (editRequest == null)
             {
                 throw new ArgumentNullException();
             }
-            var isexist =await _roleStore.IQueryableListAsync().Where(item => item.Name == editRequest.Name).FirstOrDefaultAsync(cancellationToken);
-            if (isexist != null) {
-                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists,"该角色名称已存在");           
+            var isexist = await _roleStore.IQueryableListAsync().Where(item => item.Name == editRequest.Name).FirstOrDefaultAsync(cancellationToken);
+            if (isexist != null)
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists, "该角色名称已存在");
             }
             var role = _mapper.Map<Role>(editRequest);
             role.CreateTime = DateTime.Now;

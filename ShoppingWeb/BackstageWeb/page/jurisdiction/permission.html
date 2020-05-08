@@ -24,7 +24,7 @@
                 <table class="layui-hide" id="test" lay-filter="test"></table>
             </div>
         </div>
-        
+
     </div>
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
@@ -39,10 +39,16 @@
         </div>
     </script>
 
-  
-    
+
+
     <!--新增权限模态框-->
     <form class="layui-form" id="add_from" action="" hidden>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限项分组</label>
+            <div class="layui-input-block">
+                <input type="text" name="group" lay-verify="required" placeholder="权限项分组" autocomplete="off" class="layui-input">
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">权限编码</label>
             <div class="layui-input-block">
@@ -58,7 +64,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">URL地址</label>
             <div class="layui-input-block">
-                <input type="text" name="url" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input">
+                <input type="text" name="url" placeholder="URL地址" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">

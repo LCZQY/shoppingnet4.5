@@ -8,7 +8,7 @@ namespace Authentication.Stores
 {
     public interface IPermissionStore : Baseinterface<Permissionitem>
     {
-    
+
 
         /// <summary>
         /// 批量删除权限
@@ -24,5 +24,18 @@ namespace Authentication.Stores
 
         IQueryable<Permissionitem_expansion> Permissionitem_Expansions();
 
+        /// <summary>
+        /// 批量新增权限扩展表
+        /// </summary>
+        /// <param name="permissionitem_Expansion"></param>
+        /// <returns></returns>
+        Task<bool> AddRangeAsync(List<Permissionitem_expansion> permissionitem_Expansion);
+
+        /// <summary>
+        /// 批量删除权限扩展表
+        /// </summary>
+        /// <param name="permissionitem_Expansion"></param>
+        /// <returns></returns>
+        Task<bool> DeleteRangeAsync(List<Permissionitem_expansion> permissionitem_Expansion);
     }
 }

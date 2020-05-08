@@ -106,7 +106,7 @@ namespace Authentication.Stores
             {
                 return false;
             }
-            var model = await _context.Permissionitem.FindAsync(id);          
+            var model = await _context.Permissionitem.FindAsync(id);
             _context.Attach(model);
             _context.Remove(model);
             return await _context.SaveChangesAsync() > 0;
@@ -130,8 +130,8 @@ namespace Authentication.Stores
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<bool> DeleteRangeAsync(List<string> id)
-        {         
-            var list =await IQueryableListAsync().Where(item => id.Contains(item.Id)).ToListAsync();
+        {
+            var list = await IQueryableListAsync().Where(item => id.Contains(item.Id)).ToListAsync();
             _context.AttachRange(list);
             _context.RemoveRange(list);
             return await _context.SaveChangesAsync() > 0;
@@ -146,6 +146,28 @@ namespace Authentication.Stores
             return _context.Permissionitem_Expansion;
         }
 
-    
+        /// <summary>
+        /// 批量新增权限扩展表
+        /// </summary>
+        /// <param name="permissionitem_Expansion"></param>
+        /// <returns></returns>
+        public async Task<bool> AddRangeAsync(List<Permissionitem_expansion> permissionitem_Expansion)
+        {
+            _context.AttachRange(permissionitem_Expansion);
+            await _context.AddRangeAsync(permissionitem_Expansion);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        /// <summary>
+        /// 批量删除权限扩展表
+        /// </summary>
+        /// <param name="permissionitem_Expansion"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteRangeAsync(List<Permissionitem_expansion> permissionitem_Expansion)
+        {
+            _context.AttachRange(permissionitem_Expansion);
+            _context.RemoveRange(permissionitem_Expansion);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Authentication.Dto.Request;
-using Authentication.Dto.Response;
 using Authentication.Models;
 using Authentication.Stores;
 using AutoMapper;
@@ -94,13 +93,10 @@ namespace Authentication.Managers
             if (editRequest == null)
             {
                 throw new ArgumentNullException();
-            }            
-            if(await _permissionStore.IQueryableListAsync().Where(y=>y.Name == editRequest.Name).AnyAsync())
-            {
-                response.Code = ResponseCodeDefines.ObjectAlreadyExists;
-                response.Message = "已经存在该权限名称";
-                return response;
-                //throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists ,"已经存在该权限名称");                
+            }
+            if (await _permissionStore.IQueryableListAsync().Where(y => y.Name == editRequest.Name).AnyAsync())
+            {               
+               throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists ,"已经存在该权限名称");              
             }
             var permissionitem = _mapper.Map<Permissionitem>(editRequest);
             permissionitem.Id = Guid.NewGuid().ToString();

@@ -150,7 +150,7 @@ namespace Authentication.Controllers
         /// <param name="roleid"></param>
         /// <returns></returns>
         [HttpGet("get/permission")]
-        public async Task<ResponseMessage<List<RoleListResponse>>> BindUserRole(string roleid)
+        public async Task<ResponseMessage<List<PermissionListResponse>>> BindUserRole(string roleid)
         {
             return await _roleManager.SelectRolePermissionAsync(roleid);
         }

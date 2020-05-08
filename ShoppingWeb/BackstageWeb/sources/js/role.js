@@ -38,7 +38,6 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                     [
                         { type: 'checkbox', fixed: 'left' }
                         , { field: 'name', title: '角色名称', align: "center" }
-                        , { field: 'remark', title: '备注', align: "center", sort: true, }
                         , {
                             field: 'authorizeName', title: '所属权限', align: "center", templet: function (d) {
 
@@ -51,6 +50,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                                 return layui.util.toDateString(d.createTime);
                             }
                         }
+                        , { field: 'remark', title: '备注', align: "center", sort: true, }
                         , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction' }
                     ]
                 ]
@@ -209,9 +209,13 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                     if (e.code === "0") {
                         var str = "";
                         $.each(e.extension, function (i, value) {
-                            var checked = value.isAuthorize ? 'checked = ""' : '';
-                            str += '<input roleid = "' + value.id + '" type = "checkbox" lay-skin="primary" name = "per" title = "' + value.name + '" ' + checked + '>';
+                            str += '<div class="hr"><p>' + value.group + '</p><hr  class="layui-bg-black"></div>';
+                            $.each(value.permissionList, function (o, item) {
+                                var checked = item.isAuthorize ? 'checked = ""' : '';
+                                str += '<input roleid = "' + item.id + '" type = "checkbox" lay-skin="primary" name = "per" title = "' + item.name + '" ' + checked + '>';
+                            });
                         });
+
                         $("#checkboxs").html(str);
                         console.log(str, "--");
                     } else {
