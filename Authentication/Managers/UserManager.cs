@@ -120,9 +120,9 @@ namespace Authentication.Managers
                 }
             }
             return response;
-
-
         }
+
+
 
         /// <summary>
         /// 列表数据
@@ -249,8 +249,9 @@ namespace Authentication.Managers
         public async Task<ResponseMessage<bool>> UserUpdateAsync(UserEditRequest editRequest)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            var User = _mapper.Map<User>(editRequest);
-            if (await _userStore.PutEntityAsync(User.Id, User))
+            var user = _mapper.Map<User>(editRequest);
+            user.UpdateTime = DateTime.Now;
+            if (await _userStore.PutEntityAsync(user.Id, user))
             {
                 response.Extension = true;
             }

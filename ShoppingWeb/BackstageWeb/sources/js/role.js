@@ -135,6 +135,25 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
             table.on('tool(test)', function (obj) {
                 var data = obj.data;
                 switch (obj.event) {
+                    case 'details': //详情
+                        console.log(data, "----------");
+                        layer.open({
+                            title: '用户详情',
+                            type: 1,
+                            btnAlign: 'c',
+                            area: '50%',
+                            content: $("#adduser_from")
+                        });
+                        //表单赋值
+                        form.val('example', {
+                            "userName": data.userName
+                            , "password": data.password
+                            , "phoneNumber": data.phoneNumber
+                            , "roleName": data.roleName
+                            , "trueName": data.trueName
+                        });
+                        editData = data;
+                        break;
                     case 'del'://删除
                         table_confirm({
                             obj: obj,

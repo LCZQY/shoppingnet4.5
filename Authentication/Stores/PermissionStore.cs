@@ -90,9 +90,9 @@ namespace Authentication.Stores
                 return false;
             }
 
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Attach(entity);
+            _context.Update(entity);
             return await _context.SaveChangesAsync() > 0;
-
         }
 
         /// <summary>

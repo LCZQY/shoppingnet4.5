@@ -108,22 +108,13 @@ namespace Authentication.Controllers
         {
             var response = new ResponseMessage<bool>() { Extension = false };
 
-            try
+            if (await _roleManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
             {
-                if (await _roleManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
-                {
-                    response = await _roleManager.RoleAddAsync(request);
-                }
-                else
-                {
-                    response = await _roleManager.RoleUpdateAsync(request);
-                }
+                response = await _roleManager.RoleAddAsync(request);
             }
-            catch (Exception e)
+            else
             {
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "编辑角色失败，请重试";
-                _logger.LogInformation($"编辑角色失败异常:{JsonHelper.ToJson(e)}");
+                response = await _roleManager.RoleUpdateAsync(request);
             }
             return response;
         }

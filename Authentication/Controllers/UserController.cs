@@ -119,22 +119,14 @@ namespace Authentication.Controllers
         public async Task<ResponseMessage<bool>> UserEdit([FromBody]UserEditRequest request)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-            try
+
+            if (!(await _userManager.IsExists(request.Id)) || string.IsNullOrWhiteSpace(request.Id))
             {
-                if (await _userManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))
-                {                    
-                    response = await _userManager.UserAddAsync(request);
-                }
-                else
-                {
-                    response = await _userManager.UserUpdateAsync(request);
-                }
+                response = await _userManager.UserAddAsync(request);
             }
-            catch (Exception e)
+            else
             {
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "编辑用户失败，请重试";
-                _logger.LogInformation($"编辑用户失败异常:{JsonHelper.ToJson(e)}");
+                response = await _userManager.UserUpdateAsync(request);
             }
             return response;
         }

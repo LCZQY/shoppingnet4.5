@@ -88,9 +88,7 @@ namespace Authentication.Managers
                     var oldRole_Permission = _rolePermissionStore.IQueryableListAsync().Where(y => y.RoleId == condtion.RoleId);
                     if (await oldRole_Permission.AnyAsync(cancellationToken))
                     {
-                        //直接清空该角色在权限数据 ， 再新增提交保存权限
-                        //var oldPermission = await oldRole_Permission.Select(y => y.PermissionId).Distinct().ToListAsync(); // 1 2 3 
-                        //var newPermission = condtion.ListPermissionId; // 1                
+                        //直接清空该角色在权限数据 ， 再新增提交保存权限                       
                         var rolePermisid = await oldRole_Permission.Select(y => y.Id).ToListAsync(cancellationToken);
                         await _rolePermissionStore.DeleteRangeAsync(rolePermisid);                      
                     }
