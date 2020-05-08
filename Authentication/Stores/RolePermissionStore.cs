@@ -128,11 +128,10 @@ namespace Authentication.Stores
         /// <summary>
         /// 批量删除
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="list"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteRangeAsync(List<string> id)
-        {         
-            var list =await IQueryableListAsync().Where(item => id.Contains(item.Id)).ToListAsync();
+        public async Task<bool> DeleteRangeAsync(List<Role_Permissionitem> list)
+        {                     
             _context.AttachRange(list);
             _context.RemoveRange(list);
             return await _context.SaveChangesAsync() > 0;

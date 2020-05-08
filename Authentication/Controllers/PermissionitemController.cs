@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using ZapiCore;
+using ZapiCore.Layui;
 
 namespace Authentication.Controllers
 {
@@ -12,7 +13,7 @@ namespace Authentication.Controllers
     /// <summary>
     /// 权限 API
     /// </summary>
-    [Route("api/permissionitem")]
+    [Route("api/permission")]
     [ApiController]
     public class PermissionitemController : Controller
     {
@@ -36,22 +37,28 @@ namespace Authentication.Controllers
             return await _permissionManager.CheckPermissionAsync(userid, permissionid, HttpContext.RequestAborted);
         }
 
+
+
         /// <summary>
         /// 权限列表
         /// </summary>
         /// <returns></returns>
-        [HttpPost("list")]
-        public async Task<ResponseMessage<dynamic>> PermissionList([FromBody]SearchPermissionRequest search)
+        [HttpPost("layui/table/list")]
+        public async Task<LayerTableJson> LayuiTableList([FromBody]SearchPermissionRequest search)
         {
-            var response = new ResponseMessage<dynamic>() { };
+            var response = new LayerTableJson();
+            if (search.Page == 0)
+            {
+                throw new ZCustomizeException(ResponseCodeEnum.ModelStateInvalid, "本接口仅支持页数从1开始");
+            }
             try
             {
-                response = await _permissionManager.PermissionitemListAsync(search, HttpContext.RequestAborted);
+                response = await _permissionManager.LayuiTableListAsync(search, HttpContext.RequestAborted);
             }
             catch (Exception e)
             {
-                response.Code = ResponseCodeDefines.ServiceError;
-                response.Message = "权限列表查询失败，请重试";
+                response.Code = 500;
+                response.Msg = "权限列表查询失败，请重试";
                 _logger.LogInformation($"权限列表查询失败异常:{JsonHelper.ToJson(e)}");
             }
             return response;
@@ -67,8 +74,6 @@ namespace Authentication.Controllers
         public async Task<ResponseMessage<bool>> PermissionEdit([FromBody]PermissionEditRequest request)
         {
             var response = new ResponseMessage<bool>() { Extension = false };
-
-
             try
             {
                 if (await _permissionManager.IsExists(request.Id) || string.IsNullOrWhiteSpace(request.Id))

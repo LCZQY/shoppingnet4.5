@@ -14,7 +14,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         layer = layui.layer,
         table = layui.table,
         form = layui.form;
-    var _userid = "";
+    var _roleid = "";
     var role = {
 
         /**
@@ -40,7 +40,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         , { field: 'name', title: '角色名称', align: "center" }
                         , { field: 'remark', title: '备注', align: "center", sort: true, }
                         , {
-                            field: 'authorizeName', title: '所属权限',align: "center", templet: function (d) {
+                            field: 'authorizeName', title: '所属权限', align: "center", templet: function (d) {
 
                                 if (d.authorizeName === null || d.authorizeName === '') { return "----"; }
                                 return d.authorizeName;
@@ -170,7 +170,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                                 var type = othis.data('type')
                                 layer.open({
                                     type: 1
-                                    , title: "编辑用户角色"
+                                    , title: "编辑角色的所属权限"
                                     , area: '50%'
                                     , offset: type
                                     , align: 'center'
@@ -189,7 +189,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         active[method] ? active[method].call(this, othis) : '';
 
                         //获取角色列表
-                        user.roleList(data.id);
+                        role.roleList(data.id);
                         //注：在动态加载多选框的时候，一定要重新渲染下，才可以显示
                         form.render('checkbox');
 
@@ -199,41 +199,60 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         },
         /**
          * 用户所属角色
-         * @param {any} userid 用户id
+         * @param {any} id 角色id
          */
-        roleList: function (userid) {
-            _userid = userid;
+        roleList: function (id) {
+            _roleid = id;
             ajax_request({
-                url: AuthentictionURL + "/api/user/get/role?userid=" + userid,
+                url: AuthentictionURL + "/api/role/get/permission?roleid=" + id,
                 callback: function (e) {
-
                     if (e.code === "0") {
                         var str = "";
                         $.each(e.extension, function (i, value) {
                             var checked = value.isAuthorize ? 'checked = ""' : '';
-                            str += '<input roleid = "' + value.id + '" type = "checkbox" lay-skin="primary" name = "role" title = "' + value.name + '" ' + checked + '>';
+                            str += '<input roleid = "' + value.id + '" type = "checkbox" lay-skin="primary" name = "per" title = "' + value.name + '" ' + checked + '>';
                         });
                         $("#checkboxs").html(str);
-
+                        console.log(str, "--");
                     } else {
                         layer.msg(e.message);
                     }
                 }
             }, "GET");
         },
-
         /**
          * 保存用户角色信息        
          */
-        submit_add_role: function () {
+        add_role_permission: function () {
+            $("#demo1").on("click", function () {
+                var arr = [];                //获取多选框的值
+                $("input:checkbox[name='per']:checked").each(function (i) {
+                    arr[i] = $(this).attr("roleid");
+                });
+                ajax_request({
+                    url: AuthentictionURL + "/api/role/permission/add",
+                    data: { roleId: _roleid, listPermissionId: arr },
+                    callback: function (data) {
+                        if (data.code === '0') {
+                            layer.msg("用户角色编辑成功");
+                            layer.closeAll("page");
+                            role.loadtable();
+                        } else {
+                            layer.msg(data.message, {
+                                time: 800,
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+        },
+        /**
+         * 保存用户信息        
+         */
+        add_role: function () {
             //表单的提交
             form.on('submit(addrole_submit)', function (data) {
-
-                ////获取多选框的值
-                //var arr = [];
-                //$("input:checkbox[name='role']:checked").each(function (i) {
-                //    arr[i] = $(this).attr("roleid");
-                //});                
                 ajax_request({
                     url: AuthentictionURL + "/api/role/edit",
                     data: data.field,

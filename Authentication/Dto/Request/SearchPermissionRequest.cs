@@ -1,7 +1,7 @@
 ﻿using ZapiCore;
 namespace Authentication.Dto.Request
 {
-    public class SearchPermissionRequest : PageCondition
+    public class SearchPermissionRequest : LayuiTableRequest
     {
         /// <summary>
         /// 权限编码

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ZapiCore;
+using ZapiCore.Layui;
 
 namespace Authentication.Managers
 {
@@ -63,9 +64,9 @@ namespace Authentication.Managers
         /// <param name="search"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage<dynamic>> PermissionitemListAsync(SearchPermissionRequest search, CancellationToken cancellationToken)
+        public async Task<LayerTableJson> LayuiTableListAsync(SearchPermissionRequest search, CancellationToken cancellationToken)
         {
-            var response = new ResponseMessage<dynamic>() { };
+            var response = new LayerTableJson() { };
             var entity = _permissionStore.IQueryableListAsync();
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
@@ -75,9 +76,9 @@ namespace Authentication.Managers
             {
                 entity = entity.Where(y => y.Code == search.Code);
             }
-            var list = await entity.Skip(search.PageIndex * search.PageSize).Take(search.PageSize).ToListAsync(cancellationToken);
-         
-            response.Extension = new {  list, search.PageIndex,search.PageSize};
+            response.Count = await entity.CountAsync(cancellationToken);
+            var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
+            response.Data = list;
             return response;
         }
 
@@ -93,6 +94,13 @@ namespace Authentication.Managers
             if (editRequest == null)
             {
                 throw new ArgumentNullException();
+            }            
+            if(await _permissionStore.IQueryableListAsync().Where(y=>y.Name == editRequest.Name).AnyAsync())
+            {
+                response.Code = ResponseCodeDefines.ObjectAlreadyExists;
+                response.Message = "已经存在该权限名称";
+                return response;
+                //throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists ,"已经存在该权限名称");                
             }
             var permissionitem = _mapper.Map<Permissionitem>(editRequest);
             permissionitem.Id = Guid.NewGuid().ToString();

@@ -8,14 +8,14 @@ namespace Authentication.Stores
 {
     public interface IRolePermissionStore : Baseinterface<Role_Permissionitem>
     {
-    
+
 
         /// <summary>
         /// 批量删除权限
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="role_Role_Permissionitems"></param>
         /// <returns></returns>
-        Task<bool> DeleteRangeAsync(List<string> id);
+        Task<bool> DeleteRangeAsync(List<Role_Permissionitem> role_Role_Permissionitems);
 
 
     }

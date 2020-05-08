@@ -68,16 +68,10 @@
             <div class="layui-input-block">
                 <input type="text" name="phoneNumber" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <!--<div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block">
-                <textarea name="remark" placeholder="备注" class="layui-textarea"></textarea>
-            </div>
-        </div>-->
+        </div>   
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="demo1">确认</button>
+                <button class="layui-btn layui-btn layui-btn-sm" lay-submit="" lay-filter="adduser">确认</button>
             </div>
         </div>
     </form>
@@ -102,7 +96,8 @@
             var user = layui.user;
             user.loadtable();//加载表格
             user.table_show();//加载表格操作
-            user.submit_add_user(); //保存用户角色
+            user.add_user_role(); //保存用户角色
+            user.add_user();
         });
 
 

@@ -1,8 +1,10 @@
 ﻿using Authentication.Dto.Request;
+using Authentication.Dto.Response;
 using Authentication.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZapiCore;
 using ZapiCore.Layui;
@@ -141,6 +143,17 @@ namespace Authentication.Controllers
             return response;
         }
 
+
+        /// <summary>
+        /// 查询该角色拥有哪些权限
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        [HttpGet("get/permission")]
+        public async Task<ResponseMessage<List<RoleListResponse>>> BindUserRole(string roleid)
+        {
+            return await _roleManager.SelectRolePermissionAsync(roleid);
+        }
 
 
     }
