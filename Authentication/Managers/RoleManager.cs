@@ -133,7 +133,7 @@ namespace Authentication.Managers
                             PermissionId = pid,
                             CreateTime = DateTime.Now,
                             RoleId = condtion.RoleId,
-                        });
+                        }); 
                     }
                     response.Extension = await _rolePermissionStore.AddRangeEntityAsync(roleperssion);
                     await transaction.CommitAsync(cancellationToken);
@@ -161,10 +161,10 @@ namespace Authentication.Managers
         public async Task<LayerTableJson> LayuiTableListAsync(SearchRoleRequest search, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = new LayerTableJson() { };
-            var entity = _roleStore.IQueryableListAsync();
+            var entity = _roleStore.IQueryableListAsync().Where(y=> !y.IsDeleted);
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
-                entity = entity.Where(y => y.Name == search.Name);
+                entity = entity.Where(y => y.Name.Contains(search.Name));
             }
             response.Count = await entity.CountAsync(cancellationToken);
             var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
@@ -197,6 +197,7 @@ namespace Authentication.Managers
         /// 新增
         /// </summary>
         /// <param name="editRequest"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<ResponseMessage<bool>> RoleAddAsync(RoleEditRequest editRequest, CancellationToken cancellationToken = default(CancellationToken))
         {

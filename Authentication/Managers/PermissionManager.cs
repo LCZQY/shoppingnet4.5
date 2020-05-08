@@ -22,9 +22,9 @@ namespace Authentication.Managers
 
         private readonly IMapper _mapper;
         private readonly IPermissionStore _permissionStore;
-
         private readonly IUserStore _userStore;
         private readonly ILogger<PermissionManager> _logger;
+
         public PermissionManager(IPermissionStore permissionStore, IUserStore userStore, ILogger<PermissionManager> logger, IMapper mapper)
         {
             _permissionStore = permissionStore;
@@ -54,9 +54,6 @@ namespace Authentication.Managers
         }
 
 
-
-
-
         /// <summary>
         /// 列表数据
         /// </summary>
@@ -66,7 +63,7 @@ namespace Authentication.Managers
         public async Task<LayerTableJson> LayuiTableListAsync(SearchPermissionRequest search, CancellationToken cancellationToken)
         {
             var response = new LayerTableJson() { };
-            var entity = _permissionStore.IQueryableListAsync();
+            var entity = _permissionStore.IQueryableListAsync().Where(y => !y.IsDeleted); ;
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
                 entity = entity.Where(y => y.Name == search.Name);

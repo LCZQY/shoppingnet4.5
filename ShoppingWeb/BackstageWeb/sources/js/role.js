@@ -83,12 +83,12 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         /*发送ajax请求到后台执行批量删除*/
                         break;
                     case 'flush':
-                        console.log("刷新中");
+                        console.log("刷新");
                         table.reload('test', {
-                            url: AuthentictionURL + "/api/user/layui/table/list"
+                            url: AuthentictionURL + "/api/role/layui/table/list"
                             , method: "POST"
                             , contentType: 'application/json'
-                            //  , where: { name: null }
+                            , where: { name: '' }
                         });
                         break;
                     case 'search':
@@ -97,8 +97,8 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             layer.msg("请输入商品名称");
                         } else {
                             table.reload('test', {
-                                url: AuthentictionURL + "/api/user/layui/table/list"
-                                //, method: "POST"
+                                url: AuthentictionURL + "/api/role/layui/table/list"
+                                , method: "POST"
                                 , where: { name: name }
                                 , page: { curr: 1 }
                             });
@@ -155,13 +155,20 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         editData = data;
                         break;
                     case 'del'://删除
-                        table_confirm({
-                            obj: obj,
-                            url: "groundinghandler.ashx?action=delete",
+                        delte_confirm({
+                            url: AuthentictionURL + "/api/role/delete?id=" + data.id,
                             tips: "是否确认删除",
-                            data: { id: data.ProductId }
-                        });
-                        //page_reload();
+                            data: null,
+                            active: function (e) {
+                                if (e.code === "0") {
+                                    layer.msg("角色删除成功");
+                                    layer.closeAll();
+                                    user.loadtable();
+                                } else {
+                                    layer.msg("角色删除失败");
+                                }
+                            }
+                        });                   
                         break;
                     case 'addrole':
 
@@ -192,7 +199,6 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         role.roleList(data.id);
                         //注：在动态加载多选框的时候，一定要重新渲染下，才可以显示
                         form.render('checkbox');
-
                         break;
                 }
             });

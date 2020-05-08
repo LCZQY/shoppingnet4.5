@@ -38,17 +38,17 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , cols: [
                     [
                         { type: 'checkbox', fixed: 'left' }
-                        , { field: 'code', title: '权限Code', align: "center"}
+                        , { field: 'code', title: '权限Code', align: "center" }
                         , { field: 'name', title: '权限名称', align: "center" }
                         , { field: 'group', title: '权限项分组', align: "center" }
-                        , { field: 'url', title: 'Url', align: "center", sort: true, }                      
+                        , { field: 'url', title: 'Url', align: "center", sort: true, }
 
                         , {
                             field: 'createTime', title: '创建时间', sort: true, align: "center", templet: function (d) {
                                 return layui.util.toDateString(d.createTime);
                             }
                         }
-                        , { field: 'remark', title: '备注', align: "center", sort: true, }      
+                        , { field: 'remark', title: '备注', align: "center", sort: true, }
                         , { fixed: 'right', title: '操作', align: "center", toolbar: '#takeaction' }
                     ]
                 ]
@@ -76,8 +76,8 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             anim: 0,
                             move: false,
                             content: $("#add_from") // 不可以直接用html 不然from 提交会失效
-                      
-                        });   
+
+                        });
 
                         break;
                     case 'batchDel':
@@ -90,7 +90,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             url: AuthentictionURL + "/api/permission/layui/table/list"
                             , method: "POST"
                             , contentType: 'application/json'
-                            //  , where: { name: null }
+                            , where: { name: null }
                         });
                         break;
                     case 'search':
@@ -138,13 +138,20 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 var data = obj.data;
                 switch (obj.event) {
                     case 'del'://删除
-                        table_confirm({
-                            obj: obj,
-                            url: "groundinghandler.ashx?action=delete",
+                        delte_confirm({
+                            url: AuthentictionURL + "/api/permission/delete?id=" + data.id,
                             tips: "是否确认删除",
-                            data: { id: data.ProductId }
-                        });
-                        //page_reload();
+                            data: null,
+                            active: function (e) {
+                                if (e.code === "0") {
+                                    layer.msg("权限删除成功");
+                                    layer.closeAll();
+                                    user.loadtable();
+                                } else {
+                                    layer.msg("权限删除失败");
+                                }
+                            }
+                        });                   
                         break;
                     case 'addrole':
 
@@ -169,17 +176,16 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             }
                         }
                         var othis = $(this), method = othis.data('method');
-                        active[method] ? active[method].call(this, othis) : '';                                    
+                        active[method] ? active[method].call(this, othis) : '';
                 }
             });
-        },     
+        },
         /**
          * 新增权限      
          */
-        submit_add_permission: function () {                   
+        submit_add_permission: function () {
             ////表单的提交
-            form.on('submit(addsubmit)', function (data) {
-                console.log(data,"data--------");        
+            form.on('submit(addsubmit)', function (data) {             
                 ajax_request({
                     url: AuthentictionURL + "/api/permission/edit",
                     data: data.field,
@@ -196,8 +202,8 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                     }
                 });
                 return false;
-            });                         
-       }
+            });
+        }
     }
     //输出接口 
     exports('permission', permission);

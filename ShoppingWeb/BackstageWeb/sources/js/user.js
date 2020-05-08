@@ -92,6 +92,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         table.reload('test', {
                             url: AuthentictionURL + "/api/user/layui/table/list"
                             , method: "POST"
+                            , where: { username:'' }
                             , contentType: 'application/json'                  
                         });
                         break;
@@ -119,8 +120,6 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 var loading = layer.load(2, {
                     shade: [0.1, '#000']
                 });
-
-                console.log(data, "0000000000");
                 ajax_request({
                     url: "groundinghandler.ashx?action=update",
                     data: data,
@@ -160,14 +159,21 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                         $("#myrole").show();
                         editData = data;
                         break;
-                    case 'del'://删除
-                        table_confirm({
-                            obj: obj,
-                            url: "groundinghandler.ashx?action=delete",
+                    case 'del'://删除               
+                        delte_confirm({                         
+                            url: AuthentictionURL + "/api/user/delete?id=" + data.id,
                             tips: "是否确认删除",
-                            data: { id: data.ProductId }
-                        });
-                        //page_reload();
+                            data: null,
+                            active: function (e) {
+                                if (e.code === "0") {
+                                    layer.msg("用户删除成功");
+                                    layer.closeAll();
+                                    user.loadtable();
+                                } else {
+                                    layer.msg("用户删除失败");
+                                }
+                            }
+                        });                   
                         break;
                     case 'addrole':
 

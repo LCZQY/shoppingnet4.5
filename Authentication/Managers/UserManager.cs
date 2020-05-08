@@ -157,7 +157,7 @@ namespace Authentication.Managers
         public async Task<LayerTableJson> LayuiTableListAsync(SearchUserRequest search, CancellationToken cancellationToken)
         {
             var response = new LayerTableJson();
-            var entity = _userStore.IQueryableListAsync();
+            var entity = _userStore.IQueryableListAsync().Where(y => !y.IsDeleted);
             if (!string.IsNullOrWhiteSpace(search.RoleName))
             {
                 // entity = entity.Where(y=>y.listRole.Contains(search.RoleName));            
