@@ -18,7 +18,7 @@ namespace ShoppingApi.Controllers
     /// 文件 API
     /// </summary>
     [Route("api/file")]
-    [Authorize]
+ //   [Authorize]
     [ApiController]
     public class FilesController : ControllerBase
     {

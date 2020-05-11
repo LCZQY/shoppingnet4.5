@@ -8,11 +8,11 @@ const AuthentictionURL = "https://localhost:5000";
  * 主用于母版页
  */
 
-var layer;
-layui.use(['layer', 'form'], function () {
-    layer = layui.layer
+//var layer;
+//layui.use(['layer', 'form'], function () {
+//    layer = layui.layer
 
-});
+//});
 
 /**
  * 异步交互确认框
@@ -51,7 +51,7 @@ var delte_confirm = function (options) {
             callback: function (e) {
                 options.active(e);
             }
-        },"DELETE");
+        }, "DELETE");
     });
 };
 
@@ -60,13 +60,13 @@ var delte_confirm = function (options) {
  * 获取Token
  */
 var getToken = function () {
-    
+
     if (!!localStorage.getItem('token')) {
 
         return localStorage.getItem('token');
     } else {
-        layer.msg("您还没有登录本系统,请先登录");
-        window.location.href = 'index.html';       
+        //layer.msg("您还没有登录本系统,请先登录");
+        window.location.href = 'index.html';
     }
 }
 
@@ -89,7 +89,7 @@ function handleTokenFailed(code) {
  * url: 请求路径
  * type: PSOT,GET,DELETE,PUT
  */
-var ajax_request = function (options,type="post") {
+var ajax_request = function (options, type = "post") {
 
     $.ajax({
         method: type,
@@ -109,33 +109,4 @@ var ajax_request = function (options,type="post") {
         }
     });
 };
-
-
-/**
- * 页面刷新
- * */
-var page_reload = function () {
-
-    setTimeout(function () {
-        window.parent.location.reload();
-    }, 2000);
-};
-
-/**
- * 数据加载中...
- * */
-var loading_start = function () {
-    layer.load(2, {
-        shade: [0.1, '#000']
-    });
-
-};
-
-/**
- * 关闭数据加载弹窗
- * */
-var loading_end = function () {
-    layer.close(loading);
-};
-
 

@@ -19,7 +19,7 @@ var uploadfile = function () {
                 , url: WEBURL + '/api/file/upload'
                 , accept: 'file'
                 , exts: 'jpg|png|gif|' 
-                //, headers: { token: 'sasasasa' }                   //额外添加的请求头
+                , headers: { "Authorization": getToken() } //携带token
                 , multiple: true
                 , auto: false
                 , bindAction: '#testListAction'
@@ -159,6 +159,7 @@ var select_tree = function () {
                     type: "get",
                     url: WEBURL + "/api/type/tree",
                     dataType: 'json',
+                    headers: { "Authorization": getToken() }, //携带token
                     success: function (data) {
                         el5 = eleTree.render({
                             elem: '.ele5',

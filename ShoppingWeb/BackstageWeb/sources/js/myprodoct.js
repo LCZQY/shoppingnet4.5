@@ -18,14 +18,13 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         /**
          * 绑定数据表格
          * */
-        loadtable : function(typeid, typename) {
-            console.log(table, "tables")
+        loadtable : function(typeid, typename) {           
             table.render({
                 url: WEBURL + "/api/product/layui/table/list"
                 , method: "POST"
                 , startByZero: 0
                 //, where: { cateId: typeid }
-                //,headers: {""} 携带token
+                , headers: { "Authorization": getToken()} //携带token
                 , contentType: 'application/json'
                 , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , elem: '#test'

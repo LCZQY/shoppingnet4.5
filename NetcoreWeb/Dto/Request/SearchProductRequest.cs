@@ -13,13 +13,13 @@ namespace ShoppingApi.Dto.Request
         /// <summary>
         /// 商品名称
         /// </summary>
-        [Required(ErrorMessage = "请输入商品名称")]
+        //[Required(ErrorMessage = "请输入商品名称")]
         public string Name { get; set; }
 
         /// <summary>
         /// 商品类型Id
         /// </summary>
-        [Required(ErrorMessage = "请输入商品类型Id")]
+        //[Required(ErrorMessage = "请输入商品类型Id")]
         public string CateId { get; set; }
     }
 }

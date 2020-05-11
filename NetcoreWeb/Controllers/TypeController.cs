@@ -19,7 +19,7 @@ namespace ShoppingApi.Controllers
     /// </summary>
     [Route("api/type")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TypeController : ControllerBase
     {
 

@@ -25,7 +25,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 , method: "POST"
                 , startByZero: 0
                 , where: { cateId: typeid }
-                //,headers: {""} 携带token
+                , headers: { "Authorization": getToken() } //携带token
                 , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , contentType: 'application/json'
                 , elem: '#test'
@@ -107,6 +107,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                 type: "get",
                 url: WEBURL + "/api/type/tree",
                 dataType: 'json',
+                headers: { "Authorization": getToken() }, //携带token
                 success: function (res) {
                     console.log(res, "数据源");
                     var data = [{}];
@@ -123,6 +124,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
                             onlyIconControl: true,
                             showLine: true,//显示线
                             accordion: true,//手风琴模式
+                           
                             drag: false,//拖拽
                             skin: "laySimple", // laySimple主题风格
                             showSearch: true,//显示搜索框

@@ -18,7 +18,7 @@ namespace ShoppingApi.Controllers
     /// 客户API
     /// </summary>
     [Route("api/customers")]
-    [Authorize]
+   // [Authorize]
     [ApiController]
     public class CustomersController : BaseController
     {
