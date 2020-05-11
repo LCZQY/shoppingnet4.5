@@ -19,12 +19,16 @@ namespace ShoppingApi.Controllers
     /// </summary>
     [Route("api/file")]
  //   [Authorize]
-    [ApiController]
+    [ApiController] 
     public class FilesController : ControllerBase
     {
         private readonly ILogger<FilesController> _logger;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private string _fileRootPath = "/Images/";
+        private string _fileRootPath = "D://Images/"; //简单明了 顺利通过
+        //private string _fileRootPath = "\\172.18.75.1//Images//"; //nginx 可以顺利链接 但是写入没有文件
+        //private string _fileRootPath = "\\http:\\localhost:7000\\"; //iis 部署过，无法链接到该文件
+        
+
         public FilesController(ILogger<FilesController> logger, IWebHostEnvironment hostingEnvironment)
         {
             _logger = logger;
@@ -49,8 +53,8 @@ namespace ShoppingApi.Controllers
                 response.Message = "不能够上传空文件";
                 return response;
             }
-            // long fileSize = 0;
-            string filePath = $".{_fileRootPath}{DateTime.Now.ToString("yyyy-MM-dd")}";
+            
+            string filePath = $"{_fileRootPath}{DateTime.Now.ToString("yyyy-MM-dd")}";
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);

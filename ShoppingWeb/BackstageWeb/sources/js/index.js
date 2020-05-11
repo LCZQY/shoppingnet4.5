@@ -21,7 +21,7 @@ layui.define(['form', 'layer'], function (exports) {
                 //    var obj = { "user": data.field.UserName };
                 ////                obj = JSON.stringify(obj); //×ª»¯ÎªJSON×Ö·û´®
                 ////                localStorage.setItem("login", obj);
-                    window.location.href = 'page/home.html';
+                   // window.location.href = 'page/home.html';
                 } else {
                     layer.close(loading);
                     layer.msg(data.message);

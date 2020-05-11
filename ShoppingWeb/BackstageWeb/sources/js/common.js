@@ -66,7 +66,7 @@ var getToken = function () {
         return localStorage.getItem('token');
     } else {
         layer.msg("您还没有登录本系统,请先登录");
-        window.location.href = 'index.html';       
+       // window.location.href = 'index.html';       
     }
 }
 
