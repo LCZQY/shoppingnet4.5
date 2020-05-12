@@ -19,7 +19,7 @@ var uploadfile = function () {
                 , url: WEBURL + '/api/file/upload'
                 , accept: 'file'
                 , exts: 'jpg|png|gif|' 
-                , headers: { "Authorization": getToken() } //携带token
+              //  , headers: { "Authorization": getToken() } //携带token
                 , multiple: true
                 , auto: false
                 , bindAction: '#testListAction'

@@ -6,9 +6,9 @@
 
 
 
-二， 待开发功能 https://www.cnblogs.com/zhangweizhong/p/5239233.html //参考技术方案
+二， 待开发功能 https://www.cnblogs.com/zhangweizhong/p/5239233.html //整体架构参考技术方案
 	01 缓存系统
-	02 数据库读写分离 
+	02 数据库读写分离   https://blog.csdn.net/weixin_38361347/article/details/82935231
 	03 文件系统
 	05 搜索系统
 	06
