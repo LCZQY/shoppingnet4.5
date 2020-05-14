@@ -33,6 +33,7 @@ namespace Authentication
             services.AddScoped<PermissionManager>();
             services.AddScoped<IPermissionStore, PermissionitemStore>();
 
+       
         }
 
 

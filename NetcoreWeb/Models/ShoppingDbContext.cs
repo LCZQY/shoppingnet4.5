@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-/// <summary>
-/// 数据模型层
-/// </summary>
 namespace ShoppingApi.Models
 {
-    /// <summary>
-    /// 商品评价表
-    /// </summary>
+   /// <summary>
+   /// 业务库上下文
+   /// </summary>
     public class ShoppingDbContext : DbContext
     {
         /// <summary>
@@ -18,25 +15,6 @@ namespace ShoppingApi.Models
         {
 
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="builder"></param>
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
-            builder.Entity<Customer>(b => {
-                b.ToTable("Customer");
-            });
-
-        }
-
-        ///// <summary>
-        ///// 权限管理【考虑新建一个服务，独立出去】
-        ///// </summary>
-        //public DbSet<Models.use>  Users { get; set; }
 
         /// <summary>
         /// 商品评价
@@ -71,7 +49,7 @@ namespace ShoppingApi.Models
         /// <summary>
         /// 图片
         /// </summary>
-        public DbSet<Files>  Files { get; set; }
+        public DbSet<Files> Files { get; set; }
 
         /// <summary>
         /// 商品
@@ -82,6 +60,49 @@ namespace ShoppingApi.Models
         /// 顾客【可以成为卖家】
         /// </summary>
         public DbSet<Customer> Customer { get; set; }
-    }
 
+
+
+
+
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="builder"></param>
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Customer>(b =>
+            {
+                b.ToTable("zqy_customer");
+            });
+
+            builder.Entity<Product>(b =>
+            {
+                b.ToTable("zqy_product");
+            });
+
+            builder.Entity<Files>(b =>
+            {
+                b.ToTable("zqy_files");
+            });
+
+            builder.Entity<News>(b =>
+            {
+                b.ToTable("zqy_news");
+            });
+
+            builder.Entity<Favorite>(b =>
+            {
+                b.ToTable("zqy_favorite");
+            });
+
+            builder.Entity<Appraise>(b =>
+            {
+                b.ToTable("zqy_appraise");
+            });
+        }
+    }
 }

@@ -4,6 +4,10 @@ namespace Authentication.Models
 {
     public class AuthenticationDbContext : DbContext
     {
+
+        private DbContextOptions<RedAuthenticationDbContext> _redoptions;
+        private DbContextOptions<WriteAuthenticationDbContext> _writeoptions;
+
         /// <summary>
         /// 
         /// </summary>
@@ -11,6 +15,16 @@ namespace Authentication.Models
         public AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> options) : base(options)
         {
 
+        }
+
+        public AuthenticationDbContext(DbContextOptions<RedAuthenticationDbContext> options)
+        {
+            this._redoptions = options;
+        }
+
+        public AuthenticationDbContext(DbContextOptions<WriteAuthenticationDbContext> options1)
+        {
+            this._writeoptions = options1;
         }
 
         /// <summary>
@@ -44,6 +58,48 @@ namespace Authentication.Models
         public DbSet<Permissionitem_expansion> Permissionitem_Expansion { get; set; }
 
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="builder"></param>
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            
+            base.OnModelCreating(builder);      
+            builder.Entity<Permissionitem_expansion>(b =>
+            {
+                b.ToTable("zqy_permissionitem_expansion");
+                b.HasKey(k => new { k.Id });
+            });
 
+            builder.Entity<Permissionitem>(b =>
+            {
+                b.ToTable("zqy_permissionitem");
+                b.HasKey(k => new { k.Id });
+            });
+            builder.Entity<User_Role>(b =>
+            {
+                b.ToTable("zqy_user_role");
+                b.HasKey(k => new { k.Id });
+            });
+
+            builder.Entity<Role_Permissionitem>(b =>
+            {
+                b.ToTable("zqy_role_permissionitem");
+                b.HasKey(k => new { k.Id });
+            });
+
+            builder.Entity<Role>(b =>
+            {
+                b.ToTable("zqy_role");
+                b.HasKey(k => new { k.Id });
+            });
+            builder.Entity<User>(b =>
+            {
+                b.ToTable("zqy_user");
+                b.HasKey(k => new { k.Id });
+            });
+
+        }
     }
 }

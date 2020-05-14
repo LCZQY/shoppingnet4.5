@@ -45,9 +45,9 @@
 			<div class="search fl">
 				<div class="search_form">
 					<div class="form_left fl"></div>
-					<form action="" name="serarch" method="get" class="fl">
+					<form action="list.html" name="serarch" method="get" class="fl">
 						<input type="text" class="txt" value="请输入商品关键字" />
-						<a href='list.html' ><input type="submit" class="btn" value="搜索" /></a>
+					    <input type="submit" class="btn" value="搜索" />
 					</form>
 					<div class="form_right fl"></div>
 				</div>
@@ -1068,6 +1068,13 @@
 		</p>
 	</div>
 	<!-- 底部版权 end -->
+	<script>
+		$(".fl").click(function () {
+			window.location.href = "list.html";
+			return false;
+				
+		});
 
+	</script>
 </body>
 </html>

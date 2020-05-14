@@ -36,10 +36,13 @@ namespace Authentication
             #region AutoMapper
 
             services.AddAutoMapper(typeof(ServiceProfile));  //ServiceProfile为你Mapper的类
-            #endregion      
+            #endregion
             #region Mysql                    
-            services.AddDbContext<AuthenticationDbContext>(options =>
-     options.UseMySql(Configuration.GetConnectionString("MysqlConnection")));
+            //services.AddDbContext<AuthenticationDbContext>(options =>
+            // options.UseMySql(Configuration.GetConnectionString("MysqlConnection")));
+
+            services.AddDbContext<RedAuthenticationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("RedMysqlConnection")))
+                    .AddDbContext<WriteAuthenticationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("WriteMysqlConnection")));
             #endregion
 
             #region 同时兼容 Client_Credentials 和 Resource_Owner_Password 模式（测试通过 - OK）
