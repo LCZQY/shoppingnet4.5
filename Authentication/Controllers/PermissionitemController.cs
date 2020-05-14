@@ -26,6 +26,7 @@ namespace Authentication.Controllers
             _permissionManager = permissionManager;
         }
 
+        ///
         /// <summary>
         /// 检查用户是否有权限
         /// </summary>
