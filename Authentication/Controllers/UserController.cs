@@ -75,6 +75,29 @@ namespace Authentication.Controllers
             return response;
         }
 
+        ///// <summary>
+        ///// 用户列表
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet("layui/table/mycat")]
+        //public async Task<LayerTableJson> LayuiTableList()
+        //{
+        //    var response = new LayerTableJson();
+          
+        //    try
+        //    {
+        //        response = await _userManager.LayuiTableListAsync(search, HttpContext.RequestAborted);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        response.Code = 500;
+        //        response.Msg = "用户列表查询失败，请重试";
+        //        _logger.LogInformation($"用户列表查询失败异常:{JsonHelper.ToJson(e)}");
+        //    }
+        //    return response;
+        //}
+
+
 
 
 

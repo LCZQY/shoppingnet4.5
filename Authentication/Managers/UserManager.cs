@@ -146,7 +146,7 @@ namespace Authentication.Managers
             }
             return response;
         }
-
+       
 
         /// <summary>
         /// 列表数据
@@ -173,8 +173,8 @@ namespace Authentication.Managers
             if (!string.IsNullOrWhiteSpace(search.UserName))
             {
                 entity = entity.Where(y => y.UserName.Contains(search.UserName));
-            }
-            response.Count = await entity.CountAsync(cancellationToken);
+            }           
+            response.Count = await entity.CountAsync(y=>y.Id != null,cancellationToken);
             var list = await entity.Skip(((search.Page ?? 0) - 1) * search.Limit ?? 0).Take(search.Limit ?? 0).ToListAsync(cancellationToken);
             var result = _mapper.Map<List<UserListResponse>>(list);
 

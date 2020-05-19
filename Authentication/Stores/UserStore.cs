@@ -9,7 +9,8 @@ namespace Authentication.Stores
 {
     public class UserStore : IUserStore
     {
-        private readonly AuthenticationDbContext _context;
+
+        private readonly AuthenticationDbContext _context; 
 
         public UserStore(AuthenticationDbContext context)
         {

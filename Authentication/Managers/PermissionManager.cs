@@ -91,6 +91,7 @@ namespace Authentication.Managers
             {
                 throw new ArgumentNullException();
             }
+
             if (await _permissionStore.IQueryableListAsync().Where(y => y.Name == editRequest.Name).AnyAsync())
             {               
                throw new ZCustomizeException(ResponseCodeEnum.ObjectAlreadyExists ,"已经存在该权限名称");              

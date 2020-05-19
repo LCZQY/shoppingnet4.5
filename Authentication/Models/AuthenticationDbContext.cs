@@ -2,11 +2,11 @@
 
 namespace Authentication.Models
 {
+    /// <summary>
+    /// 直接连接到mycat的数据库，相当于桥梁的作用，自动识别SQL分配到主库或者从库
+    /// </summary>
     public class AuthenticationDbContext : DbContext
     {
-
-        private DbContextOptions<RedAuthenticationDbContext> _redoptions;
-        private DbContextOptions<WriteAuthenticationDbContext> _writeoptions;
 
         /// <summary>
         /// 
@@ -15,17 +15,7 @@ namespace Authentication.Models
         public AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> options) : base(options)
         {
 
-        }
-
-        public AuthenticationDbContext(DbContextOptions<RedAuthenticationDbContext> options)
-        {
-            this._redoptions = options;
-        }
-
-        public AuthenticationDbContext(DbContextOptions<WriteAuthenticationDbContext> options1)
-        {
-            this._writeoptions = options1;
-        }
+        }      
 
         /// <summary>
         /// 角色-权限表
